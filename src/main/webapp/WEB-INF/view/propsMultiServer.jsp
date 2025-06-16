@@ -20,13 +20,13 @@
                     <legend>Server type</legend>
                     <div class="field">
                         <label for="multiServer_nbrServers" class="labelLeft">Number of servers</label>
-                        <input id="multiServer_nbrServers"type="text" class="inputText small">
+                        <input id="multiServer_nbrServers"type="text" class="inputText small" value="1">
                     </div>
 
-                    <div class="field">
+                    <%--<div class="field">
                         <label for="multiServer_nbrQueues" class="labelLeft">Number of queues</label>
                         <input id="multiServer_nbrQueues"type="text" class="inputText small">
-                    </div>
+                    </div>--%>
                 </fieldset>
 
                 <fieldset>
@@ -42,7 +42,7 @@
                     </div>
                 </fieldset>
 
-                <fieldset>
+                <%--<fieldset>
                     <legend>Choice next resource</legend>
                     <div class="field">
                         <label for="multiServer_probability" class="labelLeft">Probability</label>
@@ -53,8 +53,35 @@
                         <label for="multiServer_cycle" class="labelLeft">Cycle</label>
                         <input id="multiServer_cycle" type="radio" name="probability">
                     </div>
-                </fieldset>
+                </fieldset>--%>
+                <fieldset>
+                    <legend>Arrival distribution</legend>
+                    <div class="field">
+                        <select id="multiServer_arrival_distribution" class="inputText">
+                            <option>Exponential</option>
+                            <%--<option>HyperExponential</option>--%>
+                            <option>Normal</option>
+                            <option>Uniform</option>
+                            <%--<option>Erlang</option>--%>
+                        </select>
+                    </div>
 
+                    <div class="field">
+                        <label for="arrival_average" class="labelLeft">Average</label>
+                        <input id="arrival_average" type="text" class="inputText small">
+                    </div>
+
+                    <%--<div class="field">
+                        <label for="server_stdDeviation" class="labelLeft">Standard deviation</label>
+                        <input id="server_stdDeviation" type="text" class="inputText small">
+                    </div>
+
+                    <div class="field">
+                        <label for="server_sequence" class="labelLeft">Sequence</label>
+                        <input id="server_sequence" type="text" class="inputText small">
+                    </div>--%>
+                </fieldset>
+                
                 <fieldset>
                     <legend>Service distribution</legend>
                     <div class="field">

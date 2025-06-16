@@ -9,6 +9,8 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script data-main="js/queuingNetwork/main.js" src="js/libs/require.js"></script>
+        <script src="js/queuingNetwork/require.cfg.js"></script>
     </head>
     <body>
         <div id="serverProperties" class="standardForm">
@@ -16,7 +18,7 @@
                 <input type="hidden" id="callerId">
                 <input type="hidden" id="callerType">
 
-                <%--<fieldset>
+                <fieldset id="queueStatsFieldset">
                     <legend>Queue statistics</legend>
                     <div class="field">
                         <label for="server_emptyQueue" class="labelLeft">Empty queue</label>
@@ -29,7 +31,7 @@
                     </div>
                 </fieldset>
 
-                <fieldset>
+                <%--<fieldset>
                     <legend>Choice next resource</legend>
                     <div class="field">
                         <label for="server_probability" class="labelLeft">Probability</label>

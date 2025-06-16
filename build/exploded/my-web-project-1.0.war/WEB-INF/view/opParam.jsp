@@ -22,14 +22,14 @@
                     <fieldset>
                         <legend>Language</legend>
                         <select id="opParam_library" class="inputText">
-                            <option>R</option>
-                            <option>Java</option>
-                            <option>Python</option>
-                            <option>C SMPL</option>
-                            <option>C SMPLX</option>
-                            <option>C ParSMPL</option>
-                            <option>C SIMPACK</option>
-                            <option>C SIMPACK2</option>
+                            <option value="R">R</option>
+  <option value="Java">Java</option>
+  <option value="Python">Python</option>
+  <option value="C SMPL">C SMPL</option>
+  <option value="C SMPLX">C SMPLX</option>
+  <option value="C ParSMPL">C ParSMPL</option>
+  <option value="C SIMPACK">C SIMPACK</option>
+  <option value="C SIMPACK2">C SIMPACK2</option>
                         </select>
                     </fieldset>
                     

@@ -68,7 +68,69 @@ define(["jquery", "jsPlumb", "DrawArea", "PropertiesArea", "JsonManager", "Utils
 
             jsPlumb.detachAllConnections(element);
             father.removeChild(element);
+
+            // 1. Remove do graph.mapNodes
+            delete jsonManager.graph.mapNodes[element.id];
+
+            // 2. Recria mapeamento de ID antigo -> novo ID sequencial
+            const novoMapa = new Map();
+            const chavesAntigas = Object.keys(jsonManager.graph.mapNodes);
+            chavesAntigas.forEach((oldId, index) => {
+                novoMapa.set(oldId, index);
+            });
+
+            // 3. Atualiza os nós com os novos IDs
+            const novosMapNodes = {};
+            chavesAntigas.forEach((oldId) => {
+                const no = jsonManager.graph.mapNodes[oldId];
+                const novoId = novoMapa.get(oldId);
+
+                // Atualiza id no objeto
+                no.id = novoId;
+
+                // Atualiza targets
+                const novosTargets = {};
+                Object.keys(no.mapTargets).forEach((targetIdAntigo) => {
+                    const novoTarget = novoMapa.get(targetIdAntigo);
+                    if (novoTarget !== undefined) {
+                        novosTargets[novoTarget] = no.mapTargets[targetIdAntigo];
+                    }
+                });
+                no.mapTargets = novosTargets;
+
+                novosMapNodes[novoId] = no;
+            });
+            jsonManager.graph.mapNodes = novosMapNodes;
+
+            // 4. Atualiza a interface (DOM)
+            $(".idDiv").each(function() {
+                const $div = $(this);
+                const $element = $div.closest("div");
+                const oldId = $element.attr("id");
+                const novoId = novoMapa.get(oldId);
+
+                if (novoId !== undefined) {
+                    jsPlumb.removeAllEndpoints($element);
+                    $element.attr("id", novoId);
+                    $div.text(novoId);
+                }
+            });
+
+            // 5. Recriar conexões jsPlumb
+            Object.values(jsonManager.graph.mapNodes).forEach((no) => {
+                Object.keys(no.mapTargets).forEach((targetId) => {
+                    jsPlumb.connect({
+                        source: no.id.toString(),
+                        target: targetId.toString(),
+                        paintStyle: {lineWidth: 3, strokeStyle: "#660700"},
+                        anchors: ["RightMiddle", "LeftMiddle"],
+                        endpoint: "Blank",
+                        overlays: [["PlainArrow", {location: 1, width: 15, length: 12}]]
+                    });
+                });
+            });
         };
+
 
         ElementManager.prototype.linkElements = function(element) {
             var connection = null;

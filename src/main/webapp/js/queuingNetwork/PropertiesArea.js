@@ -26,7 +26,10 @@ define(["JsonManager", "Cons"],
                     if ($("#" + cons.PROPERTIES_AREA).css("display") !== "none") {
                         closeDiv(element);
                     }
-                    if (element.name === "server" || element.name === "out" || element.name === "multiServer") {
+                    if (element.name === "server") {
+                        openDiv(element);
+                    }
+                    if (element.name === "multiServer") {
                         openDiv(element);
                     }
                 }

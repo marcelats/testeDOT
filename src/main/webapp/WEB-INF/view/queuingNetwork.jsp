@@ -21,6 +21,7 @@
 
         <script data-main="js/queuingNetwork/main.js" src="js/libs/require.js"></script>
         <script src="js/queuingNetwork/require.cfg.js"></script>
+
     </head>
 
     <body>
@@ -52,11 +53,11 @@
                                 <img src="img/icon/server.gif" title="One Server"/>
                             </div>
                         </li>
-                        <%--<li>
+                        <li>
                             <div id="multiServer">
                                 <img src="img/icon/multiServer.gif" title="Multiple Servers"/>
                             </div>
-                        </li>--%>
+                        </li>
                         <li>
                             <div id="source">
                                 <img src="img/icon/source.gif" title="Source"/>
@@ -101,5 +102,6 @@
         <div id="shadowing" class="shadowing">
             <div id="boxContainer" class="box"></div>
         </div>
+     
     </body>
 </html>
