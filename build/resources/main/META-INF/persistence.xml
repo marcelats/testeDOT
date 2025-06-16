@@ -18,7 +18,7 @@
           value="org.hibernate.hikaricp.internal.HikariCPConnectionProvider"/>
 
       <!--<property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://postgres:5432/asda"/>-->
-      <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/asda"/>
+      <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://postgres:5432/asda"/>
       <property name="jakarta.persistence.jdbc.user" value="postgres"/>
       <property name="jakarta.persistence.jdbc.password" value="m1n1ster"/>
       <!--  Hibernate's properties -->
@@ -32,7 +32,7 @@
       <property name="hibernate.hikari.dataSourceClassName" value="org.postgresql.ds.PGSimpleDataSource"/>
       <property name="hibernate.hikari.dataSource.user" value="postgres"/>
       <property name="hibernate.hikari.dataSource.password" value="m1n1ster"/>
-      <property name="hibernate.hikari.dataSource.url" value="jdbc:postgresql://localhost:5432/asda"/>
+      <property name="hibernate.hikari.dataSource.url" value="jdbc:postgresql://postgres:5432/asda"/>
       <property name="hibernate.hikari.maximumPoolSize" value="10"/>
       <property name="hibernate.hikari.minimumIdle" value="5"/>
       <property name="hibernate.hikari.idleTimeout" value="300000"/>
