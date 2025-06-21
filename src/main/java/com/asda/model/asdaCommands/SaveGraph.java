@@ -44,6 +44,7 @@ public class SaveGraph implements Command {
             
             graph.setGraphJson(jObj.toString());
             graph.setPublicGraph(false);
+            System.out.println(graph.getPublicGraph());
             factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
             manager = factory.createEntityManager();
 
