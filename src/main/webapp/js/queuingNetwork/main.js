@@ -80,7 +80,10 @@ const fieldset = document.getElementById("queueStatsFieldset");
     console.error("Elemento #queuestats não encontrado!");
   }
   
-
+const arrivalSelect = document.getElementById("arrival_distribution");
+const serverSelect = document.getElementById("server_distribution");
+const multiserverArrivalSelect = document.getElementById("ms_arrival_distribution");
+const multiserverSelect = document.getElementById("multiServer_distribution");
 
   const allowed = ['C SMPL', 'C SMPLX', 'C ParSMPL', 'C SIMPACK', 'C SIMPACK2'];
 
@@ -94,12 +97,86 @@ const fieldset = document.getElementById("queueStatsFieldset");
 
       fieldset.style.opacity = '1';
       fieldset.style.pointerEvents = 'auto';
+      for (let option of arrivalSelect.options) {
+            if (option.text === "HyperExponential" || option.text === "Erlang") {
+                option.disabled = false;
+            }
+        }
+      for (let option of serverSelect.options) {
+            if (option.text === "HyperExponential" || option.text === "Erlang") {
+                option.disabled = false;
+            }
+        }
+      for (let option of multiserverArrivalSelect.options) {
+            if (option.text === "HyperExponential" || option.text === "Erlang") {
+                option.disabled = false;
+            }
+        }
+      for (let option of multiserverSelect.options) {
+            if (option.text === "HyperExponential" || option.text === "Erlang") {
+                option.disabled = false;
+            }
+        }  
+      
     } else {
       multiServer.style.opacity = '0.3';
       multiServer.style.pointerEvents = 'none';
 
       fieldset.style.opacity = '0.3';
       fieldset.style.pointerEvents = 'none';
+      for (let option of arrivalSelect.options) {
+            if (option.text === "HyperExponential" || option.text === "Erlang") {
+                option.disabled = true;
+            }
+        }
+        for (let option of serverSelect.options) {
+            if (option.text === "HyperExponential" || option.text === "Erlang") {
+                option.disabled = true;
+            }
+        }
+       for (let option of multiserverArrivalSelect.options) {
+            if (option.text === "HyperExponential" || option.text === "Erlang") {
+                option.disabled = true;
+            }
+        }
+        for (let option of multiserverSelect.options) {
+            if (option.text === "HyperExponential" || option.text === "Erlang") {
+                option.disabled = true;
+            }
+        } 
+        
+      if (arrivalSelect.selectedOptions[0].disabled) {
+            for (let opt of arrivalSelect.options) {
+                if (!opt.disabled) {
+                    arrivalSelect.value = opt.value;
+                    break;
+                }
+            }
+        }
+        if (serverSelect.selectedOptions[0].disabled) {
+            for (let opt of serverSelect.options) {
+                if (!opt.disabled) {
+                    serverSelect.value = opt.value;
+                    break;
+                }
+            }
+        }
+        if (multiserverArrivalSelect.selectedOptions[0].disabled) {
+            for (let opt of multiserverArrivalSelect.options) {
+                if (!opt.disabled) {
+                    multiserverArrivalSelect.value = opt.value;
+                    break;
+                }
+            }
+        }
+        if (multiserverSelect.selectedOptions[0].disabled) {
+            for (let opt of serverSelect.options) {
+                if (!opt.disabled) {
+                    multiserverSelect.value = opt.value;
+                    break;
+                }
+            }
+        }
     }
   }
 
@@ -190,18 +267,94 @@ const fieldset = document.getElementById("queueStatsFieldset");
   if (!fieldset) {
     console.error("Elemento #queuestats não encontrado!");
   }
+  const arrivalSelect = document.getElementById("arrival_distribution");
+  const serverSelect = document.getElementById("server_distribution");
+    const multiserverArrivalSelect = document.getElementById("ms_arrival_distribution");
+  const multiserverSelect = document.getElementById("multiServer_distribution");
     if (allowed.includes(selected)) {
       multiServer.style.opacity = '1';
       multiServer.style.pointerEvents = 'auto';
 
       fieldset.style.opacity = '1';
       fieldset.style.pointerEvents = 'auto';
+      for (let option of arrivalSelect.options) {
+            if (option.text === "HyperExponential" || option.text === "Erlang") {
+                option.disabled = false;
+            }
+        }
+      for (let option of serverSelect.options) {
+            if (option.text === "HyperExponential" || option.text === "Erlang") {
+                option.disabled = false;
+            }
+        } 
+        for (let option of multiserverArrivalSelect.options) {
+            if (option.text === "HyperExponential" || option.text === "Erlang") {
+                option.disabled = false;
+            }
+        }
+      for (let option of multiserverSelect.options) {
+            if (option.text === "HyperExponential" || option.text === "Erlang") {
+                option.disabled = false;
+            }
+        } 
     } else {
       multiServer.style.opacity = '0.3';
       multiServer.style.pointerEvents = 'none';
   
       fieldset.style.opacity = '0.3';
       fieldset.style.pointerEvents = 'none';
+      for (let option of arrivalSelect.options) {
+            if (option.text === "HyperExponential" || option.text === "Erlang") {
+                option.disabled = true;
+            }
+        }
+        for (let option of serverSelect.options) {
+            if (option.text === "HyperExponential" || option.text === "Erlang") {
+                option.disabled = true;
+            }
+        }
+        for (let option of multiserverArrivalSelect.options) {
+            if (option.text === "HyperExponential" || option.text === "Erlang") {
+                option.disabled = true;
+            }
+        }
+        for (let option of multiserverSelect.options) {
+            if (option.text === "HyperExponential" || option.text === "Erlang") {
+                option.disabled = true;
+            }
+        }
+        if (arrivalSelect.selectedOptions[0].disabled) {
+            for (let opt of arrivalSelect.options) {
+                if (!opt.disabled) {
+                    arrivalSelect.value = opt.value;
+                    break;
+                }
+            }
+        }
+        if (serverSelect.selectedOptions[0].disabled) {
+            for (let opt of serverSelect.options) {
+                if (!opt.disabled) {
+                    serverSelect.value = opt.value;
+                    break;
+                }
+            }
+        }
+        if (multiserverArrivalSelect.selectedOptions[0].disabled) {
+            for (let opt of multiserverArrivalSelect.options) {
+                if (!opt.disabled) {
+                    multiserverArrivalSelect.value = opt.value;
+                    break;
+                }
+            }
+        }
+        if (multiserverSelect.selectedOptions[0].disabled) {
+            for (let opt of multiserverSelect.options) {
+                if (!opt.disabled) {
+                    multiserverSelect.value = opt.value;
+                    break;
+                }
+            }
+        }
     }
   }
 

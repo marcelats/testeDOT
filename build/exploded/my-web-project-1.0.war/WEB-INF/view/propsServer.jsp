@@ -49,10 +49,10 @@
                     <div class="field">
                         <select id="arrival_distribution" class="inputText">
                             <option>Exponential</option>
-                            <%--<option>HyperExponential</option>--%>
+                            <option>HyperExponential</option>
                             <option>Normal</option>
                             <option>Uniform</option>
-                            <%--<option>Erlang</option>--%>
+                            <option>Erlang</option>
                         </select>
                     </div>
 
@@ -77,10 +77,10 @@
                     <div class="field">
                         <select id="server_distribution" class="inputText">
                             <option>Exponential</option>
-                            <%--<option>HyperExponential</option>--%>
+                            <option>HyperExponential</option>
                             <option>Normal</option>
                             <option>Uniform</option>
-                            <%--<option>Erlang</option>--%>
+                            <option>Erlang</option>
                         </select>
                     </div>
 

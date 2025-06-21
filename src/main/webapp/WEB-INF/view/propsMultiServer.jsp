@@ -57,12 +57,12 @@
                 <fieldset>
                     <legend>Arrival distribution</legend>
                     <div class="field">
-                        <select id="multiServer_arrival_distribution" class="inputText">
+                        <select id="ms_arrival_distribution" class="inputText">
                             <option>Exponential</option>
-                            <%--<option>HyperExponential</option>--%>
+                            <option>HyperExponential</option>
                             <option>Normal</option>
                             <option>Uniform</option>
-                            <%--<option>Erlang</option>--%>
+                            <option>Erlang</option>
                         </select>
                     </div>
 
