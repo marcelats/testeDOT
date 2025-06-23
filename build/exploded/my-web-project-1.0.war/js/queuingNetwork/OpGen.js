@@ -163,13 +163,13 @@ define(["jquery", "JsonManager"],
  function checkModelType() { 
 
                 
-                    const closed = document.getElementById("opParam_closed");
+                    /*const closed = document.getElementById("opParam_closed");
                     const open = document.getElementById("opParam_open");
                     if (closed.checked) {
                       modelType = "False";
                     } else if (open.checked) {
                       modelType = "True";
-                    } 
+                    } */
                 
                     const defined = document.getElementById("opParam_timeDefined");
                     const automatic = document.getElementById("opParam_timeAutomatic");

@@ -61,15 +61,15 @@
                         <input id="arrival_average" type="text" class="inputText small">
                     </div>
 
-                    <%--<div class="field">
-                        <label for="server_stdDeviation" class="labelLeft">Standard deviation</label>
-                        <input id="server_stdDeviation" type="text" class="inputText small">
+                    <div class="field" id="arrival_stdDeviation">
+                        <label for="arrival_stdDeviation" class="labelLeft">Standard deviation</label>
+                        <input id="arrival_stdDeviation" type="text" class="inputText small">
                     </div>
 
                     <div class="field">
                         <label for="server_sequence" class="labelLeft">Sequence</label>
                         <input id="server_sequence" type="text" class="inputText small">
-                    </div>--%>
+                    </div>
                 </fieldset>
                 
                 <fieldset>
@@ -89,20 +89,21 @@
                         <input id="server_average" type="text" class="inputText small">
                     </div>
 
-                    <%--<div class="field">
+                    <div class="field" id="server_stdDeviation">
                         <label for="server_stdDeviation" class="labelLeft">Standard deviation</label>
                         <input id="server_stdDeviation" type="text" class="inputText small">
                     </div>
 
-                    <div class="field">
+                                    <div class="field">
                         <label for="server_sequence" class="labelLeft">Sequence</label>
                         <input id="server_sequence" type="text" class="inputText small">
-                    </div>--%>
+                    </div>
                 </fieldset><br>
                 <div class="field">
                         <label for="probability" class="labelLeft">Probability</label>
                         <input id="probability" type="text" class="inputText small">
                 </div>
+
 
                 <input id="btCancel" type="button" value="Cancel" class="button">
                 <input id ="btSubmit" type="button" value="Ok" class="button">

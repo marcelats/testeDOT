@@ -71,7 +71,7 @@
                         <input id="arrival_average" type="text" class="inputText small">
                     </div>
 
-                    <%--<div class="field">
+                    <div class="field" id="multiServerArrivalSD">
                         <label for="server_stdDeviation" class="labelLeft">Standard deviation</label>
                         <input id="server_stdDeviation" type="text" class="inputText small">
                     </div>
@@ -79,7 +79,7 @@
                     <div class="field">
                         <label for="server_sequence" class="labelLeft">Sequence</label>
                         <input id="server_sequence" type="text" class="inputText small">
-                    </div>--%>
+                    </div>
                 </fieldset>
                 
                 <fieldset>
@@ -99,16 +99,17 @@
                         <input id="multiServer_average" type="text" class="inputText small">
                     </div>
 
-                    <div class="field">
+                    <div class="field" id="multiServerSD">
                         <label for="multiServer_stdDeviation" class="labelLeft">Standard deviation</label>
                         <input id="multiServer_stdDeviation" type="text" class="inputText small">
                     </div>
-
                     <div class="field">
                         <label for="multiServer_sequence" class="labelLeft">Sequence</label>
                         <input id="multiServer_sequence" type="text" class="inputText small">
                     </div>
+                    
                 </fieldset>
+                
 
                 <input id="btCancel" type="button" value="Cancel" class="button">
                 <input id ="btSubmit" type="button" value="Ok" class="button">

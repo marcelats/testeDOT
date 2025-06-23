@@ -40,10 +40,10 @@
                             <input id="opParam_execTime" type="text" class="inputText small">
                         </div>
                         
-                        <div class="field">
+                        <%--<div class="field">
                             <label for="opParam_numCycles" class="labelLeft">Number of cycles</label>
                             <input id="opParam_numCycles" type="text" class="inputText small">
-                        </div>
+                        </div>--%>
 
                         <div class="field">
                             <label for="opParam_batchSize" class="labelLeft">Batch size</label>
@@ -54,14 +54,14 @@
                             <label for="opParam_maxEntities" class="labelLeft">Max number of entities</label>
                             <input id="opParam_maxEntities" type="text" class="inputText small">
                         </div>
-                        <div class="field">
+                        <div class="field" id="seed">
                             <label for="opParam_seed" class="labelLeft">Seed</label>
                             <input id="opParam_seed" type="text" class="inputText small">
                         </div>                       
                         
                     </fieldset>
                     
-                    <fieldset>
+                    <%--<fieldset id="">
                         <legend>Model type</legend>
                         
                         <input id="opParam_closed" type="radio" name="modelType">
@@ -70,7 +70,7 @@
                         <input id="opParam_open" type="radio" name="modelType">
                         <label for="opParam_open" class="labelLeft">Open</label>
                         
-                    </fieldset>
+                    </fieldset>--%>
 
                     <fieldset>
                         <legend>Warmup Time</legend>
