@@ -38,8 +38,8 @@
                         <li><div id="opOpen"><img src="img/icon/open.gif"/></div>Open</li>
                         <li><div id="opParam"><img src="img/icon/param.gif"/></div>Parameters</li>
                         <li><div id="opGen"><img src="img/icon/exec.gif"/></div>Generate</li>
-                        <li><div id="opReport"><img src="img/icon/report.gif"/></div>Execute</li>
                         <li><div id="opCode"><img src="img/icon/code.gif"/></div>Source Code</li>
+                        <li><div id="opReport"><img src="img/icon/report.gif"/></div>Execute</li>
                         <li><div id="opManual"><img src="img/icon/manual.gif"/></div>Help</li>
                     </ul>
                 </div>
@@ -102,6 +102,8 @@
         <div id="shadowing" class="shadowing">
             <div id="boxContainer" class="box"></div>
         </div>
-     
+        <div id="shadow2" class="shadow2">
+            <div id="boxArrival" class="box"></div>
+        </div>
     </body>
 </html>

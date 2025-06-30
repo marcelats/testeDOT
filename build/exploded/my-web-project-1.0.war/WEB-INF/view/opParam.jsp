@@ -84,7 +84,11 @@
                         <input id="opParam_definedValue" type="text" class="inputText small">
                     </fieldset>
 
+                    <input id ="chegada-bt" type="button" value="Arrival" class="button">
+                    
                     <input id ="opParam-btSubmit" type="button" value="Ok" class="button" onclick="checkModelType()">
+                    <!-- HTML -->
+
                 </form>
             </div>
         </div>

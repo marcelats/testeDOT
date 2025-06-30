@@ -142,6 +142,7 @@ define(["jquery", "JsonManager"],
                     content += "}\n";
                     //baixar o .gv
                     const blob = new Blob([content], { type: "text/plain" }); // Criar um arquivo de texto
+                    window.graphBlob = blob;
                     const url = URL.createObjectURL(blob); // Criar URL do Blob
 
                     const a = document.createElement("a"); // Criar link

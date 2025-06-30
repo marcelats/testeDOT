@@ -68,6 +68,11 @@ private EntityManagerFactory factory;
                 aResponse.setForward(true);
                 aResponse.setPage(DIRECTORY + "opParam.jsp");
                 break;
+            case "arrival":
+                aResponse = new CommandResponse();
+                aResponse.setForward(true);
+                aResponse.setPage(DIRECTORY + "chegada.jsp");
+                break;
         }
 
         return aResponse;
@@ -93,74 +98,3 @@ private EntityManagerFactory factory;
         return graph;
     }
 }
-    
-
- /*
-package com.asda.model.asdaCommands;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.asda.Command;
-import com.asda.CommandException;
-import com.asda.CommandResponse;
-import com.asda.beans.AccountBean;
-import com.asda.beans.GraphBean;
-
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-
-import com.asda.model.accountsCommands.UserSessionManager;
-import com.asda.model.asdaCommands.OpenGraph;
-
-public class OpenBox implements Command {
-
-    private static final String TYPE = "type";
-    private static final String DIRECTORY = "/WEB-INF/view/";
-    private CommandResponse aResponse;
-
-    @Override
-    public CommandResponse execute(HttpServletRequest req, HttpServletResponse res)
-            throws CommandException, ServletException, IOException {
-        String type = req.getParameter(TYPE);
-        
-        //String nomes = arquivos.getGraphName(); new ArrayList<>();
-        //for (GraphBean g : arquivos) {
-        //    nomes.add(g.getGraphName());
-       // }
-       //HttpSession session = req.getSession();
-        //UserSessionManager sessionMgr = UserSessionManager.getInstance();
-        //AccountBean account = sessionMgr.getAccountUser(session);
-        //GraphBean graph = OpenGraph.findGraph(account, "a");   
-        //req.setAttribute("listaArquivos", graph.getGraphName());
-        //req.getRequestDispatcher("/WEB-INF/view/opOpen.jsp").forward(req, res);
-
-        switch (type) {
-            case "new":
-                aResponse = new CommandResponse();
-                aResponse.setForward(true);
-                aResponse.setPage(DIRECTORY + "opNew.jsp");
-                break;
-            case "save":
-                aResponse = new CommandResponse();
-                aResponse.setForward(true);
-                aResponse.setPage(DIRECTORY + "opSave.jsp");
-                break;
-            case "open":
-                aResponse = new CommandResponse();
-                aResponse.setForward(true);
-                aResponse.setPage(DIRECTORY + "opOpen.jsp");
-                break;
-            case "parameters":
-                aResponse = new CommandResponse();
-                aResponse.setForward(true);
-                aResponse.setPage(DIRECTORY + "opParam.jsp");
-                break;
-        }
-
-        return aResponse;
-    }
-}*/
