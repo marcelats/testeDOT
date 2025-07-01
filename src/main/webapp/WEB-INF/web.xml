@@ -35,6 +35,21 @@
         <servlet-name>Home</servlet-name>
         <servlet-class>com.asda.controller.home.HomeServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Jersey Web Application</servlet-name>
+        <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+        <init-param>
+            <param-name>jersey.config.server.provider.packages</param-name>
+            <param-value>com.asda</param-value> <!-- pacote onde estão os recursos -->
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>Jersey Web Application</servlet-name>
+        <url-pattern>/ROOT/*</url-pattern>
+    </servlet-mapping>
+
     <servlet-mapping>
         <servlet-name>QueuingNetworkServlet</servlet-name>
         <url-pattern>/qnetwork</url-pattern>
