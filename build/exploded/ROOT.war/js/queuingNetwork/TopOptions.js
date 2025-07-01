@@ -4,8 +4,8 @@
  * author: Felipe Osorio Thomé
  */
 
-define(["OpNew", "OpSave", "OpOpen", "OpParam", "OpGen", "OpCode"],
-    function(opNew, opSave, opOpen, opParam, opGen, opCode) {
+define(["OpNew", "OpSave", "OpOpen", "OpParam", "OpGen", "OpCode", "OpExecute"],
+    function(opNew, opSave, opOpen, opParam, opGen, opCode, opExecute) {
         "use strict";
 
         var elementManager = null;
@@ -36,8 +36,8 @@ define(["OpNew", "OpSave", "OpOpen", "OpParam", "OpGen", "OpCode"],
                 } else if (option === "generate") {
                     opGen.execute();
 
-                } else if (option === "report") {
-                    //opReport.execute();
+                } else if (option === "execute") {
+                    opExecute.execute();
 
                 } else if (option === "code") {
                     opCode.execute();

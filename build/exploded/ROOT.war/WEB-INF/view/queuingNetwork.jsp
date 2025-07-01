@@ -39,7 +39,7 @@
                         <li><div id="opParam"><img src="img/icon/param.gif"/></div>Parameters</li>
                         <li><div id="opGen"><img src="img/icon/exec.gif"/></div>Generate</li>
                         <li><div id="opCode"><img src="img/icon/code.gif"/></div>Source Code</li>
-                        <li><div id="opReport"><img src="img/icon/report.gif"/></div>Execute</li>
+                        <li><div id="opExecute"><img src="img/icon/report.gif"/></div>Execute</li>
                         <li><div id="opManual"><img src="img/icon/manual.gif"/></div>Help</li>
                     </ul>
                 </div>

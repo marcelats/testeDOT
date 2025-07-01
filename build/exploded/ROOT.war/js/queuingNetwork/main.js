@@ -62,8 +62,8 @@ require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "El
             $("#opGen").click(function() {
                 topOptions.ctrl("generate");
             });
-            $("#opReport").click(function() {
-                topOptions.ctrl("report");
+            $("#opExecute").click(function() {
+                topOptions.ctrl("execute");
             });
             $("#opCode").click(function() {
                 topOptions.ctrl("code");

@@ -4,7 +4,7 @@ define(["jquery"],
 
         var lastAction = null;
 
-        var OpGen = {
+        var OpCode = {
             execute: function() {
                 // Usa o blob criado no outro script
                 const blobGraph = window.graphBlob;
@@ -19,7 +19,7 @@ define(["jquery"],
                   }).then(res => res.blob()) // <- importante: usa .blob() ao invés de .text()
                         .then(blobCode => {
                           const url = URL.createObjectURL(blobCode); 
-
+                          window.codeBlob = blobCode;
                           const a = document.createElement("a");
                           a.href = url;
                           a.download = "code.py"; 
@@ -37,7 +37,7 @@ define(["jquery"],
                 return lastAction;
             }
         };
-    return OpGen;
+    return OpCode;
     }
 );
 
