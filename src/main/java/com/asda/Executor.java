@@ -27,7 +27,7 @@ public class Executor {
 
         // 2. Constrói POST para o container Python
         String boundary = "----JavaBoundary" + System.currentTimeMillis();
-        URL url = new URL("http://container-python:8000/processar");
+        URL url = new URL("http://container-python:8000/executar");
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setDoOutput(true);
         conn.setRequestMethod("POST");
