@@ -58,10 +58,9 @@ configurations.all {
     exclude group: 'org.hibernate', module: 'hibernate-c3p0'
 }
 
-
 war {
-    archiveBaseName = 'my-web-project'
-    archiveVersion = '1.0'
+    archiveBaseName = 'ROOT' // precisa ser exatamente ROOT para URL sem prefixo
+    archiveVersion = ''
 }
 
 tasks.withType(JavaCompile).configureEach {
