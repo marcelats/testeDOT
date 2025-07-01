@@ -7,16 +7,30 @@ define(["jquery"],
         var OpGen = {
             execute: function() {
                 // Usa o blob criado no outro script
-                const blob = window.graphBlob;
+                const blobGraph = window.graphBlob;
 
-                if (blob) {
+                if (blobGraph) {
                   const formData = new FormData();
-                  formData.append("arquivo", blob, "graph.gv");
+                  formData.append("arquivo", blobGraph, "graph.gv");
 
                   fetch("/ROOT/api/enviar", {
                     method: "POST",
                     body: formData
-                  }).then(res => res.text()).then(console.log);
+                  }).then(res => res.blob()) // <- importante: usa .blob() ao invés de .text()
+                        .then(blobCode => {
+                          const url = URL.createObjectURL(blobCode); 
+
+                          const a = document.createElement("a");
+                          a.href = url;
+                          a.download = "code.py"; 
+                          document.body.appendChild(a);
+                          a.click(); 
+                          document.body.removeChild(a);
+                          URL.revokeObjectURL(url);
+                        })
+                        .catch(error => {
+                          console.error("Erro ao baixar código:", error);
+                        });
                 }
             },
             getLastAction: function() {
