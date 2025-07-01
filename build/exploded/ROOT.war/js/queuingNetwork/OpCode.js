@@ -13,7 +13,7 @@ define(["jquery"],
                   const formData = new FormData();
                   formData.append("arquivo", blob, "graph.gv");
 
-                  fetch("ROOT/api/enviar", {
+                  fetch("/api/enviar", {
                     method: "POST",
                     body: formData
                   }).then(res => res.text()).then(console.log);
