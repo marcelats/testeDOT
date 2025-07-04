@@ -17,6 +17,10 @@ define(["jquery", "LightBoxManager", "JsonManager", "Utils", "Cons"],
                 $(document).on("click", "#opParam-btClose", function() {
                     lightBoxManager.closeBox(cons.BOX_CONTAINER, cons.SHADOWING);
                 });
+                
+                $(document).on("click", "#opParam-btSubmit", function() {
+                    OpParam.execute("submit");
+                });
 
                 $(document).on("click", "#chegada-btSubmit", function() {
                     OpParam.execute("submitArrival");
