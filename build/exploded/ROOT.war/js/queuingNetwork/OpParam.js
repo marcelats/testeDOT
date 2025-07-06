@@ -15,7 +15,7 @@ define(["jquery", "LightBoxManager", "JsonManager", "Utils", "Cons"],
 
                 /* Close button of the light box. */
                 $(document).on("click", "#opParam-btClose", function() {
-                    lightBoxManager.closeBox(cons.BOX_CONTAINER, cons.SHADOWING);
+                    lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
                 });
                 
                 $(document).on("click", "#opParam-btSubmit", function() {
@@ -28,9 +28,10 @@ define(["jquery", "LightBoxManager", "JsonManager", "Utils", "Cons"],
 
                 $(document).on("click", "#chegada-bt", function() {
                     console.log("clicou em arrival");
-                    lightBoxManager.openBox(        
+                    lightBoxManager.openBox(  
+                            "shadow2",
                         "boxArrival",
-                        "shadow2",
+                        
                         "qnetwork?cmd=open-box&type=arrival", 
                         function() {
                           console.log("box arrival aberta");
@@ -40,7 +41,7 @@ define(["jquery", "LightBoxManager", "JsonManager", "Utils", "Cons"],
             },
             execute: function(action) {
                 if (typeof action !== "string") {
-                    lightBoxManager.openBox(cons.BOX_CONTAINER, cons.SHADOWING,
+                    lightBoxManager.openBox(cons.SHADOWING, cons.BOX_CONTAINER,
                         "qnetwork?cmd=open-box&type=parameters", function() {
                         var parameters = jsonManager.getGraphParameters();
 
@@ -56,11 +57,11 @@ define(["jquery", "LightBoxManager", "JsonManager", "Utils", "Cons"],
                         var parameters = $("#" + cons.BOX_CONTAINER).values();
 
                         jsonManager.setGraphParameters(parameters);
-                        lightBoxManager.closeBox(cons.BOX_CONTAINER, cons.SHADOWING);
+                        lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
                     }
                     
                     if (action === "submitArrival") {
-                        lightBoxManager.closeBox("boxArrival", "shadow2");
+                        lightBoxManager.closeBox("shadow2","boxArrival");
                     }
 
                     if (typeof callback === "function") {

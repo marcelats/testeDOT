@@ -9,7 +9,7 @@ define([],
         "use strict";
 
         return {
-            openBox: function(box, shadowing, link, callback) {
+            openBox: function(shadowing, box, link, callback) {
                 $("#" + shadowing).fadeIn("fast", function() {
                     if (typeof link !== "undefined") {
                         $("#" + box).load(link, function() {
@@ -33,7 +33,7 @@ define([],
                     }
                 });
             },
-            closeBox: function(box, shadowing, callback) {
+            closeBox: function(shadowing, box, callback) {
                 $("#" + box).css("display", "none");
                 $("#" + shadowing).fadeOut("fast", function() {
                     if (typeof callback === "function") {
