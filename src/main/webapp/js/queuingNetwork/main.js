@@ -314,6 +314,7 @@ require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "El
     opParam.addEventListener("change", () => {
       applyVisibilityLogic();
       console.log(`Linguagem selecionada: ${opParam.value}`);
+      window.langSelecionada = opParam.value;
     });
 
     opParam.dataset.listenerAttached = "true";
