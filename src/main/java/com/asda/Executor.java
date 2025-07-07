@@ -20,9 +20,21 @@ public class Executor {
 
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public Response receberArquivo(@FormDataParam("arquivo") InputStream fileInputStream) throws IOException {
+    public Response receberArquivo(@FormDataParam("arquivo") InputStream fileInputStream,@FormDataParam("lang") String lang) throws IOException {
         // 1. Salva temporariamente o graph.gv
-        Path tempPath = Files.createTempFile("code", ".py");
+        Path tempPath;
+        switch (lang) {
+            case "Python":
+                tempPath = Files.createTempFile("code", ".py");
+                break;
+            case "Java":
+                tempPath = Files.createTempFile("code", ".java");
+                break;
+            default:
+                tempPath = Files.createTempFile("code", ".r");
+                break;
+        }
+        
         Files.copy(fileInputStream, tempPath, StandardCopyOption.REPLACE_EXISTING);
 
         // 2. Constrói POST para o container Python
@@ -36,7 +48,17 @@ public class Executor {
         try (DataOutputStream out = new DataOutputStream(conn.getOutputStream())) {
             // Cabeçalho da parte do arquivo
             out.writeBytes("--" + boundary + "\r\n");
-            out.writeBytes("Content-Disposition: form-data; name=\"arquivo\"; filename=\"code.py\"\r\n");
+            switch (lang) {
+            case "Python":
+                out.writeBytes("Content-Disposition: form-data; name=\"arquivo\"; filename=\"code.py\"\r\n");
+                break;
+            case "Java":
+                out.writeBytes("Content-Disposition: form-data; name=\"arquivo\"; filename=\"code.java\"\r\n");
+                break;
+            default:
+                out.writeBytes("Content-Disposition: form-data; name=\"arquivo\"; filename=\"code.r\"\r\n");
+                break;
+        }       
             out.writeBytes("Content-Type: text/plain\r\n\r\n");
             Files.copy(tempPath, out); // envia o conteúdo
             out.writeBytes("\r\n--" + boundary + "--\r\n");
@@ -46,7 +68,7 @@ public class Executor {
         // 3. Lê resposta do container Python (o arquivo codigo.py)
         int status = conn.getResponseCode();
         if (status != 200) {
-            return Response.status(Response.Status.BAD_GATEWAY).entity("Erro ao chamar container Python").build();
+            return Response.status(Response.Status.BAD_GATEWAY).entity("Erro ao chamar container").build();
         }
 
         InputStream respostaPython = conn.getInputStream();

@@ -21,26 +21,37 @@ define(["jquery"],
                 const blobCode = window.codeBlob;
                 //console.log(blobCode.text());
                 if (blobCode) {
-                  const formData = new FormData();
-                  formData.append("arquivo", blobCode, "code.py");
-
-                  fetch("/ROOT/api/executar", {
-                    method: "POST",
-                    body: formData
-                  }).then(res => res.blob()) // <- importante: usa .blob() ao invés de .text()
+                    const formData = new FormData();
+                    if(window.langSelecionada === 'Python')
+                    {
+                        formData.append("arquivo", blobCode, "code.py");
+                    }
+                    else if(window.langSelecionada === 'Java')
+                    {
+                        formData.append("arquivo", blobCode, "code.java");
+                    }
+                    else
+                    {
+                        formData.append("arquivo", blobCode, "code.r");
+                    }
+                    fetch("/ROOT/api/executar", {
+                          method: "POST",
+                          body: formData
+                        })
+                        .then(res => res.blob()) // <- importante: usa .blob() ao invés de .text()
                         .then(blobReport => {
-                          const url = URL.createObjectURL(blobReport); 
-                          const a = document.createElement("a");
-                          a.href = url;
-                          a.download = "report.txt"; 
-                          document.body.appendChild(a);
-                          a.click(); 
-                          document.body.removeChild(a);
-                          URL.revokeObjectURL(url);
+                        const url = URL.createObjectURL(blobReport); 
+                        const a = document.createElement("a");
+                        a.href = url;
+                        a.download = "report.txt"; 
+                        document.body.appendChild(a);
+                        a.click(); 
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
                         })
                         .catch(error => {
-                          console.error("Erro ao baixar relatorio:", error);
-                        });
+                        console.error("Erro ao baixar relatorio:", error);
+                    });
                 }
             },
             getLastAction: function() {
