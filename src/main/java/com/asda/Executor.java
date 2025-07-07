@@ -46,6 +46,9 @@ public class Executor {
         conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
 
         try (DataOutputStream out = new DataOutputStream(conn.getOutputStream())) {
+            out.writeBytes("--" + boundary + "\r\n");
+            out.writeBytes("Content-Disposition: form-data; name=\"lang\"\r\n\r\n");
+            out.writeBytes(lang + "\r\n");
             // Cabeçalho da parte do arquivo
             out.writeBytes("--" + boundary + "\r\n");
             switch (lang) {
