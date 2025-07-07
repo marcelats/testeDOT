@@ -49,6 +49,7 @@ public class Executor {
             out.writeBytes("--" + boundary + "\r\n");
             out.writeBytes("Content-Disposition: form-data; name=\"lang\"\r\n\r\n");
             out.writeBytes(lang + "\r\n");
+            out.writeBytes("\r\n");
             // Cabeçalho da parte do arquivo
             out.writeBytes("--" + boundary + "\r\n");
             switch (lang) {
