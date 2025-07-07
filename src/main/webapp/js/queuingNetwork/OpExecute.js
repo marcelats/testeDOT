@@ -6,9 +6,10 @@ define(["jquery"],
 
         var OpExecute = {
             execute: function() {
+                console.log("passando pelo opexecute");
                 // Usa o blob criado no outro script
                 const blobCode = window.codeBlob;
-                console.log(blobCode);
+                console.log(blobCode.text());
                 if (blobCode) {
                   const formData = new FormData();
                   formData.append("arquivo", blobCode, "code.py");
