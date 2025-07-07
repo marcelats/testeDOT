@@ -62,7 +62,7 @@ function($, lightBoxManager, cons) {
                         const formData = new FormData();
                         formData.append("arquivo", blobGraph, "graph.gv");
                         const opParam = document.querySelector("#opParam_library");
-                        formData.append('lang', opParam);
+                        formData.append('lang', opParam.value);
 
                         fetch("/ROOT/api/enviar", {
                             method: "POST",
