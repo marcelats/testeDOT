@@ -43,6 +43,12 @@ define(["JsonManager", "Cons"],
                         var tempElement = document.getElementById(callerId);
 
                         jsonManager.setNodeProperties(tempElement, properties);
+                        const btnCode = document.getElementById("opCode");
+                            btnCode.style.opacity = '0.3';
+                            btnCode.style.pointerEvents = 'none';
+                            const btnExecute = document.getElementById("opExecute");
+                            btnExecute.style.opacity = '0.3';
+                            btnExecute.style.pointerEvents = 'none';
                     }
                 }
             }

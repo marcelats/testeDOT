@@ -51,6 +51,12 @@ define(["jquery", "jsPlumb", "IdManager"],
                     $(element).css("left"), $(element).css("top"));
 
                 saved = false;
+                const btnCode = document.getElementById("opCode");
+                            btnCode.style.opacity = '0.3';
+                            btnCode.style.pointerEvents = 'none';
+                            const btnExecute = document.getElementById("opExecute");
+                            btnExecute.style.opacity = '0.3';
+                            btnExecute.style.pointerEvents = 'none';
             },
             removeNode: function(element) {
                 /*jsPlumb.select({target: element.id}).each(function(connection) {
@@ -171,11 +177,23 @@ define(["jquery", "jsPlumb", "IdManager"],
                 idManager.setStartCid(Object.keys(graph.mapNodes).length);
 
                 saved = false;
+                const btnCode = document.getElementById("opCode");
+                            btnCode.style.opacity = '0.3';
+                            btnCode.style.pointerEvents = 'none';
+                            const btnExecute = document.getElementById("opExecute");
+                            btnExecute.style.opacity = '0.3';
+                            btnExecute.style.pointerEvents = 'none';
             },
             linkNodes: function(connection) {
                 graph.mapNodes[connection.sourceId].mapTargets[connection.targetId] = 1;
 
                 saved = false;
+                const btnCode = document.getElementById("opCode");
+                            btnCode.style.opacity = '0.3';
+                            btnCode.style.pointerEvents = 'none';
+                            const btnExecute = document.getElementById("opExecute");
+                            btnExecute.style.opacity = '0.3';
+                            btnExecute.style.pointerEvents = 'none';
             },
             changeNodePosition: function(element) {
                 graph.mapNodes[element.id].x = $(element).css("left");

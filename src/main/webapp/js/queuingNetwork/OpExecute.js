@@ -5,6 +5,16 @@ define(["jquery"],
         var lastAction = null;
 
         var OpExecute = {
+            initialize: function() {
+                const btn = document.getElementById("opExecute");
+                btn.style.opacity = '0.3';
+      btn.style.pointerEvents = 'none';
+
+                window.addEventListener("codeEditorClicou", () => {
+                    btn.style.opacity = '1';
+      btn.style.pointerEvents = 'auto';
+                });
+            },
             execute: function() {
                 console.log("passando pelo opexecute");
                 // Usa o blob criado no outro script

@@ -152,6 +152,7 @@ define(["jquery", "JsonManager"],
                     a.click(); // Simular clique
                     document.body.removeChild(a);
                     URL.revokeObjectURL(url); // Liberar memória
+                    window.dispatchEvent(new Event("genClicou"));
             },
             getLastAction: function() {
                 return lastAction;

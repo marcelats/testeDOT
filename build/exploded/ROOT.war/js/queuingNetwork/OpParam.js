@@ -58,6 +58,12 @@ define(["jquery", "LightBoxManager", "JsonManager", "Utils", "Cons"],
 
                         jsonManager.setGraphParameters(parameters);
                         lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
+                        const btnCode = document.getElementById("opCode");
+                            btnCode.style.opacity = '0.3';
+                            btnCode.style.pointerEvents = 'none';
+                            const btnExecute = document.getElementById("opExecute");
+                            btnExecute.style.opacity = '0.3';
+                            btnExecute.style.pointerEvents = 'none';
                     }
                     
                     if (action === "submitArrival") {

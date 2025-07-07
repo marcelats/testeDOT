@@ -6,6 +6,14 @@ function($, lightBoxManager, cons) {
 
     var OpCode = {
         initialize: function() {
+            const btn = document.getElementById("opCode");
+                btn.style.opacity = '0.3';
+      btn.style.pointerEvents = 'none';
+
+                window.addEventListener("genClicou", () => {
+                    btn.style.opacity = '1';
+      btn.style.pointerEvents = 'auto';
+                });
             $(document).on("click", "#opCode-btClose", function() {
                 lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
             });
@@ -53,6 +61,8 @@ function($, lightBoxManager, cons) {
                     if (blobGraph) {
                         const formData = new FormData();
                         formData.append("arquivo", blobGraph, "graph.gv");
+                        const opParam = document.querySelector("#opParam_library");
+                        formData.append('lang', opParam);
 
                         fetch("/ROOT/api/enviar", {
                             method: "POST",
@@ -76,6 +86,9 @@ function($, lightBoxManager, cons) {
                     }
                 }
             );
+    
+            window.dispatchEvent(new Event("codeEditorClicou"));
+
         },
 
         getLastAction: function() {

@@ -20,7 +20,7 @@ public class Enviador {
 
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public Response receberArquivo(@FormDataParam("arquivo") InputStream fileInputStream) throws IOException {
+    public Response receberArquivo(@FormDataParam("arquivo")  InputStream fileInputStream) throws IOException {
         // 1. Salva temporariamente o graph.gv
         Path tempPath = Files.createTempFile("graph", ".gv");
         Files.copy(fileInputStream, tempPath, StandardCopyOption.REPLACE_EXISTING);
@@ -34,6 +34,9 @@ public class Enviador {
         conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
 
         try (DataOutputStream out = new DataOutputStream(conn.getOutputStream())) {
+            out.writeBytes("--" + boundary + "\r\n");
+            out.writeBytes("Content-Disposition: form-data; name=\"lang\"\r\n\r\n");
+            out.writeBytes("\r\n");
             // Cabeçalho da parte do arquivo
             out.writeBytes("--" + boundary + "\r\n");
             out.writeBytes("Content-Disposition: form-data; name=\"arquivo\"; filename=\"graph.gv\"\r\n");

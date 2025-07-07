@@ -79,6 +79,12 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons"],
 
                         } else {
                             open(filename);
+                            const btnCode = document.getElementById("opCode");
+                            btnCode.style.opacity = '0.3';
+                            btnCode.style.pointerEvents = 'none';
+                            const btnExecute = document.getElementById("opExecute");
+                            btnExecute.style.opacity = '0.3';
+                            btnExecute.style.pointerEvents = 'none';
                         }
                     }
                     
