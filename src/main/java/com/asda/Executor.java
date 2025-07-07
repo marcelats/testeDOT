@@ -23,6 +23,7 @@ public class Executor {
     public Response receberArquivo(@FormDataParam("arquivo") InputStream fileInputStream,@FormDataParam("lang") String lang) throws IOException {
         // 1. Salva temporariamente o graph.gv
         Path tempPath;
+        System.out.println("lang:"+lang);
         switch (lang) {
             case "Python":
                 tempPath = Files.createTempFile("code", ".py");
