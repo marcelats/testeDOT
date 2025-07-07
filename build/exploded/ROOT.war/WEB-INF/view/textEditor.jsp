@@ -17,7 +17,7 @@
                 <span id="opCode-btClose"><img src="img/btClose.png"/></span>
             </div>
            
-    <textarea id="textEditor" style="width:600px; height:600px;"></textarea>
+    <textarea id="textEditor" style="width:800px; height:600px;"></textarea>
 <br>
     <input id ="opCode-download" type="button" value="Download" class="button">
     <input id ="opCode-btOk" type="button" value="Ok" class="button">

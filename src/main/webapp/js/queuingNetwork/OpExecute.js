@@ -8,7 +8,7 @@ define(["jquery"],
             execute: function() {
                 // Usa o blob criado no outro script
                 const blobCode = window.codeBlob;
-
+                console.log(blobCode);
                 if (blobCode) {
                   const formData = new FormData();
                   formData.append("arquivo", blobCode, "code.py");
