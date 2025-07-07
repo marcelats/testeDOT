@@ -69,7 +69,7 @@ document.querySelector("#opParam_library")?.addEventListener("change", function 
                         formData.append("arquivo", blobGraph, "graph.gv");
                         const opParam = document.querySelector("#opParam_library");
                         formData.append('lang', window.langSelecionado);
-
+                        console.log(window.langSelecionado);
                         fetch("/ROOT/api/enviar", {
                             method: "POST",
                             body: formData
