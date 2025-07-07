@@ -22,6 +22,7 @@ define(["jquery"],
                 //console.log(blobCode.text());
                 if (blobCode) {
                     const formData = new FormData();
+                    formData.append('lang', window.langSelecionada);
                     console.log(window.langSelecionada);
                     if(window.langSelecionada === 'Python')
                     {
