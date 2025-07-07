@@ -9,6 +9,12 @@ function($, lightBoxManager, cons) {
             const btn = document.getElementById("opCode");
                 btn.style.opacity = '0.3';
       btn.style.pointerEvents = 'none';
+      
+
+document.querySelector("#opParam_library")?.addEventListener("change", function () {
+    window.langSelecionado = this.value;
+});
+
 
                 window.addEventListener("genClicou", () => {
                     btn.style.opacity = '1';
@@ -62,7 +68,7 @@ function($, lightBoxManager, cons) {
                         const formData = new FormData();
                         formData.append("arquivo", blobGraph, "graph.gv");
                         const opParam = document.querySelector("#opParam_library");
-                        formData.append('lang', opParam.value);
+                        formData.append('lang', window.langSelecionado);
 
                         fetch("/ROOT/api/enviar", {
                             method: "POST",
