@@ -75,3 +75,12 @@ body {
     margin-left: 30px;
     margin-right: 30px;
 }
+
+#textEditor {
+    resize: both;              /* permite o redimensionamento manual */
+    overflow: auto;            /* adiciona scroll automático */
+    white-space: pre;          /* mantém os espaços e quebras de linha */
+    font-family: monospace;    /* fonte tipo código */
+    font-size: 14px;           /* tamanho confortável */
+    line-height: 1.4;          /* espaçamento entre linhas */
+}

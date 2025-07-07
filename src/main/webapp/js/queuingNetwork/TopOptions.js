@@ -18,6 +18,7 @@ define(["OpNew", "OpSave", "OpOpen", "OpParam", "OpGen", "OpCode", "OpExecute"],
                 opSave.initialize();
                 opOpen.initialize(elementManager);
                 opParam.initialize();
+                opCode.initialize();
 
             },
             ctrl: function(option) {

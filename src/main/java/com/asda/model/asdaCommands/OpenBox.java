@@ -73,6 +73,11 @@ private EntityManagerFactory factory;
                 aResponse.setForward(true);
                 aResponse.setPage(DIRECTORY + "chegada.jsp");
                 break;
+            case "editor":
+                aResponse = new CommandResponse();
+                aResponse.setForward(true);
+                aResponse.setPage(DIRECTORY + "textEditor.jsp");
+                break;
         }
 
         return aResponse;
