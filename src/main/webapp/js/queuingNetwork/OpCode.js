@@ -1,5 +1,5 @@
-define(["jquery","LightBoxManager","Cons"],
-function($, lightBoxManager, cons) {
+define(["jquery","LightBoxManager","Cons","JSZip"],
+function($, lightBoxManager, cons,JSZip) {
     "use strict";
 
     var lastAction = null;
@@ -107,14 +107,37 @@ document.querySelector("#opParam_library")?.addEventListener("change", function 
                             a.click();
                             document.body.removeChild(a);
                             URL.revokeObjectURL(url);
-                            blobCode.text().then(texto => {
-                                const textarea = document.getElementById("textEditor");
-                                if (textarea) {
-                                    textarea.value = texto;
-                                } else {
-                                    console.error("Textarea ainda não foi carregado.");
+                            
+                            
+                            if(window.langSelecionada === 'Python' || window.langSelecionada === 'R')
+                            {
+                                blobCode.text().then(texto => {
+                                    const textarea = document.getElementById("textEditor");
+                                    if (textarea) {
+                                        textarea.value = texto;
+                                    } else {
+                                        console.error("Textarea ainda não foi carregado.");
+                                    }
+                                });
+                            }
+                            else
+                            {
+                                JSZip.loadAsync(blobCode).then(zip => {
+                                // Encontra o arquivo Controle.java (case-sensitive!)
+                                const file = zip.file("Controle.java");
+                                if (!file) {
+                                  throw new Error("Arquivo Controle.java não encontrado no zip");
                                 }
-                            });
+                                // Lê o conteúdo como texto
+                                return file.async("text");
+                              })
+                              .then(conteudoTexto => {
+                                console.log("Conteúdo de Controle.java:", conteudoTexto);
+                              })
+                              .catch(error => {
+                                console.error("Erro:", error);
+                              });
+                            }
                         })
                         .catch(error => {
                             console.error("Erro ao baixar código:", error);
