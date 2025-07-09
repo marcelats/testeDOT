@@ -114,14 +114,7 @@
 
 <script>
   const fieldset = document.getElementById("queueStatsFieldset");
-
-  function desativar() {
     fieldset.style.opacity = '0.3';
     fieldset.style.pointerEvents = 'none';
-  }
-
-  function ativar() {
-    fieldset.style.opacity = '1';
-    fieldset.style.pointerEvents = 'auto';
-  }
+  
 </script>
