@@ -65,7 +65,7 @@ document.querySelector("#opParam_library")?.addEventListener("change", function 
                     }
                     else 
                     {
-                        window.arquivosJava.forEach(arquivo => {
+                        window.listaArquivos.forEach(arquivo => {
                             if (arquivo.nome !== "Controle.java") {
                                     console.log("Arquivo:", arquivo.nome);
                                     console.log("Conteúdo:", arquivo.conteudo);
@@ -160,18 +160,19 @@ document.querySelector("#opParam_library")?.addEventListener("change", function 
                               });
                               JSZip.loadAsync(blobCode)
                                 .then(zip => {
-                                  window.arquivosJava = [];
+                                  arquivosJava = [];
                                   zip.forEach((caminho, file) => {
                                     if (file.name.endsWith(".java")) {
-                                      window.arquivosJava.push(file.async("text").then(texto => ({
+                                      arquivosJava.push(file.async("text").then(texto => ({
                                         nome: file.name,
                                         conteudo: texto
                                       })));
                                     }
                                   });
-                                  return Promise.all(window.arquivosJava);
+                                  return Promise.all(arquivosJava);
                                 })
                                 .then(listaArquivos => {
+                                    window.listaArquivos = listaArquivos;
                                   listaArquivos.forEach(arquivo => {
                                     console.log("Arquivo:", arquivo.nome);
                                     console.log("Conteúdo:", arquivo.conteudo);
