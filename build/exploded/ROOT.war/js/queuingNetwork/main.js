@@ -457,10 +457,10 @@ require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "El
   observeMSA();
   observeVisibilityTargets();
   
-    const fieldset = document.getElementById("queueStatsFieldset");
+    /*const fieldset = document.getElementById("queueStatsFieldset");
     if (fieldset) {
         console.log("fieldset encontrado");
       fieldset.style.opacity = '0.3';
       fieldset.style.pointerEvents = 'none';
-    }else{console.log("fieldset nao encontrado");}
+    }else{console.log("fieldset nao encontrado");}*/
     });
