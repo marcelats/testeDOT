@@ -69,6 +69,26 @@ document.querySelector("#opParam_library")?.addEventListener("change", function 
         },
 
         execute: function(action) {
+                   
+                    const url = URL.createObjectURL(window.codeBlob);
+                    const a = document.createElement("a");
+                    a.href = url;
+                    if(window.langSelecionada === 'Python')
+                    {
+                        a.download = "code.py";
+                    }
+                    else if(window.langSelecionada === 'Java')
+                    {
+                        a.download = "code.zip";
+                    } 
+                    else 
+                    {
+                        a.download = "code.r";
+                    }
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
             lightBoxManager.openBox(cons.SHADOWING, cons.BOX_CONTAINER,
                 "qnetwork?cmd=open-box&type=editor",
                 function() {
