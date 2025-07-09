@@ -19,9 +19,12 @@
                 <span id="opOpen-btClose"><img src="img/btClose.png"/></span>
             </div>
 
-            <div id="opOpen-top" class="filesWindow"><c:forEach var="arquivo" items="${arquivos}">
-        <div>${arquivo}</div>
-    </c:forEach></div>
+            <div id="opOpen-top" class="filesWindow">
+                <c:forEach var="arquivo" items="${arquivos}">
+                    <div class="file-item" data-filename="${arquivo}">${arquivo}</div>
+                </c:forEach>
+            </div>
+
 
             <div id="opOpen-bottom" class="standardForm">
                 <form>

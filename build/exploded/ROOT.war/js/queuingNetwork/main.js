@@ -459,6 +459,24 @@ require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "El
   observeMSA();
   observeVisibilityTargets();
   
+
+document.addEventListener("DOMContentLoaded", function () {
+    console.log("oi1");
+    const fileItems = document.querySelectorAll('.file-item');
+    const inputField = document.getElementById('opOpen-filename');
+
+    fileItems.forEach(item => {
+        console.log("oi2");
+        item.addEventListener('click', function () {
+            console.log("oi3");
+            const fileName = this.getAttribute('data-filename');
+            inputField.value = fileName;
+        });
+    });
+});
+
+
+  
     /*const fieldset = document.getElementById("queueStatsFieldset");
     if (fieldset) {
         console.log("fieldset encontrado");

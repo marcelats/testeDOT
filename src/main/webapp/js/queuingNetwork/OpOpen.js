@@ -47,9 +47,25 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons"],
                     e.preventDefault();
 
                     OpOpen.execute("rename");
+                    
                 });
+                
+    const fileItems = document.querySelectorAll('.file-item');
+    const inputField = document.getElementById('opOpen-filename');
+
+    fileItems.forEach(item => {
+        console.log("oi2");
+        item.addEventListener('click', function () {
+            console.log("oi3");
+            const fileName = this.getAttribute('data-filename');
+            inputField.value = fileName;
+        });
+    });
+
+
             },
             execute: function(action) {
+                
             if(!jsonManager.isSaved()) {
                 opNew.execute(function() {
                     var userChose = opNew.getLastAction();

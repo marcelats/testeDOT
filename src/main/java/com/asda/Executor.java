@@ -62,7 +62,7 @@ public class Executor {
                 out.writeBytes("Content-Disposition: form-data; name=\"arquivo\"; filename=\"code.r\"\r\n");
                 break;
         }       
-            out.writeBytes("Content-Type: text/plain\r\n\r\n");
+            out.writeBytes("Content-Type: application/zip\r\n\r\n");
             Files.copy(tempPath, out); // envia o conteúdo
             out.writeBytes("\r\n--" + boundary + "--\r\n");
             out.flush();
