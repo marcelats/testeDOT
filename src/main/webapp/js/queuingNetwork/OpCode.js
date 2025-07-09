@@ -138,7 +138,12 @@ document.querySelector("#opParam_library")?.addEventListener("change", function 
                                 return file.async("text");
                               })
                               .then(conteudoTexto => {
-                                console.log("Conteúdo de Controle.java:", conteudoTexto);
+                                  const textarea = document.getElementById("textEditor");
+                                if (textarea) {
+                                        textarea.value = conteudoTexto;
+                                    } else {
+                                        console.error("Textarea ainda não foi carregado.");
+                                    }
                               })
                               .catch(error => {
                                 console.error("Erro:", error);
