@@ -148,6 +148,26 @@ document.querySelector("#opParam_library")?.addEventListener("change", function 
                               .catch(error => {
                                 console.error("Erro:", error);
                               });
+                              JSZip.loadAsync(blobCode)
+                                .then(zip => {
+                                  const arquivosJava = [];
+                                  zip.forEach((caminho, file) => {
+                                    if (file.name.endsWith(".java")) {
+                                      arquivosJava.push(file.async("text").then(texto => ({
+                                        nome: file.name,
+                                        conteudo: texto
+                                      })));
+                                    }
+                                  });
+                                  return Promise.all(arquivosJava);
+                                })
+                                .then(listaArquivos => {
+                                  listaArquivos.forEach(arquivo => {
+                                    console.log("Arquivo:", arquivo.nome);
+                                    console.log("Conteúdo:", arquivo.conteudo);
+                                  });
+                                });
+
                             }
                         })
                         .catch(error => {
