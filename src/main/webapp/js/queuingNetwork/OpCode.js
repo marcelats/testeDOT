@@ -49,21 +49,31 @@ document.querySelector("#opParam_library")?.addEventListener("change", function 
                     const blobCode = new Blob([textoAtual], { type: "text/plain" });
                     window.codeBlob = blobCode;
 
-                    const url = URL.createObjectURL(blobCode);
-                    const a = document.createElement("a");
-                    a.href = url;
+                    if(window.langSelecionada === 'Python' || window.langSelecionada === 'R')
+                    {
+                        const url = URL.createObjectURL(blobCode);
+                        const a = document.createElement("a");
+                        a.href = url;
+                    }
                     if(window.langSelecionada === 'Python')
                     {
                         a.download = "code.py";
                     }
-                    else if(window.langSelecionada === 'Java')
-                    {
-                        a.download = "code.zip";
-                    } 
-                    else 
+                    else if(window.langSelecionada === 'R')
                     {
                         a.download = "code.r";
                     }
+                    else 
+                    {
+                        window.arquivosJava.forEach(arquivo => {
+                            if (arquivo.nome !== "Controle.java") {
+                                    console.log("Arquivo:", arquivo.nome);
+                                    console.log("Conteúdo:", arquivo.conteudo);
+                                }
+                            });
+                        a.download = "code.zip";
+                    } 
+                    
                     document.body.appendChild(a);
                     a.click();
                     document.body.removeChild(a);
@@ -150,16 +160,16 @@ document.querySelector("#opParam_library")?.addEventListener("change", function 
                               });
                               JSZip.loadAsync(blobCode)
                                 .then(zip => {
-                                  const arquivosJava = [];
+                                  window.arquivosJava = [];
                                   zip.forEach((caminho, file) => {
                                     if (file.name.endsWith(".java")) {
-                                      arquivosJava.push(file.async("text").then(texto => ({
+                                      window.arquivosJava.push(file.async("text").then(texto => ({
                                         nome: file.name,
                                         conteudo: texto
                                       })));
                                     }
                                   });
-                                  return Promise.all(arquivosJava);
+                                  return Promise.all(window.arquivosJava);
                                 })
                                 .then(listaArquivos => {
                                   listaArquivos.forEach(arquivo => {
