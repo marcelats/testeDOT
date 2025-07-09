@@ -456,5 +456,9 @@ require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "El
   observeMSS();
   observeMSA();
   observeVisibilityTargets();
-        
+  
+    const queuestats = document.getElementById("queueStatsFieldset");
+    queuestats.style.opacity = '0.3';
+    queuestats.style.pointerEvents = 'none';
+    
     });
