@@ -1,3 +1,9 @@
+require.config({
+  paths: {
+    JSZip: "https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min"
+  }
+});
+
 define(["jquery","LightBoxManager","Cons","JSZip"],
 function($, lightBoxManager, cons,JSZip) {
     "use strict";
