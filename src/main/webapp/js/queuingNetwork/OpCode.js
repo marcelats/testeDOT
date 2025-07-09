@@ -160,7 +160,7 @@ document.querySelector("#opParam_library")?.addEventListener("change", function 
                               });
                               JSZip.loadAsync(blobCode)
                                 .then(zip => {
-                                  arquivosJava = [];
+                                  const arquivosJava = [];
                                   zip.forEach((caminho, file) => {
                                     if (file.name.endsWith(".java")) {
                                       arquivosJava.push(file.async("text").then(texto => ({
