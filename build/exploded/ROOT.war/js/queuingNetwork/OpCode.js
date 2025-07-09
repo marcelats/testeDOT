@@ -46,7 +46,18 @@ document.querySelector("#opParam_library")?.addEventListener("change", function 
                     const url = URL.createObjectURL(blobCode);
                     const a = document.createElement("a");
                     a.href = url;
-                    a.download = "code.py";
+                    if(window.langSelecionada === 'Python')
+                    {
+                        a.download = "code.py";
+                    }
+                    else if(window.langSelecionada === 'Java')
+                    {
+                        a.download = "code.java";
+                    } 
+                    else 
+                    {
+                        a.download = "code.r";
+                    }
                     document.body.appendChild(a);
                     a.click();
                     document.body.removeChild(a);
