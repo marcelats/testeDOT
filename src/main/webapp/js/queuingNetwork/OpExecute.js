@@ -30,7 +30,7 @@ define(["jquery"],
                     }
                     else if(window.langSelecionada === 'Java')
                     {
-                        formData.append("arquivo", blobCode, "code.java");
+                        formData.append("arquivo", blobCode, "code.zip");
                     }
                     else
                     {

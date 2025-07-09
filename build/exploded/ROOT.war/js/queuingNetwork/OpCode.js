@@ -52,7 +52,7 @@ document.querySelector("#opParam_library")?.addEventListener("change", function 
                     }
                     else if(window.langSelecionada === 'Java')
                     {
-                        a.download = "code.java";
+                        a.download = "code.zip";
                     } 
                     else 
                     {

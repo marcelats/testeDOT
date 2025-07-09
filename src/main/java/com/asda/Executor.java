@@ -28,7 +28,7 @@ public class Executor {
                 tempPath = Files.createTempFile("code", ".py");
                 break;
             case "Java":
-                tempPath = Files.createTempFile("code", ".java");
+                tempPath = Files.createTempFile("code", ".zip");
                 break;
             default:
                 tempPath = Files.createTempFile("code", ".r");
@@ -56,7 +56,7 @@ public class Executor {
                 out.writeBytes("Content-Disposition: form-data; name=\"arquivo\"; filename=\"code.py\"\r\n");
                 break;
             case "Java":
-                out.writeBytes("Content-Disposition: form-data; name=\"arquivo\"; filename=\"code.java\"\r\n");
+                out.writeBytes("Content-Disposition: form-data; name=\"arquivo\"; filename=\"code.zip\"\r\n");
                 break;
             default:
                 out.writeBytes("Content-Disposition: form-data; name=\"arquivo\"; filename=\"code.r\"\r\n");

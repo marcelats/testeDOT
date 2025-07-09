@@ -18,7 +18,7 @@
                 <input type="hidden" id="callerId">
                 <input type="hidden" id="callerType">
 
-                <fieldset id="queueStatsFieldset">
+                <fieldset disabled id="queueStatsFieldset">
                     <legend>Queue statistics</legend>
                     <div class="field">
                         <label for="server_emptyQueue" class="labelLeft">Empty queue</label>
@@ -111,10 +111,3 @@
         </div>
     </body>
 </html>
-
-<script>
-  const fieldset = document.getElementById("queueStatsFieldset");
-    fieldset.style.opacity = '0.3';
-    fieldset.style.pointerEvents = 'none';
-  
-</script>
