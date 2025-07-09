@@ -128,12 +128,14 @@ require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "El
 
     const multiServer = document.getElementById("multiServer");
     if (multiServer) {
+      if(allowed.includes(selected)) multiServer.disabled = false;
       multiServer.style.opacity = allowed.includes(selected) ? '1' : '0.3';
       multiServer.style.pointerEvents = allowed.includes(selected) ? 'auto' : 'none';
     }
 
     const fieldset = document.getElementById("queueStatsFieldset");
     if (fieldset) {
+      if(allowed.includes(selected)) fieldset.disabled = false;
       fieldset.style.opacity = allowed.includes(selected) ? '1' : '0.3';
       fieldset.style.pointerEvents = allowed.includes(selected) ? 'auto' : 'none';
     }

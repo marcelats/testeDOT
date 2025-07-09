@@ -54,7 +54,7 @@
                             </div>
                         </li>
                         <li>
-                            <div id="multiServer">
+                            <div id="multiServer" disabled>
                                 <img src="img/icon/multiServer.gif" title="Multiple Servers"/>
                             </div>
                         </li>
