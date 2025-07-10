@@ -48,10 +48,10 @@ document.querySelector("#opParam_library")?.addEventListener("change", function 
                     const textoAtual = textarea.value;
                     const blobCode = new Blob([textoAtual], { type: "text/plain" });
                     window.codeBlob = blobCode;
-
+                    const url = URL.createObjectURL(blobCode);
+                    const a = document.createElement("a");
                     if(window.langSelecionada === 'Python' || window.langSelecionada === 'R')
-                    {
-                        const url = URL.createObjectURL(blobCode);
+                    { 
                         const a = document.createElement("a");
                         a.href = url;
                     }
