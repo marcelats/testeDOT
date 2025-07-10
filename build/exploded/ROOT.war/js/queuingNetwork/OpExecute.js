@@ -38,13 +38,13 @@ define(["jquery","JSZip"],
 
                         // Adiciona todos os arquivos, exceto "Controle.java"
                         window.listaArquivos.forEach(arquivo => {
-                          //if (arquivo.nome !== "Controle.java") {
+                          if (arquivo.nome !== "Controle.java") {
                             novoZip.file(arquivo.nome, arquivo.conteudo);
-                          //}
+                          }
                         });
                         // Adiciona o "Controle.java" a partir de blobCode
-                        //const controleTexto = await blobCode.text();
-                        //novoZip.file("Controle.java", controleTexto);
+                        const arrayBuffer = await blobCode.arrayBuffer();
+                        novoZip.file("Controle.java", arrayBuffer);
                         // Gera o zip e envia
                         try {
                             const zipBlob = await novoZip.generateAsync({ type: "blob" });
