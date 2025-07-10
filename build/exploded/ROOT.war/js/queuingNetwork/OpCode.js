@@ -121,11 +121,12 @@ document.querySelector("#opParam_library")?.addEventListener("change", function 
                             const textoAtual = textarea.value;
                             const blobCode = new Blob([textoAtual], { type: "text/plain" });
                             const textarea = document.getElementById("textEditor");
-                if (textarea) {
+                if(textarea){
                             window.codeBlob = blobCode;
                             const url = URL.createObjectURL(window.codeBlob);
+                           
                             const a = document.createElement("a");
-                            a.href = url;}
+                            a.href = url;
                             if(window.langSelecionada === 'Python')
                             {
                                 a.download = "code.py";
@@ -141,7 +142,7 @@ document.querySelector("#opParam_library")?.addEventListener("change", function 
                             document.body.appendChild(a);
                             a.click();
                             document.body.removeChild(a);
-                            URL.revokeObjectURL(url);
+                            URL.revokeObjectURL(url);}
                             
                             
                             if(window.langSelecionada === 'Python' || window.langSelecionada === 'R')
