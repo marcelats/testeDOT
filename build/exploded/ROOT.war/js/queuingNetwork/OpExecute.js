@@ -35,23 +35,24 @@ define(["jquery","JSZip"],
                     else if(window.langSelecionada === 'Java')
                     {
                         const novoZip = new JSZip();
+
+                        // Adiciona todos os arquivos, exceto "Controle.java"
                         window.listaArquivos.forEach(arquivo => {
-                            if (arquivo.nome !== "Controle.java") {
-                                window.listaArquivos.forEach(arquivo => {
-                                  // Adiciona cada arquivo ao ZIP
-                                  novoZip.file(arquivo.nome, arquivo.conteudo);
-                                });
-                                novoZip.file("Controle.java", blobCode);
-                                // Gera o ZIP e inicia o download
-                                novoZip.generateAsync({ type: "blob" })
-                                  .then(blob => {
-                                    formData.append("arquivo", blob, "code.zip");
-                                  })
-                                  .catch(err => {
-                                    console.error("Erro ao gerar o zip:", err);
-                                  });
-                                }
-                            });
+                          if (arquivo.nome !== "Controle.java") {
+                            novoZip.file(arquivo.nome, arquivo.conteudo);
+                          }
+                        });
+
+                        // Adiciona o "Controle.java" a partir de blobCode
+                        novoZip.file("Controle.java", blobCode);
+                        // Gera o zip e envia
+                        novoZip.generateAsync({ type: "blob" })
+                          .then(blob => {
+                            formData.append("arquivo", blob, "code.zip");
+                          })
+                          .catch(err => {
+                            console.error("Erro ao gerar ou enviar o zip:", err);
+                          });   
                     }
                     else
                     {
