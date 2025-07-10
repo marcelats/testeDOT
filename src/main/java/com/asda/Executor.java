@@ -11,6 +11,7 @@ import org.glassfish.jersey.media.multipart.FormDataParam;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -34,7 +35,7 @@ public class Executor {
                 tempPath = Files.createTempFile("code", ".r");
                 break;
         }
-        
+        System.out.println(new String(fileInputStream.readAllBytes(), StandardCharsets.UTF_8));
         Files.copy(fileInputStream, tempPath, StandardCopyOption.REPLACE_EXISTING);
 
         // 2. Constrói POST para o container Python

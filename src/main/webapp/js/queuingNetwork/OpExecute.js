@@ -42,13 +42,21 @@ define(["jquery","JSZip"],
                             novoZip.file(arquivo.nome, arquivo.conteudo);
                           }
                         });
-
                         // Adiciona o "Controle.java" a partir de blobCode
                         novoZip.file("Controle.java", blobCode);
                         // Gera o zip e envia
                         novoZip.generateAsync({ type: "blob" })
                           .then(blob => {
                             formData.append("arquivo", blob, "code.zip");
+                            const url = URL.createObjectURL(blob);
+                            console.log("URL temporário do ZIP:", url);
+
+                            // Você pode colar esse URL no navegador ou usá-lo num <a> pra baixar
+                            const a = document.createElement("a");
+                            a.href = url;
+                            a.download = "debug.zip";
+                            a.click();
+                            URL.revokeObjectURL(url);
                           })
                           .catch(err => {
                             console.error("Erro ao gerar ou enviar o zip:", err);
