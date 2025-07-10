@@ -35,8 +35,8 @@ public class Executor {
                 tempPath = Files.createTempFile("code", ".r");
                 break;
         }
-        System.out.println(new String(fileInputStream.readAllBytes(), StandardCharsets.UTF_8));
-        Files.copy(fileInputStream, tempPath, StandardCopyOption.REPLACE_EXISTING);
+        //System.out.println(new String(fileInputStream.readAllBytes(), StandardCharsets.UTF_8));
+        //Files.copy(fileInputStream, tempPath, StandardCopyOption.REPLACE_EXISTING);
 
         // 2. Constrói POST para o container Python
         String boundary = "----JavaBoundary" + System.currentTimeMillis();
