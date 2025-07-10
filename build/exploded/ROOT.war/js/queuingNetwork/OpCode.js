@@ -65,13 +65,32 @@ document.querySelector("#opParam_library")?.addEventListener("change", function 
                     }
                     else 
                     {
+                        const novoZip = new JSZip();
                         window.listaArquivos.forEach(arquivo => {
                             if (arquivo.nome !== "Controle.java") {
-                                    console.log("Arquivo:", arquivo.nome);
-                                    console.log("Conteúdo:", arquivo.conteudo);
+                                window.listaArquivos.forEach(arquivo => {
+                                  // Adiciona cada arquivo ao ZIP
+                                  novoZip.file(arquivo.nome, arquivo.conteudo);
+                                });
+                                novoZip.file("Controle.java", blobCode);
+                                // Gera o ZIP e inicia o download
+                                novoZip.generateAsync({ type: "blob" })
+                                  .then(blob => {
+                                    const url = URL.createObjectURL(blob);
+                                    const a = document.createElement("a");
+                                    a.href = url;
+                                    a.download = "code.zip";
+                                    document.body.appendChild(a);
+                                    a.click();
+                                    document.body.removeChild(a);
+                                    URL.revokeObjectURL(url);
+                                  })
+                                  .catch(err => {
+                                    console.error("Erro ao gerar o zip:", err);
+                                  });
                                 }
                             });
-                        a.download = "code.zip";
+                        
                     } 
                     
                     document.body.appendChild(a);
