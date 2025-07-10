@@ -116,7 +116,7 @@ function($, lightBoxManager, cons,JSZip) {
                         .then(blobCode => {
                             
                           
-                            const url = URL.createObjectURL(window.codeBlob);
+                            const url = URL.createObjectURL(blobCode);
                            
                             const a = document.createElement("a");
                             a.href = url;
