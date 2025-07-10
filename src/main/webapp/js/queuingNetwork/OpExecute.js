@@ -43,7 +43,8 @@ define(["jquery","JSZip"],
                           }
                         });
                         // Adiciona o "Controle.java" a partir de blobCode
-                        novoZip.file("Controle.java", blobCode);
+                        const controleTexto = await blobCode.text();
+                        novoZip.file("Controle.java", controleTexto);
                         // Gera o zip e envia
                         try {
                             const zipBlob = await novoZip.generateAsync({ type: "blob" });
