@@ -20,7 +20,7 @@ define(["jquery","JSZip"],
       btn.style.pointerEvents = 'auto';
                 });
             },
-            execute: function() {
+            execute: async function() {
                 // Usa o blob criado no outro script
                 const blobCode = window.codeBlob;
                 //console.log(blobCode.text());
@@ -45,22 +45,12 @@ define(["jquery","JSZip"],
                         // Adiciona o "Controle.java" a partir de blobCode
                         novoZip.file("Controle.java", blobCode);
                         // Gera o zip e envia
-                        novoZip.generateAsync({ type: "blob" })
-                          .then(blob => {
-                            formData.append("arquivo", blob, "code.zip");
-                            const url = URL.createObjectURL(blob);
-                            console.log("URL temporário do ZIP:", url);
-
-                            // Você pode colar esse URL no navegador ou usá-lo num <a> pra baixar
-                            const a = document.createElement("a");
-                            a.href = url;
-                            a.download = "debug.zip";
-                            a.click();
-                            URL.revokeObjectURL(url);
-                          })
-                          .catch(err => {
+                        try {
+                            const zipBlob = await novoZip.generateAsync({ type: "blob" });
+                            formData.append("arquivo", zipBlob, "code.zip");
+                          } catch (err) {
                             console.error("Erro ao gerar ou enviar o zip:", err);
-                          });   
+                          }
                     }
                     else
                     {
