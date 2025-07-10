@@ -1,5 +1,10 @@
-define(["jquery"],
-    function($) {
+require.config({
+  paths: {
+    JSZip: "https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min"
+  }
+});
+define(["jquery","JSZip"],
+    function($,JSZip) {
         "use strict";
 
         var lastAction = null;
