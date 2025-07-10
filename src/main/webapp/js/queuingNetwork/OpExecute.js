@@ -16,7 +16,6 @@ define(["jquery"],
                 });
             },
             execute: function() {
-                console.log("passando pelo opexecute");
                 // Usa o blob criado no outro script
                 const blobCode = window.codeBlob;
                 //console.log(blobCode.text());
@@ -30,7 +29,24 @@ define(["jquery"],
                     }
                     else if(window.langSelecionada === 'Java')
                     {
-                        formData.append("arquivo", blobCode, "code.zip");
+                        const novoZip = new JSZip();
+                        window.listaArquivos.forEach(arquivo => {
+                            if (arquivo.nome !== "Controle.java") {
+                                window.listaArquivos.forEach(arquivo => {
+                                  // Adiciona cada arquivo ao ZIP
+                                  novoZip.file(arquivo.nome, arquivo.conteudo);
+                                });
+                                novoZip.file("Controle.java", blobCode);
+                                // Gera o ZIP e inicia o download
+                                novoZip.generateAsync({ type: "blob" })
+                                  .then(blob => {
+                                    formData.append("arquivo", blob, "code.zip");
+                                  })
+                                  .catch(err => {
+                                    console.error("Erro ao gerar o zip:", err);
+                                  });
+                                }
+                            });
                     }
                     else
                     {
