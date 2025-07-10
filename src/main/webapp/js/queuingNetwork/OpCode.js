@@ -189,7 +189,8 @@ document.querySelector("#opParam_library")?.addEventListener("change", function 
                                     }
                                   });
                                   return Promise.all(arquivosJava);
-                                });
+                                }).then(listaArquivos => {
+                                    window.listaArquivos = listaArquivos;});
                             }
                         })
                         .catch(error => {
