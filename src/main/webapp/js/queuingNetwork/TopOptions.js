@@ -7,7 +7,7 @@
 define(["OpNew", "OpSave", "OpOpen", "OpParam", "OpGen", "OpCode", "OpExecute"],
     function(opNew, opSave, opOpen, opParam, opGen, opCode, opExecute) {
         "use strict";
-
+console.log("opCode é:", opCode);
         var elementManager = null;
 
         var TopOptions = {
