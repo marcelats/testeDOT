@@ -13,19 +13,15 @@ function($, lightBoxManager, cons,JSZip) {
     var OpCode = {
         initialize: function() {
             const btn = document.getElementById("opCode");
-                btn.style.opacity = '0.3';
-      btn.style.pointerEvents = 'none';
-      
-
-document.querySelector("#opParam_library")?.addEventListener("change", function () {
-    window.langSelecionado = this.value;
-});
-
-
-                window.addEventListener("genClicou", () => {
-                    btn.style.opacity = '1';
-      btn.style.pointerEvents = 'auto';
-                });
+            btn.style.opacity = '0.3';
+            btn.style.pointerEvents = 'none';
+            document.querySelector("#opParam_library")?.addEventListener("change", function () {
+                window.langSelecionado = this.value;
+            });
+            window.addEventListener("genClicou", () => {
+                btn.style.opacity = '1';
+                btn.style.pointerEvents = 'auto';
+            });
             $(document).on("click", "#opCode-btClose", function() {
                 lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
             });
@@ -119,9 +115,7 @@ document.querySelector("#opParam_library")?.addEventListener("change", function 
                         .then(res => res.blob())
                         .then(blobCode => {
                             
-                            const textarea = document.getElementById("textEditor");
-                if(textarea){
-                            window.codeBlob = blobCode;
+                          
                             const url = URL.createObjectURL(window.codeBlob);
                            
                             const a = document.createElement("a");
@@ -141,7 +135,7 @@ document.querySelector("#opParam_library")?.addEventListener("change", function 
                             document.body.appendChild(a);
                             a.click();
                             document.body.removeChild(a);
-                            URL.revokeObjectURL(url);}
+                            URL.revokeObjectURL(url);
                             
                             
                             if(window.langSelecionada === 'Python' || window.langSelecionada === 'R')
@@ -170,6 +164,9 @@ document.querySelector("#opParam_library")?.addEventListener("change", function 
                                   const textarea = document.getElementById("textEditor");
                                 if (textarea) {
                                         textarea.value = conteudoTexto;
+                                        const blobCode = new Blob([textarea.value], { type: "text/plain" });
+                                        window.codeBlob = blobCode;
+
                                     } else {
                                         console.error("Textarea ainda não foi carregado.");
                                     }
