@@ -36,7 +36,7 @@ public class Executor {
                 break;
         }
         //System.out.println(new String(fileInputStream.readAllBytes(), StandardCharsets.UTF_8));
-        //Files.copy(fileInputStream, tempPath, StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(fileInputStream, tempPath, StandardCopyOption.REPLACE_EXISTING);
 
         // 2. Constrói POST para o container Python
         String boundary = "----JavaBoundary" + System.currentTimeMillis();
