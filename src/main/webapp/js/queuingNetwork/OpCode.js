@@ -118,8 +118,7 @@ document.querySelector("#opParam_library")?.addEventListener("change", function 
                         })
                         .then(res => res.blob())
                         .then(blobCode => {
-                            const textoAtual = textarea.value;
-                            const blobCode = new Blob([textoAtual], { type: "text/plain" });
+                            
                             const textarea = document.getElementById("textEditor");
                 if(textarea){
                             window.codeBlob = blobCode;
