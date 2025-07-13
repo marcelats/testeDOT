@@ -43,7 +43,10 @@ require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "El
         propertiesArea.initialize();
         /* Initializing jquery plugins. */
         jqueryPlugins.initialize();
-
+        const btn = document.getElementById("multiServer");
+            btn.style.opacity = '0.3';
+            btn.style.pointerEvents = 'none';
+            
         /* Registering main events. */
         var eventMap = function() {
             /* topMenu event map */
@@ -104,6 +107,8 @@ require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "El
                     window.location.href = redirectHeader;
                 }
             });
+            
+            
         }();
      
         const allowed = ['C SMPL', 'C SMPLX', 'C ParSMPL', 'C SIMPACK', 'C SIMPACK2'];
@@ -120,7 +125,7 @@ require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "El
       seed.style.pointerEvents = allowed.includes(selected) ? 'none' : 'auto';
     }
     
-    const chegada = document.getElementById("chegada");
+    const chegada = document.getElementById("chegada-bt");
     if(chegada){
         chegada.style.opacity = allowed.includes(selected) ? '1' : '0.3';
         chegada.style.pointerEvents = allowed.includes(selected) ? 'auto' : 'none';

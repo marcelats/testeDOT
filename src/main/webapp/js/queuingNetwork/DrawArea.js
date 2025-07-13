@@ -7,7 +7,6 @@ function(activeTool, propertiesArea, divManager, idManager, jsonManager, cons, u
     var DrawArea = {
         initialize: function(manager) {
     elementManager = manager;
-
 }
 ,
         ctrl: function(event, element) {
@@ -44,13 +43,16 @@ function(activeTool, propertiesArea, divManager, idManager, jsonManager, cons, u
         jsonManager.removeNode(element);
     }
     function linkElements(element) {
-            var connection;
 
-            connection = elementManager.linkElements(element);
+            var connection;
+            connection =  elementManager.linkElements(element);
+            
+
             divManager.blockDiv(cons.LEFT_TOOLS);
             
-            if(connection !== null) {
+            if(connection !== 0) {
                 jsonManager.linkNodes(connection);
+            
             }
         }
 

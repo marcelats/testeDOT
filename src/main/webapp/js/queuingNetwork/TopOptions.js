@@ -4,8 +4,8 @@
  * author: Felipe Osorio Thomé
  */
 
-define(["OpNew", "OpSave", "OpOpen", "OpParam", "OpGen", "OpCode", "OpExecute"],
-    function(opNew, opSave, opOpen, opParam, opGen, opCode, opExecute) {
+define(["OpNew", "OpSave", "OpOpen", "OpParam", "OpGen", "OpCode", "OpExecute","Arrival"],
+    function(opNew, opSave, opOpen, opParam, opGen, opCode, opExecute, arrival) {
         "use strict";
 console.log("opCode é:", opCode);
         var elementManager = null;
@@ -20,6 +20,7 @@ console.log("opCode é:", opCode);
                 opParam.initialize();
                 opCode.initialize();
                 opExecute.initialize();
+                arrival.initialize();
             },
             ctrl: function(option) {
                 if (option === "new") {

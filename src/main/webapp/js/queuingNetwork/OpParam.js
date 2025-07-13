@@ -4,8 +4,8 @@
  * author: Felipe Osorio Thomé
  */
 
-define(["jquery", "LightBoxManager", "JsonManager", "Utils", "Cons"],
-    function($, lightBoxManager, jsonManager, utils, cons) {
+define(["jquery", "LightBoxManager", "JsonManager", "Utils", "Cons","Arrival"],
+    function($, lightBoxManager, jsonManager, utils, cons,arrival) {
         "use strict";
 
         var lastAction = null, callback = null;
@@ -35,6 +35,7 @@ define(["jquery", "LightBoxManager", "JsonManager", "Utils", "Cons"],
                         "qnetwork?cmd=open-box&type=arrival", 
                         function() {
                           console.log("box arrival aberta");
+                          arrival.execute();
                         }
                       );
                 });

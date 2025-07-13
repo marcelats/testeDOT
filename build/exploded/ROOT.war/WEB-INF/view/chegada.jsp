@@ -14,10 +14,10 @@
         <div class="boxContent">
            <span class="boxTitle">Arrivals</span>
            <div><input id ="prev-bt" type="button" value="Prev" class="button">
-           <input id ="prev-bt" type="button" value="Next" class="button">
-           <input id ="prev-bt" type="button" value="New" class="button">
-           <input id ="prev-bt" type="button" value="Save" class="button">
-           <input id ="prev-bt" type="button" value="Del" class="button">
+           <input id ="next-bt" type="button" value="Next" class="button">
+           <input id ="new-bt" type="button" value="New" class="button">
+           <input id ="save-bt" type="button" value="Save" class="button">
+           <input id ="del-bt" type="button" value="Del" class="button">
            </div>
            
            <div class="field">
@@ -33,8 +33,6 @@
            <fieldset>
                 <legend>Service center</legend>
                 <select id="service_center" class="inputText">
-                    <option value="R">R</option>
-                        <option value="Java">Java</option>
                 </select>
             </fieldset>
                         

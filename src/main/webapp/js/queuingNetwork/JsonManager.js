@@ -59,44 +59,6 @@ define(["jquery", "jsPlumb", "IdManager"],
                             btnExecute.style.pointerEvents = 'none';
             },
             removeNode: function(element) {
-                /*jsPlumb.select({target: element.id}).each(function(connection) {
-                    delete graph.mapNodes[connection.sourceId].mapTargets[element.id];                   
-                  
-                });
-                delete graph.mapNodes[element.id];
-                for (const key in graph.mapNodes) {
-                    const no = graph.mapNodes[key];
-
-                    for (const targetId in no.mapTargets) {
-                        if (targetId == element.id) {
-                            delete no.mapTargets[targetId];
-                        }
-                    }
-                }*/
-
-                /*const novoMapa = new Map();
-                Object.entries(graph.mapNodes).forEach(([oldId, node], index) => {
-                    novoMapa.set(oldId, index); // ID antigo → novo
-                    node.id = index;            // atualiza o próprio nó com o novo ID
-                    console.log(node.id);
-                });*/
-                
-
-                /*Object.keys(graph.mapNodes).forEach((oldId) => {
-                    const no = graph.mapNodes[oldId];
-
-                    const novosTargets = {};
-                    Object.keys(no.mapTargets).forEach((targetIdAntigo) => {
-                        const targetIdNovo = novoMapa.get(targetIdAntigo);
-                        if (targetIdNovo !== undefined) {
-                            novosTargets[targetIdNovo] = no.mapTargets[targetIdAntigo];
-                            
-                        }
-                    });
-
-                    no.mapTargets = novosTargets; // substitui pelos IDs atualizados
-                    console.log(no.mapTargets);
-                });*/
                  var father = element.parentNode;
 
             jsPlumb.detachAllConnections(element);
@@ -185,6 +147,12 @@ define(["jquery", "jsPlumb", "IdManager"],
                             btnExecute.style.pointerEvents = 'none';
             },
             linkNodes: function(connection) {
+                if(connection){
+                    if(graph.mapNodes[connection.sourceId].type==="out"){console.log("caso 1 jsonmanager");return 0;}
+                if(graph.mapNodes[connection.sourceId].type==="source" && graph.mapNodes[connection.targetId].type==="out"){console.log("caso 2 jsonmanager");return 0;}
+                if(graph.mapNodes[connection.targetId].type==="source"){console.log("caso 3 jsonmanager");return 0;}
+                }
+                    
                 graph.mapNodes[connection.sourceId].mapTargets[connection.targetId] = 1;
 
                 saved = false;

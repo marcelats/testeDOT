@@ -18,6 +18,33 @@ define(["JsonManager", "Cons"],
                 $(document).on("click", "#btCancel", function() {
                     propertiesArea.ctrl("cancel");
                 });
+                document.addEventListener("DOMContentLoaded", function () {
+    const serverSelect = document.getElementById("server_distribution");
+    if (serverSelect) {
+        for (let option of serverSelect.options) {
+            if (option.text === "HyperExponential" || option.text === "Erlang") {
+                option.disabled = true;
+            }
+        }
+    }
+});
+
+                const arrivalSelect = document.getElementById("arrival_distribution");
+                if(arrivalSelect){
+                    for (let option of arrivalSelect.options) {
+                if (option.text === "HyperExponential" || option.text === "Erlang") {
+                    option.disabled = true;
+                }
+            }
+                }
+                const serverSelect = document.getElementById("server_distribution");
+                if(serverSelect){
+                    for (let option of serverSelect.options) {
+                if (option.text === "HyperExponential" || option.text === "Erlang") {
+                    option.disabled = true;
+                }
+            }
+                }
             },
             ctrl: function(element) {
                 /* Invoked from an element. */
@@ -66,6 +93,22 @@ define(["JsonManager", "Cons"],
                 "qnetwork?cmd=open-properties&type=" + element.name,
                 function() {
                     prepareForm(element);
+                    const serverSelect = document.getElementById("server_distribution");
+        if (serverSelect) {
+            for (let option of serverSelect.options) {
+                if (["HyperExponential", "Erlang"].includes(option.text.trim())) {
+                    option.disabled = true;
+                }
+            }
+        }
+        const arrivalSelect = document.getElementById("arrival_distribution");
+        if (arrivalSelect) {
+            for (let option of arrivalSelect.options) {
+                if (["HyperExponential", "Erlang"].includes(option.text.trim())) {
+                    option.disabled = true;
+                }
+            }
+        }
                 }
             );
 

@@ -133,10 +133,11 @@ define(["jquery", "jsPlumb", "DrawArea", "PropertiesArea", "JsonManager", "Utils
 
 
         ElementManager.prototype.linkElements = function(element) {
+            
             var connection = null;
-
+            
             var targetEndPoint,
-                sourceOption = {
+            sourceOption = {
                 anchor: "RightMiddle",
                 isSource: true,
                 endpoint: "Blank"
@@ -150,14 +151,21 @@ define(["jquery", "jsPlumb", "DrawArea", "PropertiesArea", "JsonManager", "Utils
                 paintStyle: {lineWidth: 3, strokeStyle: "#660700"},
                 overlays: [["PlainArrow", {location: 1, width: 15, length: 12}]]
             };
+                if(this.prevElement)var sourceType = jsonManager.getGraph().mapNodes[this.prevElement.id].type;
+                if(element)var targetType = jsonManager.getGraph().mapNodes[element.id].type;
+               
 
             if (this.prevEndPoint === null) {
                 this.prevElement = element;
                 /* Tells jsPlumb to create the first end point */
                 this.prevEndPoint = jsPlumb.addEndpoint(element, sourceOption);
             } else {
+                
                 /* Avoid links between the same element or links that already exists */
                 if (this.prevElement !== element && !checkExistingLinks(this.prevElement, element)) {
+                    if(sourceType==="out"){console.log("caso 1 elementmanager");return 0;}
+                if(targetType==="source"){console.log("caso 2 elementmanager");return 0;}
+                if(sourceType==="source" && targetType==="out"){console.log("caso 3 elementmanager");return 0;}
                     /* Tells jsPlumb to create the second end point */
                     targetEndPoint = jsPlumb.addEndpoint(element, targetOption);
                     /* Finally, connects elements */
