@@ -6,8 +6,8 @@
 //const fs = require('fs');
 let modelType = "True";
 let warmupTime = "False";
-define(["jquery", "JsonManager"],
-    function($, jsonManager) {
+define(["jquery", "JsonManager","Arrival"],
+    function($, jsonManager,arrival) {
         "use strict";
 
         var lastAction = null;
@@ -43,10 +43,17 @@ define(["jquery", "JsonManager"],
                 var maxEntities = parameters["opParam_maxEntities"] || 0;
                 //let modelType = document.getElementById("opParam_open").checked ;
                 //let warmupTime = document.getElementById("opParam_timeDefined").checked;
-             
+                const selectedModelType = document.querySelector('input[name="modelType"]:checked');
+
+                if (selectedModelType) {
+                    console.log("Valor selecionado:", selectedModelType.value);
+                } else {
+                    console.log("Nenhuma opção selecionada");
+                }
+
                 var definedValue = parameters["opParam_definedValue"] || 0;
                 var seed = parameters["opParam_seed"] || 0;
-                let content = `digraph ${jsonManager.getGraph().name} {\n    comment=" ${execTime} ${numCycles} ${batchSize} ${maxEntities} ${modelType} ${warmupTime} ${definedValue} ${seed} " rankdir=LR\n`;
+                let content = `digraph ${jsonManager.getGraph().name} {\n    comment=" ${execTime} ${numCycles} ${batchSize} ${maxEntities} ${selectedModelType.value} ${warmupTime} ${definedValue} ${seed} " rankdir=LR\n`;
    
                     Object.values(jsonManager.getGraph().mapNodes).forEach(node => {
                         
@@ -86,8 +93,14 @@ define(["jquery", "JsonManager"],
                                         content += ` 0`;    
                                 }
                                 
-                                
-                                content += ` ${node.properties.arrival_average} ${node.properties.server_average} 1 "]\n`;
+                                if(node.properties.server_emptyQueue == 'on')
+                                {content += ` ${node.properties.arrival_average} ${node.properties.server_average} 1 true `;}
+                                else
+                                {content += ` ${node.properties.arrival_average} ${node.properties.server_average} 1 false `;}
+                                if(node.properties.server_length == 'on')
+                                {content += `true ${node.properties.arrival_sequence} ${node.properties.server_sequence} ${node.properties.server_stdDeviation} ${node.properties.arrival_stdDeviation} "]\n`;}
+                                else
+                                {content += `false ${node.properties.arrival_sequence} ${node.properties.server_sequence} ${node.properties.server_stdDeviation} ${node.properties.arrival_stdDeviation} "]\n`;}
                                 break;
                             case "out":
                                 content += `3]\n`;
@@ -125,8 +138,35 @@ define(["jquery", "JsonManager"],
                                 }
                                 
                                 
-                                if(node.properties.multiServer_nbrServers) content += ` ${node.properties.arrival_average} ${node.properties.server_average} ${node.properties.multiServer_nbrServers} "]\n`;
-                                else content += ` ${node.properties.arrival_average} ${node.properties.server_average} 1 "]\n`;
+                                if(node.properties.multiServer_nbrServers)
+                                {
+                                    if(node.properties.multiServer_emptyQueue=='on')
+                                    {
+                                        content += ` ${node.properties.arrival_average} ${node.properties.multiServer_average} ${node.properties.multiServer_nbrServers} true `;
+                                    }
+                                    else
+                                    {
+                                        content += ` ${node.properties.arrival_average} ${node.properties.multiServer_average} ${node.properties.multiServer_nbrServers} false `;
+                                    }
+                                    
+                                } 
+                                else
+                                {
+                                    if(node.properties.multiServer_emptyQueue=='on')
+                                    {
+                                        content += ` ${node.properties.arrival_average} ${node.properties.multiServer_average} 1 true `;
+                                    }
+                                    else
+                                    {
+                                        content += ` ${node.properties.arrival_average} ${node.properties.multiServer_average} 1 false `;
+                                    }
+                                }
+                                if(node.properties.multiServer_length == 'on')
+                                {content += `true ${node.properties.arrival_sequence} ${node.properties.multiServer_sequence} ${node.properties.multiServer_stdDeviation} ${node.properties.arrival_stdDeviation} "]\n`;}
+                                else
+                                {content += `false ${node.properties.arrival_sequence} ${node.properties.multiServer_sequence} ${node.properties.multiServer_stdDeviation} ${node.properties.arrival_stdDeviation} "]\n`;}    
+                                 
+                             
                                 break;
                             default:
                                 content += `" 2 1 1 1 0.1 "]\n`;
@@ -135,11 +175,23 @@ define(["jquery", "JsonManager"],
                 
                     Object.values(jsonManager.getGraph().mapNodes).forEach(node => {
                         Object.keys(node.mapTargets).forEach(targetId => {
-                            content += `    ${node.id} -> ${targetId}\n`;
+                            var prob;
+                            Object.values(jsonManager.getGraph().mapNodes).forEach(probnode=>{
+                                if(probnode.id==targetId){prob = probnode.properties.probability;}});
+                            content += `    ${node.id} -> ${targetId} [comment=${prob}]\n`;
                         });
                     });
-                
-                    content += "}\n";
+                    const arrivals = window.arrivals;
+                    content += `${arrivals.length} `;
+                    arrivals.forEach((obj, index) => {
+                        console.log(`Objeto ${index}:`);
+                        console.log("numberClients:", obj.numberClients);
+                        console.log("arrivalTime:", obj.arrivalTime);
+                        console.log("serviceCenter:", obj.serviceCenter);
+                        content += `${obj.numberClients} ${obj.arrivalTime} ${obj.serviceCenter} `;``
+                    });
+
+                    content += "\n}\n";
                     //baixar o .gv
                     const blob = new Blob([content], { type: "text/plain" }); // Criar um arquivo de texto
                     window.graphBlob = blob;

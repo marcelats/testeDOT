@@ -76,6 +76,13 @@ define(["JsonManager", "Cons"],
                             const btnExecute = document.getElementById("opExecute");
                             btnExecute.style.opacity = '0.3';
                             btnExecute.style.pointerEvents = 'none';
+                           
+                        const arrival_sequence = document.getElementById("arrival_sequence");
+                            arrival_sequence.style.opacity = '0.3';
+                            arrival_sequence.style.pointerEvents = 'none';
+                            const server_sequence = document.getElementById("server_sequence");
+                            server_sequence.style.opacity = '0.3';
+                            server_sequence.style.pointerEvents = 'none';
                     }
                 }
             }

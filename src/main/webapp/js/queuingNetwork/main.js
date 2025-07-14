@@ -125,6 +125,20 @@ require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "El
       seed.style.pointerEvents = allowed.includes(selected) ? 'none' : 'auto';
     }
     
+    const opParam_closed = document.getElementById("opParam_closed");
+    if (opParam_closed) {
+      opParam_closed.style.opacity = allowed.includes(selected) ? '1' : '0.3';
+      opParam_closed.style.pointerEvents = allowed.includes(selected) ? 'auto' : 'none';
+      if(allowed.includes(selected)){opParam_closed.disabled = false;}
+    }
+    
+    const opParam_open = document.getElementById("opParam_open");
+    if (opParam_open) {
+      opParam_open.style.opacity = allowed.includes(selected) ? '1' : '0.3';
+      opParam_open.style.pointerEvents = allowed.includes(selected) ? 'auto' : 'none';
+      if(allowed.includes(selected)){opParam_open.disabled = false;}
+    }
+    
     const chegada = document.getElementById("chegada-bt");
     if(chegada){
         chegada.style.opacity = allowed.includes(selected) ? '1' : '0.3';
@@ -240,6 +254,18 @@ require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "El
                 }
             }
         }
+    }
+    const arrival_sequence = document.getElementById("arrival_sequence");
+    if (arrival_sequence) {
+        if(allowed.includes(selected)) arrival_sequence.disabled = false;
+      arrival_sequence.style.opacity = allowed.includes(selected) ? '1' : '0.3';
+      arrival_sequence.style.pointerEvents = allowed.includes(selected) ? 'auto' : 'none';
+    }
+    const server_sequence = document.getElementById("server_sequence");
+    if (server_sequence) {
+        if(allowed.includes(selected)) server_sequence.disabled = false;
+      server_sequence.style.opacity = allowed.includes(selected) ? '1' : '0.3';
+      server_sequence.style.pointerEvents = allowed.includes(selected) ? 'auto' : 'none';
     }
 }
 

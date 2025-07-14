@@ -67,8 +67,8 @@
                     </div>
 
                     <div class="field">
-                        <label for="server_sequence" class="labelLeft">Sequence</label>
-                        <input id="server_sequence" type="text" class="inputText small">
+                        <label for="arrival_sequence" class="labelLeft">Sequence</label>
+                        <input disabled id="arrival_sequence" type="text" class="inputText small">
                     </div>
                 </fieldset>
                 
@@ -96,7 +96,7 @@
 
                                     <div class="field">
                         <label for="server_sequence" class="labelLeft">Sequence</label>
-                        <input id="server_sequence" type="text" class="inputText small">
+                        <input disabled id="server_sequence" type="text" class="inputText small">
                     </div>
                 </fieldset><br>
                 <div class="field">

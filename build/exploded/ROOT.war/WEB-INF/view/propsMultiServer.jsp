@@ -32,7 +32,7 @@
                 <fieldset>
                     <legend>Queue statistics</legend>
                     <div class="field">
-                        <label for="multiServer_emptyQueues" class="labelLeft">Empty queue</label>
+                        <label for="multiServer_emptyQueue" class="labelLeft">Empty queue</label>
                         <input id="multiServer_emptyQueue" type="checkbox">
                     </div>
 
@@ -72,13 +72,13 @@
                     </div>
 
                     <div class="field" id="multiServerArrivalSD">
-                        <label for="server_stdDeviation" class="labelLeft">Standard deviation</label>
-                        <input id="server_stdDeviation" type="text" class="inputText small">
+                        <label for="arrival_stdDeviation" class="labelLeft">Standard deviation</label>
+                        <input id="arrival_stdDeviation" type="text" class="inputText small">
                     </div>
 
                     <div class="field">
-                        <label for="server_sequence" class="labelLeft">Sequence</label>
-                        <input id="server_sequence" type="text" class="inputText small">
+                        <label for="arrival_sequence" class="labelLeft">Sequence</label>
+                        <input id="arrival_sequence" type="text" class="inputText small">
                     </div>
                 </fieldset>
                 
@@ -108,7 +108,12 @@
                         <input id="multiServer_sequence" type="text" class="inputText small">
                     </div>
                     
-                </fieldset>
+                </fieldset><br>
+                <div class="field">
+                        <label for="probability" class="labelLeft">Probability</label>
+                        <input id="probability" type="text" class="inputText small">
+                </div>
+                
                 
 
                 <input id="btCancel" type="button" value="Cancel" class="button">

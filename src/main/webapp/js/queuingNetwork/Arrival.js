@@ -1,16 +1,21 @@
+/* global arrivals */
+
 define(["jquery","LightBoxManager","Cons","JsonManager"],
 function($, lightBoxManager, cons, jsonManager) {
     "use strict";
 
     var lastAction = null;
-
+    window.arrivals = [];
     var arrival = {
         initialize: function() {
             
         },
+        getArrivals: function(){
+      return arrivals;
+        },
         
 execute: function () {
-    const arrivals = [];
+    
 let indiceAtual = 0;
     const number_clients = document.getElementById("number_clients");
             number_clients.style.opacity = '0.5';
@@ -60,10 +65,10 @@ let indiceAtual = 0;
         return;
     }
     const novoItem = { numberClients, arrivalTime, serviceCenter };
-    arrivals.push(novoItem);
-indiceAtual = arrivals.length - 1;
+    window.arrivals.push(novoItem);
+indiceAtual = window.arrivals.length - 1;
     console.log("Item adicionado:", novoItem);
-    console.log("Lista atual:", arrivals);
+    console.log("Lista atual:", window.arrivals);
             
                     number_clients.style.opacity = '0.5';
             number_clients.style.pointerEvents = 'none';
@@ -77,7 +82,7 @@ indiceAtual = arrivals.length - 1;
                 });    
                 
         $(document).on("click", "#next-bt", function() {
-           if (indiceAtual < arrivals.length - 1) {
+           if (indiceAtual < window.arrivals.length - 1) {
         indiceAtual++;
         exibirAtual();
     } else {
@@ -93,20 +98,20 @@ indiceAtual = arrivals.length - 1;
     }
         });
         $(document).on("click", "#del-bt", function() {
-           if (arrivals.length === 0) {
+           if (window.arrivals.length === 0) {
         console.log("Lista vazia. Nada para remover.");
         return;
     }
 
     console.log(`Removendo item ${indiceAtual + 1}`);
-    arrivals.splice(indiceAtual, 1);
+    window.arrivals.splice(indiceAtual, 1);
 
     // Ajustar índice após remoção
-    if (indiceAtual >= arrivals.length) {
-        indiceAtual = arrivals.length - 1;
+    if (indiceAtual >= window.arrivals.length) {
+        indiceAtual = window.arrivals.length - 1;
     }
 
-    if (arrivals.length > 0) {
+    if (window.arrivals.length > 0) {
         exibirAtual();
     } else {
         console.log("Lista vazia após remoção.");
@@ -153,13 +158,13 @@ indiceAtual = arrivals.length - 1;
     });
   }
   function exibirAtual() {
-      if (arrivals.length === 0) {
+      if (window.arrivals.length === 0) {
         console.log("Lista vazia.");
         return;
     }
-    if (indiceAtual >= 0 && indiceAtual < arrivals.length) {
-        const item = arrivals[indiceAtual];
-        console.log(`Exibindo item ${indiceAtual + 1} de ${arrivals.length}`);
+    if (indiceAtual >= 0 && indiceAtual < window.arrivals.length) {
+        const item = window.arrivals[indiceAtual];
+        console.log(`Exibindo item ${indiceAtual + 1} de ${window.arrivals.length}`);
         console.log(`numberClients: ${item.numberClients}, arrivalTime: ${item.arrivalTime}, serviceCenter: ${item.serviceCenter}`);
         document.getElementById("number_clients").value = item.numberClients;
         document.getElementById("arrival_time").value = item.arrivalTime;
