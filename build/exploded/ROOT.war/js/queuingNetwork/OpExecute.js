@@ -23,7 +23,7 @@ define(["jquery","JSZip"],
             execute: async function() {
                 // Usa o blob criado no outro script
                 const blobCode = window.codeBlob;
-                //console.log(blobCode.text());
+                console.log(blobCode.text());
                 if (blobCode) {
                     const formData = new FormData();
                     formData.append('lang', window.langSelecionada);
