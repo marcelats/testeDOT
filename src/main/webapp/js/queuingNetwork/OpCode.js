@@ -59,6 +59,14 @@ function($, lightBoxManager, cons,JSZip) {
                     {
                         a.download = "code.r";
                     }
+                     else if(window.langSelecionada === 'C SMPL' || window.langSelecionada === 'C SMPLX' || window.langSelecionada === 'C ParSMPL' || window.langSelecionada === 'C SIMPACK')
+                    {
+                        a.download = "code.c";
+                    }
+                    else if (window.langSelecionada === 'C SIMPACK2')
+                    {
+                        a.download = "code.cpp";
+                    }
                     else 
                     {
                         const novoZip = new JSZip();
@@ -129,6 +137,14 @@ function($, lightBoxManager, cons,JSZip) {
                             {
                                 a.download = "code.zip";
                             } 
+                            else if(window.langSelecionada === 'C SMPL' || window.langSelecionada === 'C SMPLX' || window.langSelecionada === 'C ParSMPL' || window.langSelecionada === 'C SIMPACK')
+                            {
+                                a.download = "code.c";
+                            }
+                            else if (window.langSelecionada === 'C SIMPACK2')
+                            {
+                                a.download = "code.cpp";
+                            }
                             else 
                             {
                                 a.download = "code.r";
@@ -154,7 +170,7 @@ function($, lightBoxManager, cons,JSZip) {
                                     }
                                 });
                             }
-                            else
+                            else if(window.langSelecionada === 'Java')
                             {
                                 JSZip.loadAsync(blobCode).then(zip => {
                                 // Encontra o arquivo Controle.java (case-sensitive!)
@@ -193,6 +209,21 @@ function($, lightBoxManager, cons,JSZip) {
                                   return Promise.all(arquivosJava);
                                 }).then(listaArquivos => {
                                     window.listaArquivos = listaArquivos;});
+                            }
+                            else
+                            {
+                                console.log("!window.langSelecionada");
+                                blobCode.text().then(texto => {
+                                    const textarea = document.getElementById("textEditor");
+                                    if (textarea) {
+                                        textarea.value = texto;
+                                        
+                    const blobCode = new Blob([texto], { type: "text/plain" });
+                    window.codeBlob = blobCode;
+                                    } else {
+                                        console.error("Textarea ainda não foi carregado.");
+                                    }
+                                });
                             }
                         })
                         .catch(error => {
