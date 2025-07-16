@@ -144,6 +144,9 @@ function($, lightBoxManager, cons,JSZip) {
                                     const textarea = document.getElementById("textEditor");
                                     if (textarea) {
                                         textarea.value = texto;
+                                        
+                    const blobCode = new Blob([texto], { type: "text/plain" });
+                    window.codeBlob = blobCode;
                                     } else {
                                         console.error("Textarea ainda não foi carregado.");
                                     }
