@@ -46,7 +46,7 @@ function($, lightBoxManager, cons,JSZip) {
                     window.codeBlob = blobCode;
                     const url = URL.createObjectURL(blobCode);
                     const a = document.createElement("a");
-                    if(window.langSelecionada === 'Python' || window.langSelecionada === 'R')
+                    if(window.langSelecionada === 'Python' || window.langSelecionada === 'R' || window.langSelecionada === undefined)
                     { 
                         const a = document.createElement("a");
                         a.href = url;
@@ -55,7 +55,7 @@ function($, lightBoxManager, cons,JSZip) {
                     {
                         a.download = "code.py";
                     }
-                    else if(window.langSelecionada === 'R')
+                    else if(window.langSelecionada === 'R' || window.langSelecionada === undefined)
                     {
                         a.download = "code.r";
                     }
@@ -138,7 +138,7 @@ function($, lightBoxManager, cons,JSZip) {
                             URL.revokeObjectURL(url);
                             
                             
-                            if(window.langSelecionada === 'Python' || window.langSelecionada === 'R' || window.langSelecionada === undefined)
+                            if(window.langSelecionada === 'Python' || window.langSelecionada === 'R')
                             {
                                 blobCode.text().then(texto => {
                                     const textarea = document.getElementById("textEditor");
@@ -149,7 +149,7 @@ function($, lightBoxManager, cons,JSZip) {
                                     }
                                 });
                             }
-                            if(window.langSelecionada === 'Java')
+                            else
                             {
                                 JSZip.loadAsync(blobCode).then(zip => {
                                 // Encontra o arquivo Controle.java (case-sensitive!)
