@@ -140,6 +140,7 @@ function($, lightBoxManager, cons,JSZip) {
                             
                             if(window.langSelecionada === 'Python' || window.langSelecionada === 'R' || !window.langSelecionada)
                             {
+                                console.log("!window.langSelecionada");
                                 blobCode.text().then(texto => {
                                     const textarea = document.getElementById("textEditor");
                                     if (textarea) {
