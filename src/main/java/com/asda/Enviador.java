@@ -24,8 +24,8 @@ public class Enviador {
         // 1. Salva temporariamente o graph.gv
         Path tempPath = Files.createTempFile("graph", ".gv");
         Files.copy(fileInputStream, tempPath, StandardCopyOption.REPLACE_EXISTING);
-
-        // 2. Constrói POST para o container Python
+        if("Java".equals(lang) ||"Python".equals(lang) || "R".equals(lang))
+        {// 2. Constrói POST para o container Python
         String boundary = "----JavaBoundary" + System.currentTimeMillis();
         URL url = new URL("http://container_b:8000/processar");
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -60,5 +60,7 @@ public class Enviador {
                 .type("text/x-python")
                 .header("Content-Disposition", "attachment; filename=\"codigo.py\"")
                 .build();
+        }
+        else{System.out.println("lang = C"); return null;}
     }
 }
