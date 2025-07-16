@@ -187,7 +187,13 @@ define(["jquery", "JsonManager","Arrival"],
                     });
                     if(selectedValue == 'C SMPL' || selectedValue == 'C SMPLX' || selectedValue == 'C ParSMPL'|| selectedValue == 'C SIMPACK' || selectedValue == 'C SIMPACK2')
                     {
+                        
                     const arrivals = window.arrivals;
+                    if (arrivals == 0) 
+                        {
+                            alert("Necessario adicionar pelo menos uma chegada");
+                            return;
+                        } 
                     content += `${arrivals.length} `;
                     arrivals.forEach((obj, index) => {
                         console.log(`Objeto ${index}:`);
