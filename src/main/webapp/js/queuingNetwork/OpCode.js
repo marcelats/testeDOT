@@ -138,18 +138,8 @@ function($, lightBoxManager, cons,JSZip) {
                             URL.revokeObjectURL(url);
                             
                             
-                            if(window.langSelecionada === 'Python' || window.langSelecionada === 'R')
-                            {
-                                blobCode.text().then(texto => {
-                                    const textarea = document.getElementById("textEditor");
-                                    if (textarea) {
-                                        textarea.value = texto;
-                                    } else {
-                                        console.error("Textarea ainda não foi carregado.");
-                                    }
-                                });
-                            }
-                            else
+                            
+                            if(window.langSelecionada === 'Java')
                             {
                                 JSZip.loadAsync(blobCode).then(zip => {
                                 // Encontra o arquivo Controle.java (case-sensitive!)
@@ -188,6 +178,18 @@ function($, lightBoxManager, cons,JSZip) {
                                   return Promise.all(arquivosJava);
                                 }).then(listaArquivos => {
                                     window.listaArquivos = listaArquivos;});
+                            }
+                            else
+                            {
+                                blobCode.text().then(texto => {
+                                    const textarea = document.getElementById("textEditor");
+                                    if (textarea) {
+                                        textarea.value = texto;
+                                    } else {
+                                        console.error("Textarea ainda não foi carregado.");
+                                    }
+                                });
+                            
                             }
                         })
                         .catch(error => {
