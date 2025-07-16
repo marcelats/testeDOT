@@ -185,6 +185,8 @@ define(["jquery", "JsonManager","Arrival"],
                             content += `    ${node.id} -> ${targetId} [comment=${prob}]\n`;
                         });
                     });
+                    if(selectedValue == 'SMPL' || selectedValue == 'SMPLX' || selectedValue == 'ParSMPL'|| selectedValue == 'SIMPACK' || selectedValue == 'SIMPACK2')
+                    {
                     const arrivals = window.arrivals;
                     content += `${arrivals.length} `;
                     arrivals.forEach((obj, index) => {
@@ -193,7 +195,7 @@ define(["jquery", "JsonManager","Arrival"],
                         console.log("arrivalTime:", obj.arrivalTime);
                         console.log("serviceCenter:", obj.serviceCenter);
                         content += `${obj.numberClients} ${obj.arrivalTime} ${obj.serviceCenter} `;``
-                    });
+                    });}
 
                     content += "\n}\n";
                     //baixar o .gv
