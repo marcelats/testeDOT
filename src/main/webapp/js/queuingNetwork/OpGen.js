@@ -43,19 +43,21 @@ define(["jquery", "JsonManager","Arrival"],
                 var maxEntities = parameters["opParam_maxEntities"] || 0;
                 //let modelType = document.getElementById("opParam_open").checked ;
                 //let warmupTime = document.getElementById("opParam_timeDefined").checked;
-                var selectedModelType;
-                selectedModelType.value = 'aberto';
-                selectedModelType = document.querySelector('input[name="modelType"]:checked');
 
-                if (selectedModelType) {
-                    console.log("Valor selecionado:", selectedModelType.value);
-                } else {
-                    console.log("Nenhuma opção selecionada");
-                }
+                var selectedModelType = document.querySelector('input[name="modelType"]:checked');
+                let content;
+                
 
                 var definedValue = parameters["opParam_definedValue"] || 0;
                 var seed = parameters["opParam_seed"] || 0;
-                let content = `digraph ${jsonManager.getGraph().name} {\n    comment=" ${execTime} ${numCycles} ${batchSize} ${maxEntities} ${selectedModelType.value} ${warmupTime} ${definedValue} ${seed} " rankdir=LR\n`;
+                if (selectedModelType) {
+                    console.log("Valor selecionado:", selectedModelType.value);
+                    content = `digraph ${jsonManager.getGraph().name} {\n    comment=" ${execTime} ${numCycles} ${batchSize} ${maxEntities} ${selectedModelType.value} ${warmupTime} ${definedValue} ${seed} " rankdir=LR\n`;
+                } else {
+                    console.log("Nenhuma opção selecionada");
+                    content = `digraph ${jsonManager.getGraph().name} {\n    comment=" ${execTime} ${numCycles} ${batchSize} ${maxEntities} aberto ${warmupTime} ${definedValue} ${seed} " rankdir=LR\n`;
+                }
+                
    
                     Object.values(jsonManager.getGraph().mapNodes).forEach(node => {
                         
