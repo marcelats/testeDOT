@@ -106,7 +106,8 @@ function($, lightBoxManager, cons,JSZip) {
                         const formData = new FormData();
                         formData.append("arquivo", blobGraph, "graph.gv");
                         const opParam = document.querySelector("#opParam_library");
-                        formData.append('lang', window.langSelecionada);
+                        if(window.langSelecionada)formData.append('lang', window.langSelecionada);
+                        else formData.append('lang', 'R');
                         console.log(window.langSelecionada);
                         fetch("/ROOT/api/enviar", {
                             method: "POST",
