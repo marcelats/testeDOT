@@ -24,10 +24,17 @@ public class Enviador {
         // 1. Salva temporariamente o graph.gv
         Path tempPath = Files.createTempFile("graph", ".gv");
         Files.copy(fileInputStream, tempPath, StandardCopyOption.REPLACE_EXISTING);
+        String boundary = "----JavaBoundary" + System.currentTimeMillis();
+        URL url;
         if("Java".equals(lang) ||"Python".equals(lang) || "R".equals(lang) || lang==null)
         {// 2. Constrói POST para o container Python
-        String boundary = "----JavaBoundary" + System.currentTimeMillis();
-        URL url = new URL("http://container_b:8000/processar");
+        url = new URL("http://container_b:8000/processar");
+        }
+        else
+        {
+            System.out.println("lang = C"); 
+            url = new URL("http://meu-java:8002/processar");
+        }
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setDoOutput(true);
         conn.setRequestMethod("POST");
@@ -49,7 +56,7 @@ public class Enviador {
         // 3. Lê resposta do container Python (o arquivo codigo.py)
         int status = conn.getResponseCode();
         if (status != 200) {
-            return Response.status(Response.Status.BAD_GATEWAY).entity("Erro ao chamar container Python").build();
+            return Response.status(Response.Status.BAD_GATEWAY).entity("Erro ao chamar container").build();
         }
 
         InputStream respostaPython = conn.getInputStream();
@@ -61,6 +68,6 @@ public class Enviador {
                 .header("Content-Disposition", "attachment; filename=\"codigo.py\"")
                 .build();
         }
-        else{System.out.println("lang = C"); return null;}
+        
     }
-}
+
