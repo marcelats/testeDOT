@@ -44,7 +44,7 @@ define(["jquery", "JsonManager","Arrival"],
                 //let modelType = document.getElementById("opParam_open").checked ;
                 //let warmupTime = document.getElementById("opParam_timeDefined").checked;
                 var selectedModelType;
-                selectedModelType.type = 'aberto';
+                selectedModelType.value = 'aberto';
                 selectedModelType = document.querySelector('input[name="modelType"]:checked');
 
                 if (selectedModelType) {
