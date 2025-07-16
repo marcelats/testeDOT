@@ -43,7 +43,8 @@ define(["jquery", "JsonManager","Arrival"],
                 var maxEntities = parameters["opParam_maxEntities"] || 0;
                 //let modelType = document.getElementById("opParam_open").checked ;
                 //let warmupTime = document.getElementById("opParam_timeDefined").checked;
-                var selectedModelType = 'aberto';
+                var selectedModelType;
+                selectedModelType.type = 'aberto';
                 selectedModelType = document.querySelector('input[name="modelType"]:checked');
 
                 if (selectedModelType) {
