@@ -138,7 +138,7 @@ function($, lightBoxManager, cons,JSZip) {
                             URL.revokeObjectURL(url);
                             
                             
-                            if(window.langSelecionada === 'Python' || window.langSelecionada === 'R')
+                            if(window.langSelecionada === 'Python' || window.langSelecionada === 'R' || window.langSelecionada === undefined)
                             {
                                 blobCode.text().then(texto => {
                                     const textarea = document.getElementById("textEditor");
