@@ -46,7 +46,7 @@ function($, lightBoxManager, cons,JSZip) {
                     window.codeBlob = blobCode;
                     const url = URL.createObjectURL(blobCode);
                     const a = document.createElement("a");
-                    if(window.langSelecionada === 'Python' || window.langSelecionada === 'R' || window.langSelecionada === undefined)
+                    if(window.langSelecionada === 'Python' || window.langSelecionada === 'R' || !window.langSelecionada)
                     { 
                         const a = document.createElement("a");
                         a.href = url;
@@ -55,7 +55,7 @@ function($, lightBoxManager, cons,JSZip) {
                     {
                         a.download = "code.py";
                     }
-                    else if(window.langSelecionada === 'R' || window.langSelecionada === undefined)
+                    else if(window.langSelecionada === 'R' || !window.langSelecionada)
                     {
                         a.download = "code.r";
                     }
@@ -138,7 +138,7 @@ function($, lightBoxManager, cons,JSZip) {
                             URL.revokeObjectURL(url);
                             
                             
-                            if(window.langSelecionada === 'Python' || window.langSelecionada === 'R' || window.langSelecionada === undefined)
+                            if(window.langSelecionada === 'Python' || window.langSelecionada === 'R' || !window.langSelecionada)
                             {
                                 blobCode.text().then(texto => {
                                     const textarea = document.getElementById("textEditor");

@@ -24,7 +24,7 @@ public class Enviador {
         // 1. Salva temporariamente o graph.gv
         Path tempPath = Files.createTempFile("graph", ".gv");
         Files.copy(fileInputStream, tempPath, StandardCopyOption.REPLACE_EXISTING);
-        if("Java".equals(lang) ||"Python".equals(lang) || "R".equals(lang))
+        if("Java".equals(lang) ||"Python".equals(lang) || "R".equals(lang) || lang==null)
         {// 2. Constrói POST para o container Python
         String boundary = "----JavaBoundary" + System.currentTimeMillis();
         URL url = new URL("http://container_b:8000/processar");
