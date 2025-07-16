@@ -185,7 +185,7 @@ define(["jquery", "JsonManager","Arrival"],
                             content += `    ${node.id} -> ${targetId} [comment=${prob}]\n`;
                         });
                     });
-                    if(selectedValue == 'SMPL' || selectedValue == 'SMPLX' || selectedValue == 'ParSMPL'|| selectedValue == 'SIMPACK' || selectedValue == 'SIMPACK2')
+                    if(selectedValue == 'C SMPL' || selectedValue == 'C SMPLX' || selectedValue == 'C ParSMPL'|| selectedValue == 'C SIMPACK' || selectedValue == 'C SIMPACK2')
                     {
                     const arrivals = window.arrivals;
                     content += `${arrivals.length} `;
