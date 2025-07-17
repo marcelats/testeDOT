@@ -102,9 +102,13 @@ define(["jquery", "JsonManager","Arrival"],
                                 else
                                 {content += ` ${node.properties.arrival_average} ${node.properties.server_average} 1 false `;}
                                 if(node.properties.server_length == 'on')
-                                {content += `true ${node.properties.arrival_sequence} ${node.properties.server_sequence} ${node.properties.server_stdDeviation} ${node.properties.arrival_stdDeviation} "]\n`;}
+                                {content += `true `;}               
                                 else
-                                {content += `false ${node.properties.arrival_sequence} ${node.properties.server_sequence} ${node.properties.server_stdDeviation} ${node.properties.arrival_stdDeviation} "]\n`;}
+                                {content += `false `;}
+                                if(node.properties.arrival_sequence)content +=`${node.properties.arrival_sequence} `;
+                                if(node.properties.server_sequence) content +=`${node.properties.server_sequence} `;
+                                if(node.properties.server_stdDeviation) content +=`${node.properties.server_stdDeviation} `;
+                                if(node.properties.arrival_stdDeviation) content +=`${node.properties.arrival_stdDeviation} "]\n`;
                                 break;
                             case "out":
                                 content += `3]\n`;
@@ -166,11 +170,15 @@ define(["jquery", "JsonManager","Arrival"],
                                     }
                                 }
                                 if(node.properties.multiServer_length == 'on')
-                                {content += `true ${node.properties.arrival_sequence} ${node.properties.multiServer_sequence} ${node.properties.multiServer_stdDeviation} ${node.properties.arrival_stdDeviation} "]\n`;}
+                                {content += `true `;}
+                                
+                           
                                 else
-                                {content += `false ${node.properties.arrival_sequence} ${node.properties.multiServer_sequence} ${node.properties.multiServer_stdDeviation} ${node.properties.arrival_stdDeviation} "]\n`;}    
-                                 
-                             
+                                {content += `false `;}    
+                                if(node.properties.arrival_sequence) content += `${node.properties.arrival_sequence} `;
+                                if(node.properties.multiServer_sequence) content += `${node.properties.multiServer_sequence} `;
+                                if(node.properties.multiServer_stdDeviation) content += `${node.properties.multiServer_stdDeviation} `;
+                                if(node.properties.arrival_stdDeviation) content += `${node.properties.arrival_stdDeviation} "]\n`;
                                 break;
                             default:
                                 content += `" 2 1 1 1 0.1 "]\n`;
