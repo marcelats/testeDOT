@@ -198,7 +198,8 @@ define(["jquery", "JsonManager","Arrival"],
                             var prob;
                             Object.values(jsonManager.getGraph().mapNodes).forEach(probnode=>{
                                 if(probnode.id==targetId){prob = probnode.properties.probability;}});
-                            content += `    ${node.id} -> ${targetId} [comment=${prob}]\n`;
+                            if(prob)content += `    ${node.id} -> ${targetId} [comment=${prob}]\n`;
+                            else content += `    ${node.id} -> ${targetId} [comment=1]\n`;
                         });
                     });
                     if(selectedValue == 'C SMPL' || selectedValue == 'C SMPLX' || selectedValue == 'C ParSMPL'|| selectedValue == 'C SIMPACK' || selectedValue == 'C SIMPACK2')
@@ -216,7 +217,7 @@ define(["jquery", "JsonManager","Arrival"],
                         console.log("numberClients:", obj.numberClients);
                         console.log("arrivalTime:", obj.arrivalTime);
                         console.log("serviceCenter:", obj.serviceCenter);
-                        content += `${obj.numberClients} ${obj.arrivalTime} ${obj.serviceCenter} `;``
+                        content += `${obj.numberClients} ${obj.arrivalTime} ${obj.serviceCenter} `;
                     });}
 
                     content += "\n}\n";
