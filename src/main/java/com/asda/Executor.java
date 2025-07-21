@@ -31,6 +31,12 @@ public class Executor {
             case "Java":
                 tempPath = Files.createTempFile("code", ".zip");
                 break;
+            case "C SMPL":
+                tempPath = Files.createTempFile("code", ".c");
+                break;
+            case "C SMPLX":
+                tempPath = Files.createTempFile("code", ".c");
+                break;
             default:
                 tempPath = Files.createTempFile("code", ".r");
                 break;
@@ -40,7 +46,10 @@ public class Executor {
 
         // 2. Constrói POST para o container Python
         String boundary = "----JavaBoundary" + System.currentTimeMillis();
-        URL url = new URL("http://helloworldweb-python-executor-1:8000/executar");
+        URL url;
+        if("Java".equals(lang) ||"Python".equals(lang) || "R".equals(lang) || lang==null) 
+            url = new URL("http://helloworldweb-python-executor-1:8000/executar");
+        else url = new URL("http://meu-java:8002/executar");
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setDoOutput(true);
         conn.setRequestMethod("POST");
@@ -58,6 +67,12 @@ public class Executor {
                 break;
             case "Java":
                 out.writeBytes("Content-Disposition: form-data; name=\"arquivo\"; filename=\"code.zip\"\r\n");
+                break;
+            case "C SMPL":
+                out.writeBytes("Content-Disposition: form-data; name=\"arquivo\"; filename=\"code.c\"\r\n");
+                break;
+            case "C SMPLX":
+                out.writeBytes("Content-Disposition: form-data; name=\"arquivo\"; filename=\"code.c\"\r\n");
                 break;
             default:
                 out.writeBytes("Content-Disposition: form-data; name=\"arquivo\"; filename=\"code.r\"\r\n");
