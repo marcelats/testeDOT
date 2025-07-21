@@ -53,6 +53,10 @@ define(["jquery","JSZip"],
                             console.error("Erro ao gerar ou enviar o zip:", err);
                           }
                     }
+                    else if(window.langSelecionada === 'C SMPL' || window.langSelecionada === 'C SMPLX')
+                    {
+                        formData.append("arquivo", blobCode, "code.c");
+                    }
                     else
                     {
                         formData.append("arquivo", blobCode, "code.r");

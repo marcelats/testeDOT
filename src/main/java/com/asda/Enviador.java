@@ -28,7 +28,7 @@ public class Enviador {
         URL url;
         if("Java".equals(lang) ||"Python".equals(lang) || "R".equals(lang) || lang==null)
         {// 2. Constrói POST para o container Python
-        url = new URL("http://container_b:8000/processar");
+            url = new URL("http://container_b:8000/processar");
         }
         else
         {
