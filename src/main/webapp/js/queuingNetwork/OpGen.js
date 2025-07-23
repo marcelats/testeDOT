@@ -211,7 +211,7 @@ define(["jquery", "JsonManager","Arrival"],
                             alert("Necessario adicionar pelo menos uma chegada");
                             return;
                         } 
-                    content += `Arrivals ${arrivals.length} `;
+                    content += `Arrivals ${arrivals.length+1} `;
                     arrivals.forEach((obj, index) => {
                         console.log(`Objeto ${index}:`);
                         console.log("numberClients:", obj.numberClients);
