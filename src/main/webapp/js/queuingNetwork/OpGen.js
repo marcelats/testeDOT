@@ -205,20 +205,26 @@ define(["jquery", "JsonManager","Arrival"],
                     if(selectedValue == 'C SMPL' || selectedValue == 'C SMPLX' || selectedValue == 'C ParSMPL'|| selectedValue == 'C SIMPACK' || selectedValue == 'C SIMPACK2')
                     {
                         
-                    const arrivals = window.arrivals;
-                    if (arrivals == 0) 
-                        {
-                            alert("Necessario adicionar pelo menos uma chegada");
-                            return;
-                        } 
-                    content += `Arrivals ${arrivals.length+1} `;
-                    arrivals.forEach((obj, index) => {
-                        console.log(`Objeto ${index}:`);
-                        console.log("numberClients:", obj.numberClients);
-                        console.log("arrivalTime:", obj.arrivalTime);
-                        console.log("serviceCenter:", obj.serviceCenter);
-                        content += `${obj.numberClients} ${obj.arrivalTime} ${obj.serviceCenter} `;
-                    });}
+                        const arrivals = window.arrivals;
+                        if (arrivals == 0) 
+                            {
+                                alert("Necessario adicionar pelo menos uma chegada");
+                                return;
+                            } 
+                        var length = 0;
+                         arrivals.forEach((obj, index) => {
+                             length+=1;
+                        });
+
+                        content += `Arrivals ${length} `;
+                        arrivals.forEach((obj, index) => {
+                            console.log(`Objeto ${index}:`);
+                            console.log("numberClients:", obj.numberClients);
+                            console.log("arrivalTime:", obj.arrivalTime);
+                            console.log("serviceCenter:", obj.serviceCenter);
+                            content += `${obj.numberClients} ${obj.arrivalTime} ${obj.serviceCenter} `;
+                        });
+                    }
 
                     content += "\n}\n";
                     //baixar o .gv
