@@ -15,7 +15,7 @@ function($, lightBoxManager, cons, jsonManager) {
         },
         
 execute: function () {
-    
+    window.arrivals = [];
 let indiceAtual = 0;
     const number_clients = document.getElementById("number_clients");
             number_clients.style.opacity = '0.5';
