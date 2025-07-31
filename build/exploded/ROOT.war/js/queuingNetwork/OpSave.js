@@ -4,8 +4,8 @@
  * author: Felipe Osorio Thomé
  */
 
-define(["jquery", "LightBoxManager", "JsonManager", "Cons"],
-    function($, lightBoxManager, jsonManager, cons) {
+define(["jquery", "LightBoxManager", "JsonManager", "Cons", "OpOpen"],
+    function($, lightBoxManager, jsonManager, cons, opOpen) {
         "use strict";
 
         var lastAction = null, callback = null;
@@ -40,8 +40,30 @@ define(["jquery", "LightBoxManager", "JsonManager", "Cons"],
                         if (filename.match(re) === null) {
                             alert("You need enter a valid filename.");
                             
-                        } else {
-                            save(filename);
+                        } 
+                        
+                        
+                        
+                        else {
+                            $.ajax({
+  url: 'qnetwork?cmd=verify',
+  type: 'POST',
+  data: { filename: filename, graphJson: jsonManager.stringifyGraph() },
+  success: function (res) {
+    // res agora é um objeto JSON com a propriedade "existe"
+    lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
+
+                    jsonManager.setSaved(true);
+
+                    document.title = filename;
+  },
+  error: function (err) {
+    console.error('Erro:', err);
+    alert('Erro ao verificar o graph.');
+  }
+});
+
+                            //save(filename);
                         }
                         
                         if (typeof callback === "function") {

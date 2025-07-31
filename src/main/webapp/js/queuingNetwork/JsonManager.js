@@ -178,6 +178,7 @@ define(["jquery", "jsPlumb", "IdManager"],
                 return graph.mapNodes[element.id].properties;
             },
             stringifyGraph: function() {
+                console.log(JSON.stringify(graph));
                 return JSON.stringify(graph);
             },
             parseGraph: function(stringJson) {

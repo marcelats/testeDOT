@@ -4,8 +4,8 @@
  * author: Felipe Osorio Thomé
  */
 
-define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons"],
-    function($, lightBoxManager, jsonManager, opNew, utils, cons) {
+define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "IdManager", "DrawArea"],
+    function($, lightBoxManager, jsonManager, opNew, utils, cons, idManager, drawArea) {
         "use strict";
 
         var lastAction = null, callback = null, elementManager = null;
@@ -54,9 +54,7 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons"],
     const inputField = document.getElementById('opOpen-filename');
 
     fileItems.forEach(item => {
-        console.log("oi2");
         item.addEventListener('click', function () {
-            console.log("oi3");
             const fileName = this.getAttribute('data-filename');
             inputField.value = fileName;
         });
@@ -105,7 +103,6 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons"],
                     }
                     
                     if (action === "copy") {
-                        alert("teste");
                         var filename = "copia" + $("#opOpen-filename").val(),
                             re = new RegExp(cons.REG_EXP_FILENAME);
 
@@ -113,8 +110,21 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons"],
                             alert("You need enter a valid filename.");
 
                         } else {
+                            $.ajax({
+                url: "qnetwork?cmd=open",
+                type: "POST",
+                data: "graphName=" + $("#opOpen-filename").val(),
+                dataType: "json",
+                success: function(data) {
+                    jsonManager.setGraph(data);
+                    jsonManager.setSaved(true);
 
-                            var tempFilename = jsonManager.getName();
+                    if (data.name !== "") {
+                        document.title = data.name;
+                    }
+
+                    constructGraph(data);
+                    var tempFilename = jsonManager.getName();
                             jsonManager.setName(filename);
 
                             $.ajax({
@@ -127,6 +137,7 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons"],
                                     jsonManager.setSaved(true);
 
                                     document.title = filename;
+                                    open(filename);
                                 },
                                 error: function(xhr, ajaxOptions, thrownError) {
                                     var errorHeader = xhr.getResponseHeader('fot-error');
@@ -140,6 +151,18 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons"],
                                     }
                                 }
                             });
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
+                    var errorHeader = xhr.getResponseHeader('fot-error');
+
+                    if (errorHeader != null) {
+                        alert(errorHeader);
+                    } else {
+                        alert(thrownError);
+                    }
+                }
+            });
+                            
                         }
                     }
                     if (action === "public") {
@@ -176,7 +199,6 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons"],
                                     }
                                 }
                             });
-                            console.log("saindo do ajax");
                         }
                     }
                     if (action === "private") {
@@ -217,40 +239,7 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons"],
                     }
                     
                     if (action === "delete") {
-                        var filename = $("#opOpen-filename").val(),
-                            re = new RegExp(cons.REG_EXP_FILENAME);
-
-                        if (filename.match(re) === null) {
-                            alert("You need enter a valid filename.");
-
-                        } else {
-                            var tempFilename = jsonManager.getName();
-                            jsonManager.setName(filename);
-
-                            $.ajax({
-                                url: "qnetwork?cmd=delete",
-                                type: "POST",
-                                async: false,
-                                data: "graphName=" + filename,
-                                success: function() {
-                                    lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
-                                    jsonManager.setSaved(true);
-
-                                    document.title = filename;
-                                },
-                                error: function(xhr, ajaxOptions, thrownError) {
-                                    var errorHeader = xhr.getResponseHeader('fot-error');
-
-                                    jsonManager.setName(tempFilename);
-
-                                    if (errorHeader != null) {
-                                        alert(errorHeader);
-                                    } else {
-                                        alert(thrownError);
-                                    }
-                                }
-                            });
-                        }
+                        OpOpen.delete($("#opOpen-filename").val());
                     }
                     
                     if (action === "rename") {
@@ -299,6 +288,42 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons"],
             },
             getLastAction: function() {
                 return lastAction;
+            },
+            delete: function(filename){
+                
+                            var re = new RegExp(cons.REG_EXP_FILENAME);
+
+                        if (filename.match(re) === null) {
+                            alert("You need enter a valid filename.");
+
+                        } else {
+                            var tempFilename = jsonManager.getName();
+                            jsonManager.setName(filename);
+
+                            $.ajax({
+                                url: "qnetwork?cmd=delete",
+                                type: "POST",
+                                async: false,
+                                data: "graphName=" + filename,
+                                success: function() {
+                                    lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
+                                    jsonManager.setSaved(true);
+
+                                    document.title = filename;
+                                },
+                                error: function(xhr, ajaxOptions, thrownError) {
+                                    var errorHeader = xhr.getResponseHeader('fot-error');
+
+                                    jsonManager.setName(tempFilename);
+
+                                    if (errorHeader != null) {
+                                        alert(errorHeader);
+                                    } else {
+                                        alert(thrownError);
+                                    }
+                                }
+                            });
+                        }
             }
         };
 
@@ -366,6 +391,21 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons"],
 
                     elementManager.add(graph.mapNodes[key].type, position, key);
                 }
+                
+                const mapNodes = jsonManager.getGraph().mapNodes;
+
+                let maiorId = -Infinity;
+
+                for (const key in mapNodes) {
+                  if (mapNodes.hasOwnProperty(key)) {
+                    const node = mapNodes[key];
+                    if (node.id > maiorId) {
+                      maiorId = node.id;
+                    }
+                  }
+                }
+
+                idManager.setStartCid(maiorId);
 
                 for (var keyNode in graph.mapNodes) {
 
@@ -373,8 +413,8 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons"],
 
                     if (!utils.mapIsEmpty(mapTargets)) {
                         for (var keyTarget in mapTargets) {
-                            elementManager.linkElements($("#" + keyNode));
-                            elementManager.linkElements($("#" + keyTarget));
+                            drawArea.linkElements($("#" + keyNode));
+                            drawArea.linkElements($("#" + keyTarget));
                         }
                     }
                 }

@@ -24,7 +24,8 @@ function(activeTool, propertiesArea, divManager, idManager, jsonManager, cons, u
                 }
                 utils.stopPropagation(event);
             }
-        }
+        },
+        linkElements: function(element){linkElements(element);}
     };
 
     function addElement(coordinates, tool) {
@@ -50,7 +51,7 @@ function(activeTool, propertiesArea, divManager, idManager, jsonManager, cons, u
 
             divManager.blockDiv(cons.LEFT_TOOLS);
             
-            if(connection !== 0) {
+            if(connection !== 0 && connection !== null) {
                 jsonManager.linkNodes(connection);
             
             }

@@ -151,8 +151,21 @@ define(["jquery", "jsPlumb", "DrawArea", "PropertiesArea", "JsonManager", "Utils
                 paintStyle: {lineWidth: 3, strokeStyle: "#660700"},
                 overlays: [["PlainArrow", {location: 1, width: 15, length: 12}]]
             };
-                if(this.prevElement)var sourceType = jsonManager.getGraph().mapNodes[this.prevElement.id].type;
-                if(element)var targetType = jsonManager.getGraph().mapNodes[element.id].type;
+
+                
+                var sourceType;
+if (this.prevElement) {
+    var id = parseInt($(this.prevElement).attr("id")); // agora funciona
+    sourceType = jsonManager.getGraph().mapNodes[id].type;
+}
+
+                console.log(element);
+                var targetType;
+if (element) {
+    var id = parseInt($(element).attr("id")); // agora funciona
+    targetType = jsonManager.getGraph().mapNodes[id].type;
+}
+
                
 
             if (this.prevEndPoint === null) {
@@ -170,6 +183,17 @@ define(["jquery", "jsPlumb", "DrawArea", "PropertiesArea", "JsonManager", "Utils
                     targetEndPoint = jsPlumb.addEndpoint(element, targetOption);
                     /* Finally, connects elements */
                     connection = jsPlumb.connect({source: this.prevEndPoint, target: targetEndPoint}, linkConnector);
+
+if (this.prevElement) {
+    connection.sourceId = $(this.prevElement).attr("id"); // agora funciona
+}
+
+                console.log(element);
+
+if (element) {
+    connection.targetId = $(element).attr("id"); // agora funciona
+    
+}
                     /* Reinitialize variables for a future link */
                     this.prevElement = null;
                     this.prevEndPoint = null;
@@ -190,7 +214,7 @@ define(["jquery", "jsPlumb", "DrawArea", "PropertiesArea", "JsonManager", "Utils
 
                 return flag;
             }
-
+            console.log(connection);
             return connection;
         };
 

@@ -8,12 +8,12 @@ define([],
     function() {
         "use strict";
 
-        var newCid = 0;
+        var newCid = -1;
 
         return {
             getNewCid: function() {
 
-                return newCid++;
+                return ++newCid;
             },
             setStartCid: function(start) {
                 newCid = start;

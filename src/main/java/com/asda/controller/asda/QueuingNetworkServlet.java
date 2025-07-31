@@ -13,6 +13,7 @@ import com.asda.model.asdaCommands.PublicGraph;
 import com.asda.model.asdaCommands.SaveGraph;
 import com.asda.model.asdaCommands.DeleteGraph;
 import com.asda.model.asdaCommands.RenameGraph;
+import com.asda.model.asdaCommands.VerificarGraphServlet;
 import com.asda.utils.FlowControl;
 import java.io.IOException;
 import java.util.HashMap;
@@ -76,6 +77,7 @@ public class QueuingNetworkServlet extends HttpServlet {
         commands.put("private", new PrivateGraph());
         commands.put("delete", new DeleteGraph());
         commands.put("rename", new RenameGraph());
+        commands.put("verify", new VerificarGraphServlet());
     }
 
     /**
