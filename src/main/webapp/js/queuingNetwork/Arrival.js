@@ -7,15 +7,32 @@ function($, lightBoxManager, cons, jsonManager) {
     var lastAction = null;
     window.arrivals = [];
     var arrival = {
-        initialize: function() {
-            
-        },
+        initialize: function () {
+            console.log("initiliaze do arrival");   
+  if (!window.observer) {
+      console.log("novo mutation observer");
+    window.observer = new MutationObserver((mutations, obs) => {
+      const select = document.getElementById("service_center");
+      if (select) {
+        preencherSelect(select);
+        obs.disconnect(); // desconecta quando encontrar
+        window.isObserving = false; // atualiza flag
+      }
+    });
+
+    window.isObserving = false; // flag de controle
+  }
+}
+,
         getArrivals: function(){
       return arrivals;
         },
         
 execute: function () {
+    console.log("execute do arrival");
     window.arrivals = [];
+    console.log("window.arrivals");
+    console.log(window.arrivals);
 let indiceAtual = 0;
     const number_clients = document.getElementById("number_clients");
             number_clients.style.opacity = '0.5';
@@ -26,6 +43,7 @@ let indiceAtual = 0;
             const service_center = document.getElementById("service_center");
             service_center.style.opacity = '0.5';
             service_center.style.pointerEvents = 'none';
+            $(document).off("click", "#new-bt");
             $(document).on("click", "#new-bt", function() {
                     number_clients.style.opacity = '1';
             number_clients.style.pointerEvents = 'auto';
@@ -36,21 +54,33 @@ let indiceAtual = 0;
             service_center.style.opacity = '1';
             service_center.style.pointerEvents = 'auto';
             const select = document.getElementById("service_center");
+
+
   if (select) {
-    preencherSelect(select);
-  } else {
-    const observer = new MutationObserver((mutations, obs) => {
-      const select = document.getElementById("service_center");
-      if (select) {
-        preencherSelect(select);
-        obs.disconnect();
-      }
-    });
-    observer.observe(document.body, { childList: true, subtree: true });
+    preencherSelect(select); // já existe? preenche direto
+    window.observer.disconnect(); // desconecta quando encontrar
+        window.isObserving = false;
+    //return;
   }
-            
+console.log("antes de if (!window.isObserving)");
+  if (!window.isObserving) {
+    //window.observer.observe(document.body, {
+    //  childList: true,
+    //  subtree: true
+    //});
+    //window.isObserving = true;
+    //console.log("Observer ativado");
+    window.observer.disconnect(); // desconecta quando encontrar
+        window.isObserving = false;
+  } else {
+    console.log("Observer já ativo — não será ativado novamente");
+    window.observer.disconnect(); // desconecta quando encontrar
+        window.isObserving = false;
+  }  
+  console.log("depois de if (!window.isObserving)");
             
                 });
+                $(document).off("click", "#save-bt");
             $(document).on("click", "#save-bt", function() {
                 const numberClients = document.getElementById("number_clients").value;
             const arrivalTime = document.getElementById("arrival_time").value;
@@ -66,6 +96,7 @@ let indiceAtual = 0;
     }
     const novoItem = { numberClients, arrivalTime, serviceCenter };
     window.arrivals.push(novoItem);
+    console.log("push");
 indiceAtual = window.arrivals.length - 1;
     console.log("Item adicionado:", novoItem);
     console.log("Lista atual:", window.arrivals);
@@ -80,7 +111,7 @@ indiceAtual = window.arrivals.length - 1;
             service_center.style.pointerEvents = 'none';
             
                 });    
-                
+                    $(document).off("click", "#next-bt");
         $(document).on("click", "#next-bt", function() {
            if (indiceAtual < window.arrivals.length - 1) {
         indiceAtual++;
@@ -89,6 +120,7 @@ indiceAtual = window.arrivals.length - 1;
         console.log("Último item já exibido.");
     } 
         });
+        $(document).off("click", "#prev-bt");
         $(document).on("click", "#prev-bt", function() {
             if (indiceAtual > 0) {
         indiceAtual--;
@@ -97,6 +129,7 @@ indiceAtual = window.arrivals.length - 1;
         console.log("Primeiro item já exibido.");
     }
         });
+        $(document).off("click", "#del-bt");
         $(document).on("click", "#del-bt", function() {
            if (window.arrivals.length === 0) {
         console.log("Lista vazia. Nada para remover.");
