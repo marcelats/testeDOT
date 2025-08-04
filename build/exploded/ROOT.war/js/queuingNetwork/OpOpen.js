@@ -12,6 +12,10 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "I
 
         var OpOpen = {
             initialize: function(manager) {
+                console.log("lightBoxManager", lightBoxManager);
+console.log("jsonManager", jsonManager);
+console.log("opNew", opNew); // este deve aparecer como objeto, não undefined
+
                 elementManager = manager;
 
                 /* Close button of the light box. */
@@ -63,8 +67,9 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "I
 
             },
             execute: function(action) {
-                
-            if(!jsonManager.isSaved()) {
+                require(["OpNew"], function(opNew) {
+    if(!jsonManager.isSaved()) {
+                console.log("opNew", opNew);
                 opNew.execute(function() {
                     var userChose = opNew.getLastAction();
                     
@@ -73,6 +78,9 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "I
                     }
                 });
             }
+});
+
+            
                 if (typeof action !== "string") {
                     lightBoxManager.openBox(cons.SHADOWING, cons.BOX_CONTAINER,
                         "qnetwork?cmd=open-box&type=open", function() {
