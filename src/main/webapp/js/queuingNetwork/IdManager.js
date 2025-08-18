@@ -12,7 +12,7 @@ define([],
 
         return {
             getNewCid: function() {
-
+                console.log("getnewcid");
                 return ++newCid;
             },
             setStartCid: function(start) {
