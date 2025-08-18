@@ -136,7 +136,7 @@ define(["jquery", "jsPlumb", "IdManager"],
                 });
             });
                       
-                idManager.setStartCid(Object.keys(graph.mapNodes).length);
+                idManager.setStartCid(Object.keys(graph.mapNodes).length-1);
 
                 saved = false;
                 const btnCode = document.getElementById("opCode");
