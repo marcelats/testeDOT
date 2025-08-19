@@ -46,6 +46,7 @@ require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "El
         const btn = document.getElementById("multiServer");
             btn.style.opacity = '0.3';
             btn.style.pointerEvents = 'none';
+            btn.tabIndex = -1;
             
         /* Registering main events. */
         var eventMap = function() {
@@ -123,12 +124,15 @@ require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "El
     if (seed) {
       seed.style.opacity = allowed.includes(selected) ? '0.3' : '1';
       seed.style.pointerEvents = allowed.includes(selected) ? 'none' : 'auto';
+      seed.tabIndex = allowed.includes(selected) ? -1 : 0;
+      seed.disabled = allowed.includes(selected) ? true : false;
     }
     
-    const opParam_closed = document.getElementById("opParam_closed");
+    /*const opParam_closed = document.getElementById("opParam_closed");
     if (opParam_closed) {
       opParam_closed.style.opacity = allowed.includes(selected) ? '1' : '0.3';
       opParam_closed.style.pointerEvents = allowed.includes(selected) ? 'auto' : 'none';
+      opParam_closed.tabIndex = allowed.includes(selected) ? 0 : -1;
       if(allowed.includes(selected)){opParam_closed.disabled = false;}
     }
     
@@ -136,13 +140,15 @@ require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "El
     if (opParam_open) {
       opParam_open.style.opacity = allowed.includes(selected) ? '1' : '0.3';
       opParam_open.style.pointerEvents = allowed.includes(selected) ? 'auto' : 'none';
+      opParam_open.tabIndex = allowed.includes(selected) ? 0 : -1;
       if(allowed.includes(selected)){opParam_open.disabled = false;}
-    }
+    }*/
     
     const chegada = document.getElementById("chegada-bt");
     if(chegada){
         chegada.style.opacity = allowed.includes(selected) ? '1' : '0.3';
         chegada.style.pointerEvents = allowed.includes(selected) ? 'auto' : 'none';
+        chegada.tabIndex = allowed.includes(selected) ? 0 : -1;
     }
 
     const multiServer = document.getElementById("multiServer");
@@ -150,6 +156,7 @@ require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "El
       if(allowed.includes(selected)) multiServer.disabled = false;
       multiServer.style.opacity = allowed.includes(selected) ? '1' : '0.3';
       multiServer.style.pointerEvents = allowed.includes(selected) ? 'auto' : 'none';
+      multiServer.tabIndex = allowed.includes(selected) ? 0 : -1;
     }
 
     const fieldset = document.getElementById("queueStatsFieldset");
@@ -157,6 +164,8 @@ require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "El
       if(allowed.includes(selected)) fieldset.disabled = false;
       fieldset.style.opacity = allowed.includes(selected) ? '1' : '0.3';
       fieldset.style.pointerEvents = allowed.includes(selected) ? 'auto' : 'none';
+      fieldset.tabIndex = allowed.includes(selected) ? 0 : -1;
+      fieldset.disabled = allowed.includes(selected) ? false : true;
     }
     const arrivalSelect = document.getElementById("arrival_distribution");
     if(arrivalSelect){
@@ -260,12 +269,21 @@ require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "El
         if(allowed.includes(selected)) arrival_sequence.disabled = false;
       arrival_sequence.style.opacity = allowed.includes(selected) ? '1' : '0.3';
       arrival_sequence.style.pointerEvents = allowed.includes(selected) ? 'auto' : 'none';
+      arrival_sequence.tabIndex = allowed.includes(selected) ? 0 : -1;
     }
     const server_sequence = document.getElementById("server_sequence");
     if (server_sequence) {
         if(allowed.includes(selected)) server_sequence.disabled = false;
       server_sequence.style.opacity = allowed.includes(selected) ? '1' : '0.3';
       server_sequence.style.pointerEvents = allowed.includes(selected) ? 'auto' : 'none';
+      server_sequence.tabIndex = allowed.includes(selected) ? 0 : -1;
+    }
+    
+    const opParam_batchSize = document.getElementById("opParam_batchSize");
+    if (opParam_batchSize) {
+      opParam_batchSize.style.opacity = allowed.includes(selected) ? '1' : '0.3';
+      opParam_batchSize.style.pointerEvents = allowed.includes(selected) ? 'auto' : 'none';
+      opParam_batchSize.tabIndex = allowed.includes(selected) ? 0 : -1;
     }
 }
 
@@ -280,10 +298,14 @@ require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "El
     }
     if (selected!='Exponential') {
       server_sd.style.opacity = '1';
-      server_sd.style.pointerEvents = 'auto';      
+      server_sd.style.pointerEvents = 'auto';
+      server_sd.tabIndex = 0;
+      server_sd.disabled = false;
     } else {
       server_sd.style.opacity = '0.3';
       server_sd.style.pointerEvents = 'none';
+      server_sd.tabIndex = -1;
+      server_sd.disabled = true;
     }
   }
 
@@ -298,10 +320,14 @@ require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "El
     }
     if (selected!='Exponential') {
       arrival_sd.style.opacity = '1';
-      arrival_sd.style.pointerEvents = 'auto';      
+      arrival_sd.style.pointerEvents = 'auto';
+      arrival_sd.tabIndex = 0;
+      arrival_sd.disabled = false;
     } else {
       arrival_sd.style.opacity = '0.3';
       arrival_sd.style.pointerEvents = 'none';
+      arrival_sd.tabIndex = -1;
+      arrival_sd.disabled = true;
     }
   }
   
@@ -316,10 +342,14 @@ require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "El
     }
     if (selected!='Exponential') {
       multiserver_sd.style.opacity = '1';
-      multiserver_sd.style.pointerEvents = 'auto';      
+      multiserver_sd.style.pointerEvents = 'auto';    
+      multiserver_sd.tabIndex = 0;
+      multiserver_sd.disabled = false;
     } else {
       multiserver_sd.style.opacity = '0.3';
       multiserver_sd.style.pointerEvents = 'none';
+      multiserver_sd.tabIndex = -1;
+      multiserver_sd.disabled = true;
     }
   }
   
@@ -334,10 +364,14 @@ require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "El
     }
     if (selected!='Exponential') {
       msarrival_sd.style.opacity = '1';
-      msarrival_sd.style.pointerEvents = 'auto';      
+      msarrival_sd.style.pointerEvents = 'auto';  
+      msarrival_sd.tabIndex = 0;
+      msarrival_sd.disabled = false;
     } else {
       msarrival_sd.style.opacity = '0.3';
       msarrival_sd.style.pointerEvents = 'none';
+      msarrival_sd.tabIndex = -1;
+      msarrival_sd.disabled = true;
     }
   }
 

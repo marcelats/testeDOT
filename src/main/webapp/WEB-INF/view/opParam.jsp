@@ -61,7 +61,7 @@
                         
                     </fieldset>
                     
-                    <fieldset>
+                    <%--<fieldset>
                         <legend>Model type</legend>
                         
                         <input disabled id="opParam_closed" type="radio" name="modelType" value="fechado">
@@ -70,7 +70,7 @@
                         <input disabled id="opParam_open" type="radio" name="modelType" value="aberto">
                         <label for="opParam_open" class="labelLeft">Open</label>
                         
-                    </fieldset>
+                    </fieldset>--%>
 
                     <fieldset>
                         <legend>Warmup Time</legend>
