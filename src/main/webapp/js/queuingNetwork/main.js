@@ -144,39 +144,35 @@ require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "El
       if(allowed.includes(selected)){opParam_open.disabled = false;}
     }*/
             
-    const radios = document.querySelectorAll("input[name='modeltype']");
 
-  if(radios){radios.forEach(radio => {
-    radio.addEventListener("change", () => {
-      // desabilita todos os inputs
-      document.getElementById("opParam_execTime").disabled = true;
+document.getElementById("opParam_execTime").disabled = true;
       document.getElementById("opParam_maxEntities").disabled = true;
-
-      // habilita só o correspondente
-      if (document.getElementById("opParam_execTimeOp").checked) {
-        document.getElementById("opParam_execTime").disabled = false;
-      }
-      if (document.getElementById("opParam_maxEntitiesOp").checked) {
-        document.getElementById("opParam_maxEntities").disabled = false;
-      }
-    });
-  });}
-  
-  const radioswarmup = document.querySelectorAll("input[name='warmupTime']");
-
-  if(radioswarmup){radioswarmup.forEach(radio => {
-    radio.addEventListener("change", () => {
-      // desabilita todos os inputs
       document.getElementById("opParam_definedValue").disabled = true;
 
+  
+  const execTimeInput = document.getElementById("opParam_execTime");
+const maxEntitiesInput = document.getElementById("opParam_maxEntities");
+const definedValueInput = document.getElementById("opParam_definedValue");
 
-      // habilita só o correspondente
-      if (document.getElementById("opParam_timeDefined").checked) {
-        document.getElementById("opParam_definedValue").disabled = false;
-      }
+function atualizarModelType() {
+  execTimeInput.disabled = !document.getElementById("opParam_execTimeOp").checked;
+  maxEntitiesInput.disabled = !document.getElementById("opParam_maxEntitiesOp").checked;
+}
 
-    });
-  });}
+function atualizarWarmup() {
+  definedValueInput.disabled = !document.getElementById("opParam_timeDefined").checked;
+}
+
+const radios = document.querySelectorAll("input[name='modeltype']");
+if(radios){radios.forEach(radio => radio.addEventListener("change", atualizarModelType));}
+
+const radioswarmup = document.querySelectorAll("input[name='warmupTime']");
+if(radioswarmup){radioswarmup.forEach(radio => radio.addEventListener("change", atualizarWarmup));}
+
+// 🔹 chamada inicial, pra respeitar os radios já marcados ao carregar a página/janela
+atualizarModelType();
+atualizarWarmup();
+
     
     const chegada = document.getElementById("chegada-bt");
     if(chegada){

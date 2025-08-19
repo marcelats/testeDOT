@@ -37,10 +37,10 @@ define(["jquery", "JsonManager","Arrival"],
                 //alert
                 
                 var parameters = jsonManager.getGraphParameters();
-                var execTime = parameters["opParam_execTime"] || 0;
+                //var execTime = parameters["opParam_execTime"] || 0;
                 var numCycles = parameters["opParam_numCycles"] || 0;
                 var batchSize = parameters["opParam_batchSize"] || 0;
-                var maxEntities = parameters["opParam_maxEntities"] || 0;
+                //var maxEntities = parameters["opParam_maxEntities"] || 0;
                 //let modelType = document.getElementById("opParam_open").checked ;
                 //let warmupTime = document.getElementById("opParam_timeDefined").checked;
 
@@ -50,15 +50,36 @@ define(["jquery", "JsonManager","Arrival"],
 
                 var definedValue = parameters["opParam_definedValue"] || 0;
                 var seed = parameters["opParam_seed"] || 0;
-                if (selectedModelType) {
-                    console.log("Valor selecionado:", selectedModelType.value);
-                    content = `digraph ${jsonManager.getGraph().name} {\n    comment=" ${execTime} ${numCycles} ${batchSize} ${maxEntities} ${selectedModelType.value} ${warmupTime} ${definedValue} ${seed} " rankdir=LR\n`;
-                } else {
-                    console.log("Nenhuma opção selecionada");
-                    content = `digraph ${jsonManager.getGraph().name} {\n    comment=" ${execTime} ${numCycles} ${batchSize} ${maxEntities} aberto ${warmupTime} ${definedValue} ${seed} " rankdir=LR\n`;
-                }
                 
-   
+                const execTimeOp = document.getElementById("opParam_execTimeOp");
+    const maxEntitiesOp = document.getElementById("opParam_maxEntitiesOp");
+    const execTime = document.getElementById("opParam_execTime").value.trim() || 0;
+    const maxEntities = document.getElementById("opParam_maxEntities").value.trim() || 0;
+
+    // nenhum radio selecionado
+    if (!execTimeOp.checked && !maxEntitiesOp.checked) {
+      alert("Selecione um tipo de modelo.");
+      return; // encerra fluxo
+    }
+
+    if (execTimeOp.checked) {
+      if (execTime === "" || Number(execTime) === 0) {
+        alert("Preencha Execution time com um valor diferente de zero.");
+        return;
+      }
+      content = `digraph ${jsonManager.getGraph().name} {\n    comment=" ${execTime} ${numCycles} ${batchSize} 0 aberto ${warmupTime} ${definedValue} ${seed} " rankdir=LR\n`;
+    }
+
+    if (maxEntitiesOp.checked) {
+      if (maxEntities === "" || Number(maxEntities) === 0) {
+        alert("Preencha Max number of entities com um valor diferente de zero.");
+        return;
+      }
+      content = `digraph ${jsonManager.getGraph().name} {\n    comment=" 0 ${numCycles} ${batchSize} ${maxEntities} fechado ${warmupTime} ${definedValue} ${seed} " rankdir=LR\n`;
+    }
+                
+                    //content = `digraph ${jsonManager.getGraph().name} {\n    comment=" ${execTime} ${numCycles} ${batchSize} ${maxEntities} aberto ${warmupTime} ${definedValue} ${seed} " rankdir=LR\n`;
+
                     Object.values(jsonManager.getGraph().mapNodes).forEach(node => {
                         
                         content += `    ${node.id} [label=${node.type} comment=`;
