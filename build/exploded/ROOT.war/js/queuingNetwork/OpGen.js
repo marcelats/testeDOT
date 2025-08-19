@@ -109,9 +109,9 @@ define(["jquery", "JsonManager","Arrival"],
                                 else content +=`0 `;
                                 if(node.properties.server_sequence) content +=`${node.properties.server_sequence} `;
                                 else content +=`0 `;
-                                if(node.properties.server_stdDeviation) content +=`${node.properties.server_stdDeviation} `;
-                                else content +=`0 `;
                                 if(node.properties.arrival_stdDeviation) content +=`${node.properties.arrival_stdDeviation} `;
+                                else content +=`0 `;
+                                if(node.properties.server_stdDeviation) content +=`${node.properties.server_stdDeviation} `;
                                 else content +=`0 `;
                                 content +=`"]\n`;
                                 break;
