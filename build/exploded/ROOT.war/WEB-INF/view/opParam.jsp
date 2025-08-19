@@ -35,7 +35,8 @@
                     
                     <fieldset>
                         <legend>General</legend>
-                        <div class="field">
+                        
+                        <%--<div class="field">
                             <label for="opParam_execTime" class="labelLeft">Execution time</label>
                             <input id="opParam_execTime" type="text" class="inputText small">
                         </div>
@@ -50,16 +51,31 @@
                             <input id="opParam_batchSize" type="text" class="inputText small">
                         </div>
                         
-                        <div class="field">
+                        <%--<div class="field">
                             <label for="opParam_maxEntities" class="labelLeft">Max number of entities</label>
                             <input id="opParam_maxEntities" type="text" class="inputText small">
-                        </div>
+                        </div>--%>
                         <div class="field" id="seed">
                             <label for="opParam_seed" class="labelLeft">Seed</label>
                             <input id="opParam_seed" type="text" class="inputText small">
                         </div>                       
                         
-                    </fieldset>
+ <fieldset>
+  <legend>Model type</legend>
+
+  <div class="fieldRow">
+    <input id="opParam_execTimeOp" type="radio" name="modeltype">
+    <label for="opParam_execTimeOp">Execution time</label>
+    <input id="opParam_execTime" type="text" class="inputText small" disabled>
+  </div>
+
+  <div class="fieldRow">
+    <input id="opParam_maxEntitiesOp" type="radio" name="modeltype">
+    <label for="opParam_maxEntitiesOp">Max number of entities</label>
+    <input id="opParam_maxEntities" type="text" class="inputText small" disabled>
+  </div>
+</fieldset>
+
                     
                     <%--<fieldset>
                         <legend>Model type</legend>
@@ -81,7 +97,7 @@
                         <input id="opParam_timeDefined" type="radio" name="warmupTime">
                         <label for="opParam_timeDefined" class="labelLeft">Defined</label>
                         
-                        <input id="opParam_definedValue" type="text" class="inputText small">
+                        <input id="opParam_definedValue" type="text" class="inputText small" disabled>
                     </fieldset>
 
                     <input id ="chegada-bt" type="button" value="Arrival" class="button">

@@ -96,3 +96,17 @@ body {
     font-size: 14px;           /* tamanho confortável */
     line-height: 1.4;          /* espaçamento entre linhas */
 }
+
+fieldset {
+  display: flex;
+  flex-direction: column; /* um item por linha */
+  gap: 10px;
+}
+
+.fieldRow {
+  display: flex;
+  justify-content: space-between; /* joga input pra direita */
+  align-items: center;
+}
+
+
