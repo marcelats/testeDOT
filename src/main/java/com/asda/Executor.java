@@ -47,9 +47,9 @@ public class Executor {
         // 2. Constrói POST para o container Python
         String boundary = "----JavaBoundary" + System.currentTimeMillis();
         URL url;
-        if("Java".equals(lang) ||"Python".equals(lang) || "R".equals(lang) || lang==null) 
+        //if("Java".equals(lang) ||"Python".equals(lang) || "R".equals(lang) || lang==null) 
             url = new URL("http://helloworldweb-python-executor-1:8000/executar");
-        else url = new URL("http://meu-java:8002/executar");
+        //else url = new URL("http://meu-java:8002/executar");
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setDoOutput(true);
         conn.setRequestMethod("POST");
