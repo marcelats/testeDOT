@@ -6,6 +6,7 @@ function($, lightBoxManager, cons, jsonManager) {
 
     var lastAction = null;
     window.arrivals = [];
+    window.arrivalIndex = 0;
     var arrival = {
         initialize: function () {
             console.log("initiliaze do arrival");   
@@ -30,10 +31,9 @@ function($, lightBoxManager, cons, jsonManager) {
         
 execute: function () {
     console.log("execute do arrival");
-    window.arrivals = [];
     console.log("window.arrivals");
     console.log(window.arrivals);
-let indiceAtual = 0;
+    exibirAtual();
     const number_clients = document.getElementById("number_clients");
             number_clients.style.opacity = '0.5';
             number_clients.style.pointerEvents = 'none';
@@ -97,7 +97,7 @@ console.log("antes de if (!window.isObserving)");
     const novoItem = { numberClients, arrivalTime, serviceCenter };
     window.arrivals.push(novoItem);
     console.log("push");
-indiceAtual = window.arrivals.length - 1;
+window.arrivalIndex = window.arrivals.length - 1;
     console.log("Item adicionado:", novoItem);
     console.log("Lista atual:", window.arrivals);
             
@@ -113,8 +113,8 @@ indiceAtual = window.arrivals.length - 1;
                 });    
                     $(document).off("click", "#next-bt");
         $(document).on("click", "#next-bt", function() {
-           if (indiceAtual < window.arrivals.length - 1) {
-        indiceAtual++;
+           if (window.arrivalIndex < window.arrivals.length - 1) {
+        window.arrivalIndex++;
         exibirAtual();
     } else {
         console.log("Último item já exibido.");
@@ -122,8 +122,8 @@ indiceAtual = window.arrivals.length - 1;
         });
         $(document).off("click", "#prev-bt");
         $(document).on("click", "#prev-bt", function() {
-            if (indiceAtual > 0) {
-        indiceAtual--;
+            if (window.arrivalIndex > 0) {
+        window.arrivalIndex--;
         exibirAtual();
     } else {
         console.log("Primeiro item já exibido.");
@@ -136,12 +136,12 @@ indiceAtual = window.arrivals.length - 1;
         return;
     }
 
-    console.log(`Removendo item ${indiceAtual + 1}`);
-    window.arrivals.splice(indiceAtual, 1);
+    console.log(`Removendo item ${window.arrivalIndex + 1}`);
+    window.arrivals.splice(window.arrivalIndex, 1);
 
     // Ajustar índice após remoção
-    if (indiceAtual >= window.arrivals.length) {
-        indiceAtual = window.arrivals.length - 1;
+    if (window.arrivalIndex >= window.arrivals.length) {
+        window.arrivalIndex = window.arrivals.length - 1;
     }
 
     if (window.arrivals.length > 0) {
@@ -195,9 +195,9 @@ indiceAtual = window.arrivals.length - 1;
         console.log("Lista vazia.");
         return;
     }
-    if (indiceAtual >= 0 && indiceAtual < window.arrivals.length) {
-        const item = window.arrivals[indiceAtual];
-        console.log(`Exibindo item ${indiceAtual + 1} de ${window.arrivals.length}`);
+    if (window.arrivalIndex >= 0 && window.arrivalIndex < window.arrivals.length) {
+        const item = window.arrivals[window.arrivalIndex];
+        console.log(`Exibindo item ${window.arrivalIndex + 1} de ${window.arrivals.length}`);
         console.log(`numberClients: ${item.numberClients}, arrivalTime: ${item.arrivalTime}, serviceCenter: ${item.serviceCenter}`);
         document.getElementById("number_clients").value = item.numberClients;
         document.getElementById("arrival_time").value = item.arrivalTime;
