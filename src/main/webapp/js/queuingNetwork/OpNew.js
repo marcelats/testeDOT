@@ -50,7 +50,11 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpSave", "Cons", "IdManager
                             jsonManager.clearGraph();
                             jsonManager.setSaved(true);
                             $("#" + cons.DRAW_AREA).empty();
+                            console.log("oldCid");
+                            console.log(idManager.getNewCid());
                             idManager.setStartCid(-1);
+                            console.log("new cid");
+                            console.log(idManager.getNewCid());
                         }
 
                         if (typeof callback === "function") {
