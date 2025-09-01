@@ -54,7 +54,7 @@ console.log("opNew", opNew); // este deve aparecer como objeto, não undefined
                     
                 });
                 
-    const fileItems = document.querySelectorAll('.file-item');
+    /*const fileItems = document.querySelectorAll('.file-item');
     const inputField = document.getElementById('opOpen-filename');
 
     fileItems.forEach(item => {
@@ -62,9 +62,33 @@ console.log("opNew", opNew); // este deve aparecer como objeto, não undefined
             const fileName = this.getAttribute('data-filename');
             inputField.value = fileName;
         });
+    });*/
+    console.log('file-item count =', document.querySelectorAll('.file-item').length);
+
+    /*document.addEventListener("DOMContentLoaded", function() {
+    // Pega todos os elementos com a classe .file-item
+    document.querySelectorAll(".file-item").forEach(function(item) {
+      item.addEventListener("click", function() {
+        // Pega o valor do atributo data-filename
+        var filename = this.getAttribute("data-filename");
+        console.log("filename:");
+        console.log(filename);
+        // Coloca no input
+        document.getElementById("opOpen-filename").value = filename;
+        console.log("document.getElementById(opOpen-filename).value");
+        console.log(document.getElementById("opOpen-filename").value);
+      });
     });
+  });*/
+    document.addEventListener("click", function(e) {
+  if (e.target && e.target.classList.contains("file-item")) {
+    var filename = e.target.getAttribute("data-filename");
+    console.log("filename:", filename);
+    document.getElementById("opOpen-filename").value = filename;
+  }
+});
 
-
+             
             },
             execute: function(action) {
                 require(["OpNew"], function(opNew) {

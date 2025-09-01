@@ -21,11 +21,10 @@
 
             <div id="opOpen-top" class="filesWindow">
                 <c:forEach var="arquivo" items="${arquivos}">
-                    <div class="file-item" data-filename="${arquivo}">${arquivo}</div>
+                    <span class="file-item" data-filename="${arquivo}">${arquivo}</span><br>
                 </c:forEach>
             </div>
-
-
+            
             <div id="opOpen-bottom" class="standardForm">
                 <form>
                     <label>

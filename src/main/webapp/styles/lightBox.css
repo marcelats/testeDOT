@@ -109,4 +109,20 @@ fieldset {
   align-items: center;
 }
 
+.file-item {
+  display: inline-block;      /* Para respeitar padding/borda */
+  padding: 5px 10px;          /* Espaçamento interno */
+  margin: 4px 0;              /* Espaçamento entre os itens */
+  border: 1px solid #ccc;     /* Borda cinza clara */
+  border-radius: 8px;         /* Cantos arredondados */
+  background-color: #f9f9f9;  /* Fundo clarinho */
+  cursor: pointer;            /* Mãozinha para indicar clique */
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.file-item:hover {
+  background-color: #e6f0ff;  /* Fundo azul clarinho no hover */
+  border-color: #66a3ff;      /* Borda azul no hover */
+}
+
 
