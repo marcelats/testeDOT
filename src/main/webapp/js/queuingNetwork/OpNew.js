@@ -4,8 +4,8 @@
  * author: Felipe Osorio Thomé
  */
 
-define(["jquery", "LightBoxManager", "JsonManager", "OpSave", "Cons"],
-    function($, lightBoxManager, jsonManager, opSave, cons) {
+define(["jquery", "LightBoxManager", "JsonManager", "OpSave", "Cons", "IdManager"],
+    function($, lightBoxManager, jsonManager, opSave, cons, idManager) {
         "use strict";
 
         var lastAction = null, callback = null;
@@ -50,7 +50,7 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpSave", "Cons"],
                             jsonManager.clearGraph();
                             jsonManager.setSaved(true);
                             $("#" + cons.DRAW_AREA).empty();
-
+                            idManager.setStartCid(-1);
                         }
 
                         if (typeof callback === "function") {
