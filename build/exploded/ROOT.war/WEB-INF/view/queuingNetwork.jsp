@@ -105,9 +105,15 @@
         <div id="shadow2" class="shadow2">
             <div id="boxArrival" class="box"></div>
         </div>
-        <div id="modalContainer">
-            <jsp:include page="/WEB-INF/view/opOpen.jsp"/>
-        </div>
+        <!-- sombra preta ou transparente -->
+<div id="shadowing" style="display:none; position:fixed; top:0; left:0; 
+     width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:999;"></div>
+
+<!-- container que já vem com o conteúdo do modal -->
+<div id="modalContainer">
+    <jsp:include page="/WEB-INF/view/opOpen.jsp"/>
+</div>
+
 
 
     </body>
