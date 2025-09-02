@@ -11,7 +11,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     </head>
     <body>
-        <div id="opParamBox" class="boxContent">
+        <div id="opParamBox" class="boxContent" style="display: none;">
             <div class="btCloseDiv cf">
                 <span class="boxTitle">Parametrize the model</span>
                 <span id="opParam-btClose"><img src="img/btClose.png"/></span>

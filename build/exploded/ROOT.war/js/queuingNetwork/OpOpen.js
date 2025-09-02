@@ -12,6 +12,12 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "I
 
         var OpOpen = {
             initialize: function(manager) {
+          
+    // já carrega o conteúdo JSP dentro do container do modal
+    $("#opOpenBox").load("opOpen.jsp", function () {
+        console.log("Modal pré-carregado!");
+    });
+
                 console.log("lightBoxManager", lightBoxManager);
 console.log("jsonManager", jsonManager);
 console.log("opNew", opNew); // este deve aparecer como objeto, não undefined
@@ -152,7 +158,7 @@ console.log("opNew", opNew); // este deve aparecer como objeto, não undefined
                     jsonManager.setSaved(true);
 
                     if (data.name !== "") {
-                        document.title = data.name;
+                        document.title = "ASDA - " + data.name;
                     }
 
                     constructGraph(data);
