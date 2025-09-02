@@ -1,9 +1,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
-<div id="opOpenBox" class="boxContent" style="position:fixed; 
+<div id="opOpenBox" class="boxContent" style="display:none; position:fixed; 
      z-index:1000; left:50%; transform:translateX(-50%);">
-    <!-- seu conteúdo -->
 
 
     <div class="btCloseDiv cf">
