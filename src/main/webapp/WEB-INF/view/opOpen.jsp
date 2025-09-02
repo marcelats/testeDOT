@@ -4,7 +4,7 @@
 <div id="opOpenBox" class="boxContent" style="display:none; position:fixed; 
      z-index:1000; left:50%; transform:translateX(-50%);">
     <!-- seu conteúdo -->
-</div>
+
 
     <div class="btCloseDiv cf">
         <span class="boxTitle">Open</span>
