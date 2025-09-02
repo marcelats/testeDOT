@@ -54,8 +54,10 @@ define(["jquery", "JsonManager","Arrival"],
                 
                 const execTimeOp = document.getElementById("opParam_execTimeOp");
     const maxEntitiesOp = document.getElementById("opParam_maxEntitiesOp");
-    const execTime = document.getElementById("opParam_execTime").value.trim() || 0;
-    const maxEntities = document.getElementById("opParam_maxEntities").value.trim() || 0;
+    const execTime = 0;
+    if(document.getElementById("opParam_execTime").value.trim()) execTime = document.getElementById("opParam_execTime").value.trim();
+    const maxEntities = 0;
+    if(document.getElementById("opParam_maxEntities").value.trim()) maxEntities = document.getElementById("opParam_maxEntities").value.trim();
 
     // nenhum radio selecionado
     if (!execTimeOp.checked && !maxEntitiesOp.checked) {
