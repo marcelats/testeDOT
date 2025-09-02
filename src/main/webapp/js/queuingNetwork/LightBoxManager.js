@@ -4,7 +4,10 @@ define([], function () {
     return {
         openBox: function (shadowing, box, callback) {
             $("#" + shadowing).fadeIn("fast", function () {
-                $("#" + box).show();
+                //$("#" + box).show();
+                $("#" + box).css({ 
+                    display: "block" // apenas mostra o modal
+                });
                 /*$("#" + box).css({
                     display: "inline-block",
                     top: $(window).height() > $("#" + box).outerHeight()
