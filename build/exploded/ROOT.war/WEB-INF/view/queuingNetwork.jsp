@@ -106,8 +106,9 @@
             <div id="boxArrival" class="box"></div>
         </div>
         <div id="modalContainer">
-            <jsp:include page="opOpen.jsp"/>
+            <jsp:include page="/WEB-INF/view/opOpen.jsp"/>
         </div>
+
 
     </body>
 </html>
