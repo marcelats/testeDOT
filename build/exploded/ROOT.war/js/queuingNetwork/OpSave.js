@@ -24,7 +24,7 @@ define(["jquery", "LightBoxManager", "JsonManager", "Cons", "OpOpen"],
   if (e.target && e.target.classList.contains("file-item")) {
     var filename = e.target.getAttribute("data-filename");
     console.log("filename:", filename);
-    document.getElementById("opOpen-filename").value = filename;
+    document.getElementById("opSave-filename").value = filename;
   }
 });
             },
