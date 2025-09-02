@@ -21,7 +21,7 @@ console.log("opNew", opNew); // este deve aparecer como objeto, não undefined
 
                 /* Close button of the light box. */
                 $(document).on("click", "#opOpen-btClose", function() {
-                    lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
+                    lightBoxManager.closeBox('shadowing3', 'opOpenBox');
                 });
 
                 $(document).on("click", "#opOpen-btSubmit", function() {
@@ -166,7 +166,7 @@ console.log("opNew", opNew); // este deve aparecer como objeto, não undefined
                                 data: "graphJson=" + jsonManager.stringifyGraph(),
                                 async: false,
                                 success: function() {
-                                    lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
+                                    lightBoxManager.closeBox('shadowing3', 'opOpenBox');
                                     jsonManager.setSaved(true);
 
                                     document.title = filename;
@@ -215,7 +215,7 @@ console.log("opNew", opNew); // este deve aparecer como objeto, não undefined
                                 async: false,
                                 data: "graphName=" + filename,
                                 success: function() {
-                                    lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
+                                    lightBoxManager.closeBox('shadowing3', 'opOpenBox');
                                     jsonManager.setSaved(true);
 
                                     document.title = filename;
@@ -251,7 +251,7 @@ console.log("opNew", opNew); // este deve aparecer como objeto, não undefined
                                 async: false,
                                 data: "graphName=" + filename,
                                 success: function() {
-                                    lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
+                                    lightBoxManager.closeBox('shadowing3', 'opOpenBox');
                                     jsonManager.setSaved(true);
 
                                     document.title = filename;
@@ -292,7 +292,7 @@ console.log("opNew", opNew); // este deve aparecer como objeto, não undefined
                                 async: false,
                                 data: "graphName=" + filename + "&newName=" + $("#opOpen-newname").val(),
                                 success: function() {
-                                    lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
+                                    lightBoxManager.closeBox('shadowing3', 'opOpenBox');
                                     jsonManager.setSaved(true);
 
                                     document.title = filename;
@@ -339,7 +339,7 @@ console.log("opNew", opNew); // este deve aparecer como objeto, não undefined
                                 async: false,
                                 data: "graphName=" + filename,
                                 success: function() {
-                                    lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
+                                    lightBoxManager.closeBox('shadowing3', 'opOpenBox');
                                     jsonManager.setSaved(true);
 
                                     document.title = filename;
@@ -369,7 +369,7 @@ console.log("opNew", opNew); // este deve aparecer como objeto, não undefined
                 data: "graphName=" + filename,
                 dataType: "json",
                 success: function(data) {
-                    lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
+                    lightBoxManager.closeBox('shadowing3', 'opOpenBox');
 
                     jsonManager.setGraph(data);
                     jsonManager.setSaved(true);
