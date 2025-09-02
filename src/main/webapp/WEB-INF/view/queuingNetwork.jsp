@@ -110,7 +110,7 @@
      width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:999;"></div>
 
 <!-- container que já vem com o conteúdo do modal -->
-<div id="modalContainer">
+<div id="modalContainer" style="display:none;">
     <jsp:include page="/WEB-INF/view/opOpen.jsp"/>
 </div>
 
