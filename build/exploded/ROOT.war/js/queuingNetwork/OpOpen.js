@@ -12,11 +12,6 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "I
 
         var OpOpen = {
             initialize: function(manager) {
-          
-    // já carrega o conteúdo JSP dentro do container do modal
-    $("#modalContainer").load("opOpen.jsp", function () {
-        console.log("Modal pré-carregado!");
-    });
 
                 console.log("lightBoxManager", lightBoxManager);
 console.log("jsonManager", jsonManager);

@@ -27,9 +27,6 @@
   <option value="Python">Python</option>
   <option value="C SMPL">C SMPL</option>
   <option value="C SMPLX">C SMPLX</option>
-  <%--<option value="C ParSMPL">C ParSMPL</option>
-  <option value="C SIMPACK">C SIMPACK</option>
-  <option value="C SIMPACK2">C SIMPACK2</option>--%>
                         </select>
                     </fieldset>
                     
