@@ -21,6 +21,7 @@ define(["jquery", "JsonManager","Arrival"],
                 console.log("passando pelo execute do opgen");
                 const opParam = document.getElementById("opParam_library");
                 const selectedValue = opParam?.value;
+                console.log(selectedValue);
                 if (selectedValue == 'R' || selectedValue == 'Java' || selectedValue == 'Python')
                 {
                     const mapNodes = jsonManager.getGraph().mapNodes;
