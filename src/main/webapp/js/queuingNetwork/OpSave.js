@@ -40,6 +40,8 @@ define(["jquery", "LightBoxManager", "JsonManager", "Cons", "OpOpen"],
                         if (filename.match(re) === null) {
                             alert("You need enter a valid filename.");
                             
+                        //console.log(jsonManager.);
+                            
                         } 
                         
                         

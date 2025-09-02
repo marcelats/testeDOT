@@ -61,6 +61,7 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpSave", "Cons", "IdManager
                 } else {
                     jsonManager.clearGraph();
                     jsonManager.setSaved(true);
+                    idManager.setStartCid(-1);
                     $("#" + cons.DRAW_AREA).empty();
                 }
             },

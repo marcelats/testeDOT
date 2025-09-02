@@ -17,10 +17,12 @@
                 <span class="boxTitle">Save</span>
                 <span id="opSave-btClose"><img src="img/btClose.png"/></span>
             </div>
-
-            <div id="opSave-top" class="filesWindow"><c:forEach var="arquivo" items="${arquivos}">
-        <div>${arquivo}</div>
-    </c:forEach></div>
+            
+            <div id="opSave-top" class="filesWindow">
+                <c:forEach var="arquivo" items="${arquivos}">
+                    <span class="file-item" data-filename="${arquivo}">${arquivo}</span><br>
+                </c:forEach>
+            </div>
 
             <div id="opSave-bottom" class="standardForm">
                 <form>
