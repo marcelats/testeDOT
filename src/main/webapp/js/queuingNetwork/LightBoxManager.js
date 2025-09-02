@@ -6,8 +6,11 @@ define([], function () {
             $("#" + shadowing).fadeIn("fast", function () {
                 //$("#" + box).show();
                 $("#" + box).css({ 
-                    display: "block" // apenas mostra o modal
+                    display: "inline-block", 
+                    top: $(window).height() > $("#" + box).outerHeight() ? 
+                         ($(window).height() - $("#" + box).outerHeight()) / 2 : 0 
                 });
+
                 /*$("#" + box).css({
                     display: "inline-block",
                     top: $(window).height() > $("#" + box).outerHeight()
