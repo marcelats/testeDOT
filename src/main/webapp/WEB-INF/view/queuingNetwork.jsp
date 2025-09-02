@@ -105,7 +105,9 @@
         <div id="shadow2" class="shadow2">
             <div id="boxArrival" class="box"></div>
         </div>
-        <div id="modalContainer"></div>
+        <div id="modalContainer">
+            <jsp:include page="opOpen.jsp"/>
+        </div>
 
     </body>
 </html>
