@@ -4,7 +4,8 @@ define([], function () {
     return {
         openBox: function (shadowing, box, callback) {
             $("#" + shadowing).fadeIn("fast", function () {
-                $("#" + box).css({
+                $("#" + box).show();
+                /*$("#" + box).css({
                     display: "inline-block",
                     top: $(window).height() > $("#" + box).outerHeight()
                         ? ($(window).height() - $("#" + box).outerHeight()) / 2
@@ -17,7 +18,7 @@ define([], function () {
                             ? ($(window).height() - $("#" + box).outerHeight()) / 2
                             : 0
                     });
-                });
+                });*/
 
                 if (typeof callback === "function") {
                     callback();
