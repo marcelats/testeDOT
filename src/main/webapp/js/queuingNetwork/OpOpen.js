@@ -107,7 +107,7 @@ console.log("opNew", opNew); // este deve aparecer como objeto, não undefined
 
             
                 if (typeof action !== "string") {
-                    lightBoxManager.openBox('shadowing', 'opOpenBox',
+                    lightBoxManager.openBox('shadowing3', 'opOpenBox',
                         "qnetwork?cmd=open-box&type=open", function() {
                         $("#opOpen-filename").focus();
                     });

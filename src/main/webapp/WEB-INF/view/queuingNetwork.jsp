@@ -106,7 +106,7 @@
             <div id="boxArrival" class="box"></div>
         </div>
         <!-- sombra preta ou transparente -->
-<div id="shadowing" style="display:none; position:fixed; top:0; left:0; 
+<div id="shadowing3" style="display:none; position:fixed; top:0; left:0; 
      width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:999;"></div>
 
 <!-- container que já vem com o conteúdo do modal -->
