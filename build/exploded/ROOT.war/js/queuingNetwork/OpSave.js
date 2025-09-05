@@ -1,9 +1,3 @@
-/*
- * (Singleton) Top options controller.
- * 
- * author: Felipe Osorio Thomé
- */
-
 define(["jquery", "LightBoxManager", "JsonManager", "Cons", "OpOpen"],
     function($, lightBoxManager, jsonManager, cons, opOpen) {
         "use strict";
@@ -20,13 +14,6 @@ define(["jquery", "LightBoxManager", "JsonManager", "Cons", "OpOpen"],
                 $(document).on("click", "#opSave-btSubmit", function() {
                     OpSave.execute("submit");
                 });
-                document.addEventListener("click", function(e) {
-  if (e.target && e.target.classList.contains("file-item")) {
-    var filename = e.target.getAttribute("data-filename");
-    console.log("filename:", filename);
-    document.getElementById("opSave-filename").value = filename;
-  }
-});
             },
             execute: function(action) {
                 if (typeof action !== "string") {

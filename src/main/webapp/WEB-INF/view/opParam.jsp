@@ -1,16 +1,4 @@
-<%-- 
-    Document   : opParameters
-    Created on : 23/05/2014, 16:16:07
-    Author     : Felipe Osorio Thomé
---%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    </head>
-    <body>
         <div id="opParamBox" class="boxContent" style="display: none;">
             <div class="btCloseDiv cf">
                 <span class="boxTitle">Parametrize the model</span>
@@ -23,35 +11,22 @@
                         <legend>Language</legend>
                         <select id="opParam_library" class="inputText">
                             <option value="R">R</option>
-  <option value="Java">Java</option>
-  <option value="Python">Python</option>
-  <option value="C SMPL">C SMPL</option>
-  <option value="C SMPLX">C SMPLX</option>
+                            <option value="Java">Java</option>
+                            <option value="Python">Python</option>
+                            <option value="C SMPL">C SMPL</option>
+                            <option value="C SMPLX">C SMPLX</option>
                         </select>
                     </fieldset>
                     
                     <fieldset>
                         <legend>General</legend>
-                        
-                        <%--<div class="field">
-                            <label for="opParam_execTime" class="labelLeft">Execution time</label>
-                            <input id="opParam_execTime" type="text" class="inputText small">
-                        </div>
-                        
-                        <%--<div class="field">
-                            <label for="opParam_numCycles" class="labelLeft">Number of cycles</label>
-                            <input id="opParam_numCycles" type="text" class="inputText small">
-                        </div>--%>
 
                         <div class="field">
                             <label for="opParam_batchSize" class="labelLeft">Batch size</label>
                             <input id="opParam_batchSize" type="text" class="inputText small">
                         </div>
                         
-                        <%--<div class="field">
-                            <label for="opParam_maxEntities" class="labelLeft">Max number of entities</label>
-                            <input id="opParam_maxEntities" type="text" class="inputText small">
-                        </div>--%>
+
                         <div class="field" id="seed">
                             <label for="opParam_seed" class="labelLeft">Seed</label>
                             <input id="opParam_seed" type="text" class="inputText small">
@@ -73,18 +48,6 @@
   </div>
 </fieldset>
 
-                    
-                    <%--<fieldset>
-                        <legend>Model type</legend>
-                        
-                        <input disabled id="opParam_closed" type="radio" name="modelType" value="fechado">
-                        <label for="opParam_closed" class="labelLeft">Closed</label>
-                        
-                        <input disabled id="opParam_open" type="radio" name="modelType" value="aberto">
-                        <label for="opParam_open" class="labelLeft">Open</label>
-                        
-                    </fieldset>--%>
-
                     <fieldset>
                         <legend>Warmup Time</legend>
                         
@@ -100,10 +63,8 @@
                     <input id ="chegada-bt" type="button" value="Arrival" class="button">
                     
                     <input id ="opParam-btSubmit" type="button" value="Ok" class="button" onclick="checkModelType()">
-                    <!-- HTML -->
+
 
                 </form>
             </div>
         </div>
-    </body>
-</html>

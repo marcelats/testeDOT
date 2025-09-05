@@ -1,8 +1,3 @@
-<%-- 
-    Document   : opSave
-    Created on : 21/05/2014, 19:34:15
-    Author     : Felipe Osorio Thomé
---%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

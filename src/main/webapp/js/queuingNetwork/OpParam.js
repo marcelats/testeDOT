@@ -1,8 +1,3 @@
-/*
- * (Singleton) Top options controller.
- * 
- * author: Felipe Osorio Thomé
- */
 
 define(["jquery", "LightBoxManager", "JsonManager", "Utils", "Cons","Arrival"],
     function($, lightBoxManager, jsonManager, utils, cons,arrival) {
@@ -12,10 +7,22 @@ define(["jquery", "LightBoxManager", "JsonManager", "Utils", "Cons","Arrival"],
 
         var OpParam = {
             initialize: function() {
+                $("#opParamBox").dialog({
+    autoOpen: false,
+    modal: true,
+  width: 300,
+  resizable: false,
+  dialogClass: "no-titlebar", // remove cabeçalho nativo
+    show: { effect: "fadeIn", duration: 200 },   // efeito na abertura
+    hide: { effect: "fadeOut", duration: 200 }   // efeito no fechamento
+});
+
+                
 
                 /* Close button of the light box. */
                 $(document).on("click", "#opParam-btClose", function() {
-                    lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
+                    //lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
+                    $("#opParamBox").dialog("close");
                 });
                 
                 $(document).on("click", "#opParam-btSubmit", function() {
@@ -42,12 +49,22 @@ define(["jquery", "LightBoxManager", "JsonManager", "Utils", "Cons","Arrival"],
             },
             execute: function(action) {
                 if (typeof action !== "string") {
-                    lightBoxManager.openBox(cons.SHADOWING, cons.BOX_CONTAINER,
+                    /*lightBoxManager.openBox(cons.SHADOWING, cons.BOX_CONTAINER,
                         "qnetwork?cmd=open-box&type=parameters", function() {
                         var parameters = jsonManager.getGraphParameters();
+                    
 
                         $("#" + cons.BOX_CONTAINER).values(parameters);
-                    });
+                    });*/
+              $("#opParamBox").dialog("open");      
+    
+  
+
+        // aqui você pode aplicar valores ao form, como no seu exemplo:
+        $("#opParamBox").values(jsonManager.getGraphParameters());
+ 
+
+
 
                     callback = action;
 
@@ -55,16 +72,17 @@ define(["jquery", "LightBoxManager", "JsonManager", "Utils", "Cons","Arrival"],
                     lastAction = action;
                     
                     if (action === "submit") {
-                        var parameters = $("#" + cons.BOX_CONTAINER).values();
+                        var parameters = $("#opParamBox").values();
 
                         jsonManager.setGraphParameters(parameters);
-                        lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
+                        //lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
+                        $("#opParamBox").dialog("close");
                         const btnCode = document.getElementById("opCode");
-                            btnCode.style.opacity = '0.3';
-                            btnCode.style.pointerEvents = 'none';
-                            const btnExecute = document.getElementById("opExecute");
-                            btnExecute.style.opacity = '0.3';
-                            btnExecute.style.pointerEvents = 'none';
+                        btnCode.style.opacity = '0.3';
+                        btnCode.style.pointerEvents = 'none';
+                        const btnExecute = document.getElementById("opExecute");
+                        btnExecute.style.opacity = '0.3';
+                        btnExecute.style.pointerEvents = 'none';
                     }
                     
                     if (action === "submitArrival") {

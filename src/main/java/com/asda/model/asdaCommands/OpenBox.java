@@ -31,6 +31,7 @@ private EntityManagerFactory factory;
     @Override
     public CommandResponse execute(HttpServletRequest req, HttpServletResponse res)
             throws CommandException, ServletException, IOException {
+        System.out.println("execute do openbox.java");
         String type = req.getParameter(TYPE);
         HttpSession session = req.getSession();
         UserSessionManager sessionMgr = UserSessionManager.getInstance();
@@ -52,13 +53,11 @@ private EntityManagerFactory factory;
                 aResponse.setPage(DIRECTORY + "opNew.jsp");
                 break;
             case "save":
-                req.getRequestDispatcher("/WEB-INF/view/opSave.jsp").forward(req, res);
                 aResponse = new CommandResponse();
                 aResponse.setForward(true);
                 aResponse.setPage(DIRECTORY + "opSave.jsp");
                 break;
             case "open":
-                req.getRequestDispatcher("/WEB-INF/view/opOpen.jsp").forward(req, res);
                 aResponse = new CommandResponse();
                 aResponse.setForward(true);
                 aResponse.setPage(DIRECTORY + "opOpen.jsp");
@@ -79,6 +78,8 @@ private EntityManagerFactory factory;
                 aResponse.setPage(DIRECTORY + "textEditor.jsp");
                 break;
         }
+        System.out.println("Arquivos recebidos: " + nomes);
+
 
         return aResponse;
     }

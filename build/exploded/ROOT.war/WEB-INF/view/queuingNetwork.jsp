@@ -3,6 +3,8 @@
     Created on : 29/01/2014, 21:20:05
     Author     : Felipe Osorio Thomé
 --%>
+<jsp:include page="/WEB-INF/view/opParam.jsp" />
+
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -13,7 +15,7 @@
         <title>ASDA</title>
 
         <link rel="icon" type="image/png" href="img/favicon.png" />
-        
+        <link rel="stylesheet" href="js/libs/jquery-ui-1.10.4.custom.css">
         <link rel="stylesheet" type="text/css" href="styles/queuingNetwork.css">
         <link rel="stylesheet" type="text/css" href="styles/formStd.css">
         <link rel="stylesheet" type="text/css" href="styles/lightBox.css">
@@ -21,7 +23,8 @@
 
         <script data-main="js/queuingNetwork/main.js" src="js/libs/require.js"></script>
         <script src="js/queuingNetwork/require.cfg.js"></script>
-
+<script src="js/libs/jquery-1.10.2.js"></script>
+    <script src="js/libs/jquery-ui-1.10.4.custom.js"></script>
     </head>
 
     <body>
@@ -105,16 +108,8 @@
         <div id="shadow2" class="shadow2">
             <div id="boxArrival" class="box"></div>
         </div>
-        <!-- sombra preta ou transparente -->
-<div id="shadowing3" style="display:none; position:fixed; top:0; left:0; 
-     width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:999;"></div>
-
-<!-- container que já vem com o conteúdo do modal -->
-<div id="modalContainer" >
-    <jsp:include page="/WEB-INF/view/opOpen.jsp"/>
-</div>
 
 
-
+        
     </body>
 </html>
