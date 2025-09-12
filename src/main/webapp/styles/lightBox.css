@@ -110,7 +110,7 @@ fieldset {
   align-items: center;
 }
 
-.file-item {
+.file-item-open, .file-item-save {
   display: inline-block;      /* Para respeitar padding/borda */
   padding: 5px 10px;          /* Espaçamento interno */
   margin: 4px 0;              /* Espaçamento entre os itens */
@@ -121,7 +121,7 @@ fieldset {
   transition: background-color 0.2s, border-color 0.2s;
 }
 
-.file-item:hover {
+.file-item-open:hover, .file-item-save:hover {
   background-color: #e6f0ff;  /* Fundo azul clarinho no hover */
   border-color: #66a3ff;      /* Borda azul no hover */
 }
@@ -156,7 +156,37 @@ fieldset {
     overflow: auto;
 }
 
+.filesHeader, .file-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 8px;
+    border-bottom: 1px solid #ccc;
+}
 
+.file-col, .author-col, .file-item-open, .file-item-save, .file-author {
+    flex: 1;
+}
+
+.file-col, .author-col {
+    font-weight: bold;
+}
+
+.form-row {
+    margin-bottom: 8px;
+}
+
+.form-row label {
+    display: inline-block;
+    width: 100px; /* ajusta a largura fixa da coluna esquerda */
+}
+
+.form-row input {
+    width: 200px; /* ou o tamanho que você preferir */
+}
+
+.form-buttons {
+    margin: 12px 0;
+}
 
 
 

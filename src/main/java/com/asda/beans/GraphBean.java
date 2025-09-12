@@ -24,7 +24,7 @@ import org.hibernate.validator.constraints.NotEmpty;
         uniqueConstraints= @UniqueConstraint(columnNames={"user_id", "graph_name"}))
 @NamedQueries({
     @NamedQuery(name="graphs.findGraph",
-               query="SELECT g FROM GraphBean g WHERE g.graphName = :name AND (g.user = :user OR g.publicGraph=true)"),
+               query="SELECT g FROM GraphBean g WHERE g.graphName = :name AND g.user = :user"),
     @NamedQuery(name="graphs.findGraphs",
                query="SELECT g FROM GraphBean g WHERE g.user = :user OR g.publicGraph = true"),
     @NamedQuery(name="graphs.setPublic",
@@ -35,6 +35,8 @@ import org.hibernate.validator.constraints.NotEmpty;
                query="DELETE FROM GraphBean WHERE graphName = :name"),
     @NamedQuery(name="graphs.renameGraph",
                query="UPDATE GraphBean g SET graphName = :newName WHERE graphName = :name"),
+    @NamedQuery(name="graphs.findGraphCopy",
+            query="SELECT g FROM GraphBean g WHERE g.graphName = :name AND g.user.userId = :author AND (g.user.userId=:user OR g.publicGraph=true)")
 }) 
 public class GraphBean implements Serializable {
 

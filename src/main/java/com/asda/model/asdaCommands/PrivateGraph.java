@@ -1,22 +1,20 @@
 package com.asda.model.asdaCommands;
-
+import com.asda.controller.asda.JpaContextListener;
 import com.asda.Command;
 import com.asda.CommandException;
 import com.asda.CommandResponse;
 import com.asda.beans.AccountBean;
 import com.asda.beans.GraphBean;
 import com.asda.model.accountsCommands.UserSessionManager;
-import java.io.IOException;
-import java.io.PrintWriter;
+
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
+
 import jakarta.persistence.NoResultException;
-import jakarta.persistence.Persistence;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.List;
+
 import java.util.Objects;
 
 /**
@@ -25,10 +23,10 @@ import java.util.Objects;
  */
 public class PrivateGraph implements Command {
 
-    private static final String PERSISTENCE_UNIT = "ASDA_JSPPU";
+
     private CommandResponse aResponse;
-    private EntityManagerFactory factory;
-    private EntityManager manager;
+
+    private EntityManager em;
 
     @Override
     public CommandResponse execute(HttpServletRequest req, HttpServletResponse res)
@@ -41,34 +39,31 @@ public class PrivateGraph implements Command {
         String graphName = req.getParameter("graphName");
 
         if (graphName != null ) {
-            factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
-            manager = factory.createEntityManager();
+
+            em = JpaContextListener.getEmf().createEntityManager();
 
             GraphBean graph = findGraph(account, graphName);
 
             if (graph != null && Objects.equals(account.getUserId(), graph.getUser().getUserId())) {
 
-            factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
-            manager = factory.createEntityManager();
+
         try {
 
-manager.getTransaction().begin();
-            manager.createNamedQuery("graphs.setPrivate").setParameter("name", graphName).executeUpdate();
-            manager.getTransaction().commit();
+em.getTransaction().begin();
+            em.createNamedQuery("graphs.setPrivate").setParameter("name", graphName).executeUpdate();
+            em.getTransaction().commit();
         } catch (NoResultException e) {
-            manager.close();
-            factory.close();
+
             throw new CommandException("The graph name is invalid.");
 
         } catch (Exception e) {
-            manager.close();
-            factory.close();
+
             throw new CommandException("An error occurred.");
         }
+        finally{em.close();}
             }
 
-            manager.close();
-            factory.close();
+
         }
 
         return aResponse;
@@ -77,23 +72,21 @@ manager.getTransaction().begin();
     private GraphBean findGraph(AccountBean account, String graphName)
             throws CommandException {
         GraphBean graph = null;
-            factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
-            manager = factory.createEntityManager();
+
+            em = JpaContextListener.getEmf().createEntityManager();
         try {
-            graph = (GraphBean) manager.createNamedQuery("graphs.findGraph")
+            graph = (GraphBean) em.createNamedQuery("graphs.findGraph")
                     .setParameter("user", account)
                     .setParameter("name", graphName)
                     .getSingleResult();
         } catch (NoResultException e) {
-            manager.close();
-            factory.close();
+
             throw new CommandException("The graph name is invalid.");
 
         } catch (Exception e) {
-            manager.close();
-            factory.close();
+
             throw new CommandException("An error occurred.");
-        }
+        }finally{em.close();}
 
         return graph;
     }

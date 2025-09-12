@@ -51,6 +51,7 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpSave", "Cons", "IdManager
                             jsonManager.setSaved(true);
                             $("#" + cons.DRAW_AREA).empty();
                             idManager.setStartCid(-1);
+                            document.title = "ASDA";
                         }
 
                         if (typeof callback === "function") {
@@ -63,6 +64,7 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpSave", "Cons", "IdManager
                     jsonManager.setSaved(true);
                     idManager.setStartCid(-1);
                     $("#" + cons.DRAW_AREA).empty();
+                    document.title = "ASDA";
                 }
             },
             getLastAction: function() {

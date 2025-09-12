@@ -1,5 +1,5 @@
 package com.asda.model.asdaCommands;
-
+import com.asda.controller.asda.JpaContextListener;
 import com.asda.Command;
 import com.asda.CommandException;
 import com.asda.CommandResponse;
@@ -7,8 +7,6 @@ import com.asda.beans.AccountBean;
 import com.asda.beans.GraphBean;
 import com.asda.model.accountsCommands.UserSessionManager;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,12 +20,12 @@ import java.util.List;
  * @author Felipe Osorio Thomé
  */
 public class OpenBox implements Command {
-private static final String PERSISTENCE_UNIT = "ASDA_JSPPU";
+
     private static final String TYPE = "type";
     private static final String DIRECTORY = "/WEB-INF/view/";
     private CommandResponse aResponse;
-private EntityManagerFactory factory;
-    private EntityManager manager;
+
+    private EntityManager em;
     @Override
     public CommandResponse execute(HttpServletRequest req, HttpServletResponse res)
             throws CommandException, ServletException, IOException {
@@ -37,11 +35,7 @@ private EntityManagerFactory factory;
         UserSessionManager sessionMgr = UserSessionManager.getInstance();
         AccountBean account = sessionMgr.getAccountUser(session);
         List<GraphBean> graph = findGraphs(account);   
-        List<String> nomes = new ArrayList<>();
-        for (GraphBean g : graph) {
-            nomes.add(g.getGraphName());
-        }
-        req.setAttribute("arquivos", nomes);
+        req.setAttribute("arquivos", graph);
         //essa linha fez o save virar open
         //req.getRequestDispatcher("/WEB-INF/view/opSave.jsp").forward(req, res);
         //req.getRequestDispatcher("/WEB-INF/view/opOpen.jsp").forward(req, res);
@@ -78,7 +72,7 @@ private EntityManagerFactory factory;
                 aResponse.setPage(DIRECTORY + "textEditor.jsp");
                 break;
         }
-        System.out.println("Arquivos recebidos: " + nomes);
+        System.out.println("Arquivos recebidos: " + graph);
 
 
         return aResponse;
@@ -86,11 +80,11 @@ private EntityManagerFactory factory;
     public List<GraphBean> findGraphs(AccountBean account) throws CommandException 
     {
         List<GraphBean> graph = new ArrayList<>();
-        factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
-        manager = factory.createEntityManager();
+
+        em = JpaContextListener.getEmf().createEntityManager();
         try
         {
-            graph = manager.createNamedQuery("graphs.findGraphs", GraphBean.class).setParameter("user", account).getResultList();
+            graph = em.createNamedQuery("graphs.findGraphs", GraphBean.class).setParameter("user", account).getResultList();
         }  
         catch (Exception e)
         {
@@ -98,8 +92,7 @@ private EntityManagerFactory factory;
         } 
         finally 
         {
-            manager.close();
-            factory.close();
+            em.close();
         }
         return graph;
     }

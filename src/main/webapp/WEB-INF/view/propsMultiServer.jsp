@@ -77,7 +77,7 @@
                     </div>
 
                     <div class="field">
-                        <label for="arrival_sequence" class="labelLeft">Sequence</label>
+                        <label for="arrival_sequence" class="labelLeft">Random number generation seed</label>
                         <input id="arrival_sequence" type="text" class="inputText small">
                     </div>
                 </fieldset>
@@ -104,7 +104,7 @@
                         <input id="multiServer_stdDeviation" type="text" class="inputText small">
                     </div>
                     <div class="field">
-                        <label for="multiServer_sequence" class="labelLeft">Sequence</label>
+                        <label for="multiServer_sequence" class="labelLeft">Random number generation seed</label>
                         <input id="multiServer_sequence" type="text" class="inputText small">
                     </div>
                     

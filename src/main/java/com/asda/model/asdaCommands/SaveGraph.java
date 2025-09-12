@@ -1,5 +1,5 @@
 package com.asda.model.asdaCommands;
-
+import com.asda.controller.asda.JpaContextListener;
 import com.asda.Command;
 import com.asda.CommandException;
 import com.asda.CommandResponse;
@@ -7,8 +7,7 @@ import com.asda.beans.AccountBean;
 import com.asda.beans.GraphBean;
 import com.asda.model.accountsCommands.UserSessionManager;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -20,10 +19,10 @@ import org.json.JSONObject;
  */
 public class SaveGraph implements Command {
     
-    private static final String PERSISTENCE_UNIT = "ASDA_JSPPU";
+
     private CommandResponse aResponse;
-    private EntityManagerFactory factory;
-    private EntityManager manager;
+
+    private EntityManager em;
 
     @Override
     public CommandResponse execute(HttpServletRequest req, HttpServletResponse res)
@@ -36,7 +35,7 @@ public class SaveGraph implements Command {
 
             String graphName = jObj.getString("name");
             graph.setGraphName(graphName);
-            
+            try{
             HttpSession session = req.getSession();
             UserSessionManager sessionMgr = UserSessionManager.getInstance();
             AccountBean account = sessionMgr.getAccountUser(session);
@@ -45,15 +44,15 @@ public class SaveGraph implements Command {
             graph.setGraphJson(jObj.toString());
             graph.setPublicGraph(false);
             System.out.println(graph.getPublicGraph());
-            factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
-            manager = factory.createEntityManager();
 
-            manager.getTransaction().begin();
-            manager.persist(graph);
-            manager.getTransaction().commit();
+           em = JpaContextListener.getEmf().createEntityManager();
 
-            manager.close();
-            factory.close();
+            em.getTransaction().begin();
+            em.persist(graph);
+            em.getTransaction().commit();}
+               finally{
+            if(em!=null)em.close();}
+
         }
 
         return aResponse;

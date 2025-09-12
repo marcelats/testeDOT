@@ -6,9 +6,7 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "I
 
         var OpOpen = {
             initialize: function(manager) {
-                console.log("lightBoxManager", lightBoxManager);
-console.log("jsonManager", jsonManager);
-console.log("opNew", opNew); // este deve aparecer como objeto, não undefined
+
 
                 elementManager = manager;
 
@@ -48,37 +46,14 @@ console.log("opNew", opNew); // este deve aparecer como objeto, não undefined
                     
                 });
                 
-    /*const fileItems = document.querySelectorAll('.file-item');
-    const inputField = document.getElementById('opOpen-filename');
-
-    fileItems.forEach(item => {
-        item.addEventListener('click', function () {
-            const fileName = this.getAttribute('data-filename');
-            inputField.value = fileName;
-        });
-    });*/
     console.log('file-item count =', document.querySelectorAll('.file-item').length);
 
-    /*document.addEventListener("DOMContentLoaded", function() {
-    // Pega todos os elementos com a classe .file-item
-    document.querySelectorAll(".file-item").forEach(function(item) {
-      item.addEventListener("click", function() {
-        // Pega o valor do atributo data-filename
-        var filename = this.getAttribute("data-filename");
-        console.log("filename:");
-        console.log(filename);
-        // Coloca no input
-        document.getElementById("opOpen-filename").value = filename;
-        console.log("document.getElementById(opOpen-filename).value");
-        console.log(document.getElementById("opOpen-filename").value);
-      });
-    });
-  });*/
     document.addEventListener("click", function(e) {
-  if (e.target && e.target.classList.contains("file-item")) {
+  if (e.target && e.target.classList.contains("file-item-open")) {
     var filename = e.target.getAttribute("data-filename");
     console.log("filename:", filename);
     document.getElementById("opOpen-filename").value = filename;
+    document.getElementById("opOpen-author").value = e.target.getAttribute("data-authorname");
   }
 });
 
@@ -112,13 +87,21 @@ console.log("opNew", opNew); // este deve aparecer como objeto, não undefined
                     
                     if (action === "submit") {
                         var filename = $("#opOpen-filename").val(),
-                            re = new RegExp(cons.REG_EXP_FILENAME);
+                            re = new RegExp(cons.REG_EXP_FILENAME),
+                            author = $("#opOpen-author").val();
+                           
 
                         if (filename.match(re) === null) {
-                            alert("You need enter a valid filename.");
+                            alert("You need to enter a valid filename.");
 
-                        } else {
-                            open(filename);
+                        }else if(author.match(re) === null) {
+                            alert("You need to enter a valid author.");
+
+                        }
+
+                        
+                        else {
+                            open(filename, author);
                             const btnCode = document.getElementById("opCode");
                             btnCode.style.opacity = '0.3';
                             btnCode.style.pointerEvents = 'none';
@@ -129,46 +112,40 @@ console.log("opNew", opNew); // este deve aparecer como objeto, não undefined
                     }
                     
                     if (action === "copy") {
-                        var filename = "copia" + $("#opOpen-filename").val(),
-                            re = new RegExp(cons.REG_EXP_FILENAME);
+                        var filename = $("#opOpen-filename").val(),
+                            re = new RegExp(cons.REG_EXP_FILENAME),
+                        author = $("#opOpen-author").val();
+ 
 
                         if (filename.match(re) === null) {
                             alert("You need enter a valid filename.");
 
-                        } else {
+                        }
+                        else if (author.match(re) === null) {
+                            alert("You need to enter a valid author.");
+                        }
+                        else {
                             $.ajax({
-                url: "qnetwork?cmd=open",
-                type: "POST",
-                data: "graphName=" + $("#opOpen-filename").val(),
-                dataType: "json",
-                success: function(data) {
-                    jsonManager.setGraph(data);
-                    jsonManager.setSaved(true);
-
-                    if (data.name !== "") {
-                        document.title = data.name;
-                    }
-
-                    constructGraph(data);
-                    var tempFilename = jsonManager.getName();
-                            jsonManager.setName(filename);
-
-                            $.ajax({
-                                url: "qnetwork?cmd=save",
+                                url: "qnetwork?cmd=copy",
                                 type: "POST",
-                                data: "graphJson=" + jsonManager.stringifyGraph(),
-                                async: false,
-                                success: function() {
-                                    lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
+                                data: {
+                                    graphName: $("#opOpen-filename").val(),
+                                    author: author
+                                },
+                                dataType: "json",
+                                success: function(data) {
+                                    jsonManager.setGraph(data);
                                     jsonManager.setSaved(true);
 
-                                    document.title = filename;
-                                    open(filename);
+                                    constructGraph(data);
+                                    var tempFilename = jsonManager.getName();
+                                            
+
+                                            saveAs(filename,0);
+                                            
                                 },
                                 error: function(xhr, ajaxOptions, thrownError) {
                                     var errorHeader = xhr.getResponseHeader('fot-error');
-
-                                    jsonManager.setName(tempFilename);
 
                                     if (errorHeader != null) {
                                         alert(errorHeader);
@@ -177,28 +154,21 @@ console.log("opNew", opNew); // este deve aparecer como objeto, não undefined
                                     }
                                 }
                             });
-                },
-                error: function(xhr, ajaxOptions, thrownError) {
-                    var errorHeader = xhr.getResponseHeader('fot-error');
-
-                    if (errorHeader != null) {
-                        alert(errorHeader);
-                    } else {
-                        alert(thrownError);
-                    }
-                }
-            });
                             
                         }
                     }
                     if (action === "public") {
                         var filename = $("#opOpen-filename").val(),
                             re = new RegExp(cons.REG_EXP_FILENAME);
+ 
 
                         if (filename.match(re) === null) {
                             alert("You need enter a valid filename.");
 
-                        } else {
+                        }
+                        
+
+                        else {
                             var tempFilename = jsonManager.getName();
                             jsonManager.setName(filename);
 
@@ -206,12 +176,15 @@ console.log("opNew", opNew); // este deve aparecer como objeto, não undefined
                                 url: "qnetwork?cmd=public",
                                 type: "POST",
                                 async: false,
-                                data: "graphName=" + filename,
+                                data: {
+        graphName: filename
+        
+    },
                                 success: function() {
                                     lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
                                     jsonManager.setSaved(true);
 
-                                    document.title = filename;
+                                    document.title = "ASDA - " + filename;
                                 },
                                 error: function(xhr, ajaxOptions, thrownError) {
                                     var errorHeader = xhr.getResponseHeader('fot-error');
@@ -230,11 +203,13 @@ console.log("opNew", opNew); // este deve aparecer como objeto, não undefined
                     if (action === "private") {
                         var filename = $("#opOpen-filename").val(),
                             re = new RegExp(cons.REG_EXP_FILENAME);
+ 
 
                         if (filename.match(re) === null) {
                             alert("You need enter a valid filename.");
 
-                        } else {
+                        }
+                        else {
                             var tempFilename = jsonManager.getName();
                             jsonManager.setName(filename);
 
@@ -242,12 +217,15 @@ console.log("opNew", opNew); // este deve aparecer como objeto, não undefined
                                 url: "qnetwork?cmd=private",
                                 type: "POST",
                                 async: false,
-                                data: "graphName=" + filename,
+                                data: {
+        graphName: filename
+
+    },
                                 success: function() {
                                     lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
                                     jsonManager.setSaved(true);
 
-                                    document.title = filename;
+                                    document.title = "ASDA - " + filename;
                                 },
                                 error: function(xhr, ajaxOptions, thrownError) {
                                     var errorHeader = xhr.getResponseHeader('fot-error');
@@ -266,16 +244,23 @@ console.log("opNew", opNew); // este deve aparecer como objeto, não undefined
                     
                     if (action === "delete") {
                         OpOpen.delete($("#opOpen-filename").val());
+                        jsonManager.clearGraph();
+                            jsonManager.setSaved(true);
+                            $("#" + cons.DRAW_AREA).empty();
+                            idManager.setStartCid(-1);
+                            document.title = "ASDA";
                     }
                     
                     if (action === "rename") {
                         var filename = $("#opOpen-filename").val(),
                             re = new RegExp(cons.REG_EXP_FILENAME);
+ 
 
                         if (filename.match(re) === null) {
                             alert("You need enter a valid filename.");
 
-                        } else {
+                        }
+                         else {
                             var tempFilename = jsonManager.getName();
                             jsonManager.setName(filename);
 
@@ -283,12 +268,16 @@ console.log("opNew", opNew); // este deve aparecer como objeto, não undefined
                                 url: "qnetwork?cmd=rename",
                                 type: "POST",
                                 async: false,
-                                data: "graphName=" + filename + "&newName=" + $("#opOpen-newname").val(),
+                                data: {
+        graphName: filename,
+        newName: $("#opOpen-newname").val()
+    },
+                                
                                 success: function() {
                                     lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
                                     jsonManager.setSaved(true);
 
-                                    document.title = filename;
+                                    document.title = "ASDA - "+filename;
                                 },
                                 error: function(xhr, ajaxOptions, thrownError) {
                                     var errorHeader = xhr.getResponseHeader('fot-error');
@@ -319,10 +308,14 @@ console.log("opNew", opNew); // este deve aparecer como objeto, não undefined
                 
                             var re = new RegExp(cons.REG_EXP_FILENAME);
 
+                        
+ 
+
                         if (filename.match(re) === null) {
                             alert("You need enter a valid filename.");
 
-                        } else {
+                        }
+                        else {
                             var tempFilename = jsonManager.getName();
                             jsonManager.setName(filename);
 
@@ -330,12 +323,15 @@ console.log("opNew", opNew); // este deve aparecer como objeto, não undefined
                                 url: "qnetwork?cmd=delete",
                                 type: "POST",
                                 async: false,
-                                data: "graphName=" + filename,
+                                data: {
+        graphName: filename
+        
+    },
                                 success: function() {
                                     lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
                                     jsonManager.setSaved(true);
 
-                                    document.title = filename;
+                                    document.title = "ASDA - "+filename;
                                 },
                                 error: function(xhr, ajaxOptions, thrownError) {
                                     var errorHeader = xhr.getResponseHeader('fot-error');
@@ -355,11 +351,14 @@ console.log("opNew", opNew); // este deve aparecer como objeto, não undefined
 
         /* --- Private methods. --- */
 
-        function open(filename) {
+        function open(filename,author) {
             $.ajax({
                 url: "qnetwork?cmd=open",
                 type: "POST",
-                data: "graphName=" + filename,
+                data: {
+        graphName: filename,
+       author: author
+    },
                 dataType: "json",
                 success: function(data) {
                     lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
@@ -368,7 +367,7 @@ console.log("opNew", opNew); // este deve aparecer como objeto, não undefined
                     jsonManager.setSaved(true);
 
                     if (data.name !== "") {
-                        document.title = data.name;
+                        document.title = "ASDA - " + data.name;
                     }
 
                     constructGraph(data);
@@ -445,6 +444,52 @@ console.log("opNew", opNew); // este deve aparecer como objeto, não undefined
                     }
                 }
             }
+        }
+        function saveAs(filename, i = 0) {
+            if (i !== 0) jsonManager.setName(filename + "_" + i);
+
+            $.ajax({
+                url: "qnetwork?cmd=save",
+                type: "POST",
+                data: "graphJson=" + jsonManager.stringifyGraph(),
+                async: true, // nunca usar false
+                success: function () {
+                    lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
+                    jsonManager.setSaved(true);
+
+                    if (i === 0) document.title = "ASDA - " + filename;
+                    else document.title = "ASDA - " + filename + "_" + i;
+                },
+                error: function () {
+                    if (i < 10) { // limite de tentativas
+                        setTimeout(() => saveAs(filename, i + 1), 500); 
+                    } else {
+                        alert("Erro ao salvar após várias tentativas.");
+                    }
+                }
+            });
+        }
+
+        function saveAs(filename,i){
+            if(i!==0)jsonManager.setName(filename+"_"+i);
+            $.ajax({
+                url: "qnetwork?cmd=save",
+                type: "POST",
+                data: "graphJson=" + jsonManager.stringifyGraph(),
+                async: false,
+                success: function() {
+                    lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
+                    jsonManager.setSaved(true);
+
+                    if(i===0)document.title = "ASDA - "+filename;
+                    else document.title = "ASDA - "+filename+"_"+i;
+                    return;
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
+                    saveAs(filename,i+1);
+                    return;
+                }
+            });
         }
 
         return OpOpen;

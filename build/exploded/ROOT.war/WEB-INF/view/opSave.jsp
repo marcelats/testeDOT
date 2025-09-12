@@ -15,8 +15,15 @@
             
             <div id="opSave-top" class="filesWindow">
                 <c:forEach var="arquivo" items="${arquivos}">
-                    <span class="file-item" data-filename="${arquivo}">${arquivo}</span><br>
-                </c:forEach>
+                <div class="file-row">
+                    <span class="file-item-save" data-filename="${arquivo.graphName}" data-authorname="${arquivo.user.userId}">
+                        ${arquivo.graphName}
+                    </span>
+                    <span class="file-author">
+                        ${arquivo.user.userId}
+                    </span>
+                </div>
+            </c:forEach>
             </div>
 
             <div id="opSave-bottom" class="standardForm">

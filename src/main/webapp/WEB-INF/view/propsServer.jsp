@@ -67,7 +67,7 @@
                     </div>
 
                     <div class="field">
-                        <label for="arrival_sequence" class="labelLeft">Sequence</label>
+                        <label for="arrival_sequence" class="labelLeft">Random number generation seed</label>
                         <input disabled id="arrival_sequence" type="text" class="inputText small">
                     </div>
                 </fieldset>
@@ -95,7 +95,7 @@
                     </div>
 
                                     <div class="field">
-                        <label for="server_sequence" class="labelLeft">Sequence</label>
+                        <label for="server_sequence" class="labelLeft">Random number generation seed</label>
                         <input disabled id="server_sequence" type="text" class="inputText small">
                     </div>
                 </fieldset><br>
