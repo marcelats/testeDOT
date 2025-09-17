@@ -14,6 +14,10 @@
             </div>
             
             <div id="opSave-top" class="filesWindow">
+                <div class="filesHeader">
+                <span class="file-col">Filename</span>
+                <span class="author-col">Author</span>
+            </div>
                 <c:forEach var="arquivo" items="${arquivos}">
                 <div class="file-row">
                     <span class="file-item-save" data-filename="${arquivo.graphName}" data-authorname="${arquivo.user.userId}">

@@ -41,7 +41,7 @@ $(document).ready(function() {
 $(document).bind('ajaxComplete', function(event, xhr, options) {
     var redirectHeader = xhr.getResponseHeader('fot-redirect');
 
-    if (xhr.readyState == 4 && redirectHeader != null) {
+    if (xhr.readyState === 4 && redirectHeader !== null) {
         window.location.href = redirectHeader;
     }
 });
@@ -72,7 +72,7 @@ function validateLogIn() {
                 error: function(xhr, ajaxOptions, thrownError) {
                     var errorHeader = xhr.getResponseHeader('fot-error');
                     
-                    if(errorHeader != null) {
+                    if(errorHeader !== null) {
                         alert(errorHeader);
                     }else {
                         alert(thrownError);
@@ -119,10 +119,10 @@ function validateSignIn() {
                 success: function() {
                     alert("Registration done successfully!");
                 },
-                error: function(xhr, ajaxOptions, thrownError) {
+                error: function(xhr, thrownError) {
                     var errorHeader = xhr.getResponseHeader('fot-error');
                     
-                    if(errorHeader != null) {
+                    if(errorHeader !== null) {
                         alert(errorHeader);
                     }else {
                         alert(thrownError);

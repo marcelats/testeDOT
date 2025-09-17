@@ -1,17 +1,12 @@
 package com.asda;
-
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
-
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-
 import org.glassfish.jersey.media.multipart.FormDataParam;
-
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -46,10 +41,7 @@ public class Executor {
 
         // 2. Constrói POST para o container Python
         String boundary = "----JavaBoundary" + System.currentTimeMillis();
-        URL url;
-        //if("Java".equals(lang) ||"Python".equals(lang) || "R".equals(lang) || lang==null) 
-            url = new URL("http://helloworldweb-python-executor-1:8000/executar");
-        //else url = new URL("http://meu-java:8002/executar");
+        URL url = new URL("http://helloworldweb-python-executor-1:8000/executar");
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setDoOutput(true);
         conn.setRequestMethod("POST");
@@ -87,7 +79,7 @@ public class Executor {
         // 3. Lê resposta do container Python (o arquivo codigo.py)
         int status = conn.getResponseCode();
         if (status != 200) {
-            return Response.status(Response.Status.BAD_GATEWAY).entity("Erro ao chamar container").build();
+            return Response.status(Response.Status.BAD_GATEWAY).entity("Error when calling container").build();
         }
 
         InputStream respostaPython = conn.getInputStream();
@@ -95,9 +87,9 @@ public class Executor {
 
         // 4. Retorna o código como download
         return Response.ok(new ByteArrayInputStream(resultado))
-                .type("text/x-python")
-                .header("Content-Disposition", "attachment; filename=\"report.txt\"")
-                .build();
+        .type("text/x-python")
+        .header("Content-Disposition", "attachment; filename=\"report.txt\"")
+        .build();
     }
 }
 

@@ -6,8 +6,6 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "I
 
         var OpOpen = {
             initialize: function(manager) {
-
-
                 elementManager = manager;
 
                 /* Close button of the light box. */
@@ -39,67 +37,96 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "I
 
                     OpOpen.execute("delete");
                 });
-                $(document).on("click", "#opRename-btSubmit", function(e) {
+                /*$(document).on("click", "#opRename-btSubmit", function(e) {
                     e.preventDefault();
 
                     OpOpen.execute("rename");
-                    
-                });
+                });*/
                 
-    console.log('file-item count =', document.querySelectorAll('.file-item').length);
+                console.log('file-item count =', document.querySelectorAll('.file-item').length);
+                document.addEventListener("click", (e) => {
+                    const checkbox = e.target.closest(".checkbox");
+                    const row = e.target.closest(".file-row-open");
 
-    document.addEventListener("click", function(e) {
-  if (e.target && e.target.classList.contains("file-item-open")) {
-    var filename = e.target.getAttribute("data-filename");
-    console.log("filename:", filename);
-    document.getElementById("opOpen-filename").value = filename;
-    document.getElementById("opOpen-author").value = e.target.getAttribute("data-authorname");
-  }
-});
+                    if (checkbox) {
+                        e.stopPropagation();
+                        const checkbox = e.target;
+                        const filename = checkbox.dataset.filenameCheckbox;
+                        const authorId = checkbox.dataset.authorCheckbox;
+                        const userId = document.getElementById("current-user").dataset.userId;
+                        console.log(authorId);
+                        console.log(userId);
+                        if (authorId !== userId) {
+                            alert("Somente o autor pode alterar a visibilidade.");
+                            return;
+                        }
 
-             
+                        // Bloqueia novos cliques até terminar
+                        if (checkbox.dataset.busy === "true") return;
+                        checkbox.dataset.busy = "true";
+
+                        // Alterna visualmente para feedback imediato
+                        const currentlyPublic = checkbox.textContent === "✔";
+                        checkbox.textContent = currentlyPublic ? "" : "✔";
+
+                        $.ajax({
+                            url: "qnetwork?cmd=public",
+                            type: "POST",
+                            data: { graphName: filename },
+                            success: function() {
+                                jsonManager.setSaved(true);
+                                // aqui você poderia atualizar o estado real se necessário
+                            },
+                            error: function(xhr, ajaxOptions, thrownError) {
+                                // reverte visual caso erro
+                                checkbox.textContent = currentlyPublic ? "✔" : "";
+                                var errorHeader = xhr.getResponseHeader('fot-error');
+                                alert(errorHeader != null ? errorHeader : thrownError);
+                            },
+                            complete: function() {
+                                checkbox.dataset.busy = "false"; // libera clique
+                            }
+                        });
+                    } else if (row) {
+                        var filename = row.dataset.filename;
+                        var authorId = row.dataset.authorname;
+
+                        console.log("filename:", filename);
+                        document.getElementById("opOpen-filename").value = filename;
+                        document.getElementById("opOpen-author").value = authorId;
+                    }
+                });
             },
             execute: function(action) {
                 require(["OpNew"], function(opNew) {
-    if(!jsonManager.isSaved()) {
-                console.log("opNew", opNew);
-                opNew.execute(function() {
-                    var userChose = opNew.getLastAction();
-                    
-                    if(userChose !== "cancel") {
-                        OpOpen.execute();
+                    if(!jsonManager.isSaved()) {
+                        console.log("opNew", opNew);
+                        opNew.execute(function() {
+                            var userChose = opNew.getLastAction();
+
+                            if(userChose !== "cancel") {
+                                OpOpen.execute();
+                            }
+                        });
                     }
                 });
-            }
-});
-
-            
                 if (typeof action !== "string") {
                     lightBoxManager.openBox(cons.SHADOWING, cons.BOX_CONTAINER,
                         "qnetwork?cmd=open-box&type=open", function() {
                         $("#opOpen-filename").focus();
-                    });
-
+                    });      
                     callback = action;
-
                 } else {
                     lastAction = action;
-                    
                     if (action === "submit") {
                         var filename = $("#opOpen-filename").val(),
                             re = new RegExp(cons.REG_EXP_FILENAME),
                             author = $("#opOpen-author").val();
-                           
-
                         if (filename.match(re) === null) {
                             alert("You need to enter a valid filename.");
-
                         }else if(author.match(re) === null) {
                             alert("You need to enter a valid author.");
-
                         }
-
-                        
                         else {
                             open(filename, author);
                             const btnCode = document.getElementById("opCode");
@@ -110,16 +137,12 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "I
                             btnExecute.style.pointerEvents = 'none';
                         }
                     }
-                    
                     if (action === "copy") {
                         var filename = $("#opOpen-filename").val(),
                             re = new RegExp(cons.REG_EXP_FILENAME),
                         author = $("#opOpen-author").val();
- 
-
                         if (filename.match(re) === null) {
                             alert("You need enter a valid filename.");
-
                         }
                         else if (author.match(re) === null) {
                             alert("You need to enter a valid author.");
@@ -136,17 +159,12 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "I
                                 success: function(data) {
                                     jsonManager.setGraph(data);
                                     jsonManager.setSaved(true);
-
                                     constructGraph(data);
                                     var tempFilename = jsonManager.getName();
-                                            
-
-                                            saveAs(filename,0);
-                                            
+                                    saveAs(filename,0);       
                                 },
                                 error: function(xhr, ajaxOptions, thrownError) {
                                     var errorHeader = xhr.getResponseHeader('fot-error');
-
                                     if (errorHeader != null) {
                                         alert(errorHeader);
                                     } else {
@@ -154,20 +172,14 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "I
                                     }
                                 }
                             });
-                            
                         }
                     }
                     if (action === "public") {
                         var filename = $("#opOpen-filename").val(),
                             re = new RegExp(cons.REG_EXP_FILENAME);
- 
-
                         if (filename.match(re) === null) {
                             alert("You need enter a valid filename.");
-
-                        }
-                        
-
+                        }                       
                         else {
                             var tempFilename = jsonManager.getName();
                             jsonManager.setName(filename);
@@ -177,13 +189,11 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "I
                                 type: "POST",
                                 async: false,
                                 data: {
-        graphName: filename
-        
-    },
+                                    graphName: filename
+                                },
                                 success: function() {
                                     lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
                                     jsonManager.setSaved(true);
-
                                     document.title = "ASDA - " + filename;
                                 },
                                 error: function(xhr, ajaxOptions, thrownError) {
@@ -203,35 +213,27 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "I
                     if (action === "private") {
                         var filename = $("#opOpen-filename").val(),
                             re = new RegExp(cons.REG_EXP_FILENAME);
- 
-
                         if (filename.match(re) === null) {
                             alert("You need enter a valid filename.");
-
                         }
                         else {
                             var tempFilename = jsonManager.getName();
                             jsonManager.setName(filename);
-
                             $.ajax({
                                 url: "qnetwork?cmd=private",
                                 type: "POST",
                                 async: false,
                                 data: {
-        graphName: filename
-
-    },
+                                    graphName: filename
+                                },
                                 success: function() {
                                     lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
                                     jsonManager.setSaved(true);
-
                                     document.title = "ASDA - " + filename;
                                 },
                                 error: function(xhr, ajaxOptions, thrownError) {
                                     var errorHeader = xhr.getResponseHeader('fot-error');
-
                                     jsonManager.setName(tempFilename);
-
                                     if (errorHeader != null) {
                                         alert(errorHeader);
                                     } else {
@@ -243,35 +245,32 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "I
                     }
                     
                     if (action === "delete") {
-                        OpOpen.delete($("#opOpen-filename").val());
-                        jsonManager.clearGraph();
-                            jsonManager.setSaved(true);
-                            $("#" + cons.DRAW_AREA).empty();
-                            idManager.setStartCid(-1);
-                            document.title = "ASDA";
+                        const confirmDelete = confirm("Are you sure you want to delete " + $("#opOpen-filename").val() +"?");
+                        if (!confirmDelete) {
+                            return; 
+                        }
+                        OpOpen.delete($("#opOpen-filename").val(),$("#opOpen-author").val());
+                        document.getElementById("opOpen-filename").value = "";
+                        document.getElementById("opOpen-author").value = "";
                     }
                     
                     if (action === "rename") {
                         var filename = $("#opOpen-filename").val(),
                             re = new RegExp(cons.REG_EXP_FILENAME);
- 
-
                         if (filename.match(re) === null) {
                             alert("You need enter a valid filename.");
-
                         }
                          else {
                             var tempFilename = jsonManager.getName();
                             jsonManager.setName(filename);
-
                             $.ajax({
                                 url: "qnetwork?cmd=rename",
                                 type: "POST",
                                 async: false,
                                 data: {
-        graphName: filename,
-        newName: $("#opOpen-newname").val()
-    },
+                                    graphName: filename,
+                                    newName: $("#opOpen-newname").val()
+                                },
                                 
                                 success: function() {
                                     lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
@@ -304,48 +303,36 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "I
             getLastAction: function() {
                 return lastAction;
             },
-            delete: function(filename){
-                
-                            var re = new RegExp(cons.REG_EXP_FILENAME);
-
-                        
- 
-
-                        if (filename.match(re) === null) {
-                            alert("You need enter a valid filename.");
-
+            delete: function(filename,author){
+                var re = new RegExp(cons.REG_EXP_FILENAME);
+                if (filename.match(re) === null) {
+                    alert("You need enter a valid filename.");
+                }
+                else {
+                    $.ajax({
+                        url: "qnetwork?cmd=delete",
+                        type: "POST",
+                        async: false,
+                        data: {
+                            graphName: filename
+                        },
+                        success: function() {
+                            //lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
+                            //jsonManager.setSaved(true);
+                            //document.title = "ASDA - "+filename;
+                            $('.file-row-open[data-filename="' + filename + '"][data-authorname="' + author + '"]').remove();      
+                        },
+                        error: function(xhr, ajaxOptions, thrownError) {
+                            var errorHeader = xhr.getResponseHeader('fot-error');
+                            jsonManager.setName(tempFilename);
+                            if (errorHeader != null) {
+                                alert(errorHeader);
+                            } else {
+                                alert(thrownError);
+                            }
                         }
-                        else {
-                            var tempFilename = jsonManager.getName();
-                            jsonManager.setName(filename);
-
-                            $.ajax({
-                                url: "qnetwork?cmd=delete",
-                                type: "POST",
-                                async: false,
-                                data: {
-        graphName: filename
-        
-    },
-                                success: function() {
-                                    lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
-                                    jsonManager.setSaved(true);
-
-                                    document.title = "ASDA - "+filename;
-                                },
-                                error: function(xhr, ajaxOptions, thrownError) {
-                                    var errorHeader = xhr.getResponseHeader('fot-error');
-
-                                    jsonManager.setName(tempFilename);
-
-                                    if (errorHeader != null) {
-                                        alert(errorHeader);
-                                    } else {
-                                        alert(thrownError);
-                                    }
-                                }
-                            });
-                        }
+                    });
+                }
             }
         };
 
@@ -356,9 +343,9 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "I
                 url: "qnetwork?cmd=open",
                 type: "POST",
                 data: {
-        graphName: filename,
-       author: author
-    },
+                    graphName: filename,
+                   author: author
+                },
                 dataType: "json",
                 success: function(data) {
                     lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
@@ -369,12 +356,11 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "I
                     if (data.name !== "") {
                         document.title = "ASDA - " + data.name;
                     }
-
                     constructGraph(data);
+                    $("#opParamBox").values(jsonManager.getGraphParameters());
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
                     var errorHeader = xhr.getResponseHeader('fot-error');
-
                     if (errorHeader != null) {
                         alert(errorHeader);
                     } else {
@@ -384,58 +370,29 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "I
             });
         }
 
-        function opParam(action) {
-            if (typeof action === "undefined") {
-                lightBoxManager.openBox(cons.SHADOWING, cons.BOX_CONTAINER,
-                    "qnetwork?cmd=open-box&type=parameters", function() {
-                    var parameters = jsonManager.getGraphParameters();
-
-                    $("#" + cons.BOX_CONTAINER).values(parameters);
-                });
-
-            } else if (action === "submit") {
-                var parameters = $("#" + cons.BOX_CONTAINER).values();
-
-                jsonManager.setGraphParameters(parameters);
-
-                lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
-            }
-        }
-
         function constructGraph(graph) {
             $("#" + cons.DRAW_AREA).empty();
-
             if (!utils.mapIsEmpty(graph.mapNodes)) {
-
                 for (var key in graph.mapNodes) {
-
                     var position = {
                         x: parseInt(graph.mapNodes[key].x),
                         y: parseInt(graph.mapNodes[key].y)
                     };
-
                     elementManager.add(graph.mapNodes[key].type, position, key);
                 }
-                
                 const mapNodes = jsonManager.getGraph().mapNodes;
-
                 let maiorId = -Infinity;
-
                 for (const key in mapNodes) {
-                  if (mapNodes.hasOwnProperty(key)) {
-                    const node = mapNodes[key];
-                    if (node.id > maiorId) {
-                      maiorId = node.id;
+                    if (mapNodes.hasOwnProperty(key)) {
+                        const node = mapNodes[key];
+                        if (node.id > maiorId) {
+                            maiorId = node.id;
+                        }
                     }
-                  }
                 }
-
                 idManager.setStartCid(maiorId);
-
                 for (var keyNode in graph.mapNodes) {
-
                     var mapTargets = graph.mapNodes[keyNode].mapTargets;
-
                     if (!utils.mapIsEmpty(mapTargets)) {
                         for (var keyTarget in mapTargets) {
                             drawArea.linkElements($("#" + keyNode));
@@ -447,7 +404,6 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "I
         }
         function saveAs(filename, i = 0) {
             if (i !== 0) jsonManager.setName(filename + "_" + i);
-
             $.ajax({
                 url: "qnetwork?cmd=save",
                 type: "POST",
@@ -470,7 +426,7 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "I
             });
         }
 
-        function saveAs(filename,i){
+        function saveAs(filename, i){
             if(i!==0)jsonManager.setName(filename+"_"+i);
             $.ajax({
                 url: "qnetwork?cmd=save",
@@ -491,7 +447,6 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "I
                 }
             });
         }
-
         return OpOpen;
     }
 );

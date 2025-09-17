@@ -22,7 +22,7 @@ define(["jquery"],
             $.fn.values = function(data) {
                 var els = $(this).find(':input').get();
 
-                if (typeof data != 'object') {
+                if (typeof data !== 'object') {
                     // return all data
                     data = {};
 
@@ -38,8 +38,8 @@ define(["jquery"],
                 } else {
                     $.each(els, function() {
                         if (this.id && data[this.id]) {
-                            if (this.type == 'checkbox' || this.type == 'radio') {
-                                $(this).attr("checked", (data[this.id] == $(this).val()));
+                            if (this.type === 'checkbox' || this.type === 'radio') {
+                                $(this).attr("checked", (data[this.id] === $(this).val()));
                             } else {
                                 $(this).val(data[this.id]);
                             }

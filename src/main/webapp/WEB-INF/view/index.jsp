@@ -53,11 +53,6 @@
                 </form>
 
             </div>
-
-            <div id="bottomLogin">
-                <p>Core - Sarita Mazzini Bruschi</p>
-                <p>Interface - Felipe Osorio Thomé</p>
-            </div>
         </div>
 
         <div id="shadowing" class="shadowing">

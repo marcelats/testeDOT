@@ -50,6 +50,14 @@ define(["jquery", "LightBoxManager", "JsonManager", "Cons", "OpOpen"],
                         
                         else {
                             jsonManager.setName(filename);
+                            // capturar o radio selecionado
+                            
+/*let valorSalvo = $('input[name="modeltype"]:checked').val();
+console.log("valorSalvo save:");
+console.log(valorSalvo);
+// salvar no objeto
+jsonManager.getGraph().radio = valorSalvo;
+console.log("graph: ", jsonManager.stringifyGraph());*/
                             $.ajax({
   url: 'qnetwork?cmd=verify',
   type: 'POST',
@@ -60,7 +68,7 @@ define(["jquery", "LightBoxManager", "JsonManager", "Cons", "OpOpen"],
 
                     jsonManager.setSaved(true);
 
-                    document.title = filename;
+                    document.title = "ASDA - "+ filename;
   },
   error: function (err) {
     console.error('Erro:', err);
@@ -100,7 +108,7 @@ define(["jquery", "LightBoxManager", "JsonManager", "Cons", "OpOpen"],
 
                     jsonManager.setSaved(true);
 
-                    document.title = filename;
+                    document.title = "ASDA - "+filename;
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
                     var errorHeader = xhr.getResponseHeader('fot-error');

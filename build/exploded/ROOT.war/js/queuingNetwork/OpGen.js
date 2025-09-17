@@ -29,7 +29,7 @@ define(["jquery", "JsonManager","Arrival"],
                     {
                         if (jsonManager.getGraph().mapNodes[key]?.properties?.multiServer_nbrServers !== undefined) 
                         {
-                            alert("Remova os multiservers ou use linguagem C");
+                            alert("Remove multiservers or use C language");
                             return;
                         }         
                     }  
@@ -45,7 +45,9 @@ define(["jquery", "JsonManager","Arrival"],
                 //let modelType = document.getElementById("opParam_open").checked ;
                 //let warmupTime = document.getElementById("opParam_timeDefined").checked;
 
-                var selectedModelType = document.querySelector('input[name="modelType"]:checked');
+                //var selectedModelType = document.querySelector('input[name="modeltype"]:checked').value();
+                //c/onsole.log("model type:");
+//console.log(selectedModelType);
                 let content;
                 
 
@@ -274,21 +276,11 @@ define(["jquery", "JsonManager","Arrival"],
 );
   
  function checkModelType() { 
-
-                
-                    /*const closed = document.getElementById("opParam_closed");
-                    const open = document.getElementById("opParam_open");
-                    if (closed.checked) {
-                      modelType = "False";
-                    } else if (open.checked) {
-                      modelType = "True";
-                    } */
-                
-                    const defined = document.getElementById("opParam_timeDefined");
-                    const automatic = document.getElementById("opParam_timeAutomatic");
-                    if (defined.checked) {
-                      warmupTime = "True";
-                    } else if (automatic.checked) {
-                      warmupTime = "False";
-                    }
-                }
+    const defined = document.getElementById("opParam_timeDefined");
+    const automatic = document.getElementById("opParam_timeAutomatic");
+    if (defined.checked) {
+      warmupTime = "True";
+    } else if (automatic.checked) {
+      warmupTime = "False";
+    }
+}

@@ -6,15 +6,11 @@ import com.asda.CommandResponse;
 import com.asda.beans.AccountBean;
 import com.asda.beans.GraphBean;
 import com.asda.model.accountsCommands.UserSessionManager;
-
 import jakarta.persistence.EntityManager;
-
 import jakarta.persistence.NoResultException;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-
 import java.util.Objects;
 
 /**
@@ -23,56 +19,49 @@ import java.util.Objects;
  */
 public class RenameGraph implements Command {
 
-
     private CommandResponse aResponse;
 
     private EntityManager em;
 
     @Override
     public CommandResponse execute(HttpServletRequest req, HttpServletResponse res)
-            throws CommandException {
+        throws CommandException {
 
-        HttpSession session = req.getSession();
-        UserSessionManager sessionMgr = UserSessionManager.getInstance();
-        AccountBean account = sessionMgr.getAccountUser(session);
+            HttpSession session = req.getSession();
+            UserSessionManager sessionMgr = UserSessionManager.getInstance();
+            AccountBean account = sessionMgr.getAccountUser(session);
+            String graphName = req.getParameter("graphName");
+            String newName = req.getParameter("newName");
 
-        String graphName = req.getParameter("graphName");
-        String newName = req.getParameter("newName");
+            if (graphName != null ) {
 
-        if (graphName != null ) {
+                em = JpaContextListener.getEmf().createEntityManager();
 
-            em = JpaContextListener.getEmf().createEntityManager();
+                GraphBean graph = findGraph(em, account, graphName);
+                if (graph != null && Objects.equals(account.getUserId(), graph.getUser().getUserId())) {
+                    try {
+                        em.getTransaction().begin();
+                        em.createNamedQuery("graphs.renameGraph").setParameter("name", graphName).setParameter("newName", newName).executeUpdate();
+                        em.getTransaction().commit();
+                    } catch (NoResultException e) {
 
-            GraphBean graph = findGraph(account, graphName);
-            if (graph != null && Objects.equals(account.getUserId(), graph.getUser().getUserId())) {
+                        throw new CommandException("The graph name is invalid.");
 
+                    } catch (Exception e) {
 
-        try {
-
-em.getTransaction().begin();
-            em.createNamedQuery("graphs.renameGraph").setParameter("name", graphName).setParameter("newName", newName).executeUpdate();
-            em.getTransaction().commit();
-        } catch (NoResultException e) {
-
-            throw new CommandException("The graph name is invalid.");
-
-        } catch (Exception e) {
-
-            throw new CommandException("An error occurred.");
-        }
-        finally{em.close();}
+                        throw new CommandException("An error occurred.");
+                    }
+                    finally{
+                        em.close();
+                    }
+                }
             }
-
-        }
-
-        return aResponse;
+            return aResponse;
     }
 
-    private GraphBean findGraph(AccountBean account, String graphName)
+    private GraphBean findGraph(EntityManager em, AccountBean account, String graphName)
             throws CommandException {
         GraphBean graph = null;
-
-            em = JpaContextListener.getEmf().createEntityManager();
         try {
             graph = (GraphBean) em.createNamedQuery("graphs.findGraph")
                     .setParameter("user", account)
@@ -86,8 +75,6 @@ em.getTransaction().begin();
 
             throw new CommandException("An error occurred.");
         }
-        finally{em.close();}
-
         return graph;
     }
 }

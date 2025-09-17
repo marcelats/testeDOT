@@ -17,11 +17,11 @@ public class Init implements Command {
 
     @Override
     public CommandResponse execute(HttpServletRequest req, HttpServletResponse res)
-            throws CommandException {
-        aResponse = new CommandResponse();
-        aResponse.setForward(true);
-        aResponse.setPage(appPage);
-        
-        return aResponse;
+        throws CommandException {
+            aResponse = new CommandResponse();
+            aResponse.setForward(true);
+            aResponse.setPage(appPage);
+
+            return aResponse;
     }
 }

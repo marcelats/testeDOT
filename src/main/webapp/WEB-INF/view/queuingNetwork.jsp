@@ -23,8 +23,8 @@
 
         <script data-main="js/queuingNetwork/main.js" src="js/libs/require.js"></script>
         <script src="js/queuingNetwork/require.cfg.js"></script>
-<script src="js/libs/jquery-1.10.2.js"></script>
-    <script src="js/libs/jquery-ui-1.10.4.custom.js"></script>
+        <script src="js/libs/jquery-1.10.2.js"></script>
+        <script src="js/libs/jquery-ui-1.10.4.custom.js"></script>
     </head>
 
     <body>
@@ -95,10 +95,6 @@
                     <div id="statusMiddle">&nbsp;</div>
                     <div id="statusRight">&nbsp;</div>
                 </div>
-                <div id="bottomCredits">
-                    Model - Sarita Mazzini Bruschi <br>
-                    View and Controllers - Felipe Osorio Thomé
-                </div>
             </div>
         </div>
         
@@ -108,8 +104,5 @@
         <div id="shadow2" class="shadow2">
             <div id="boxArrival" class="box"></div>
         </div>
-
-
-        
     </body>
 </html>

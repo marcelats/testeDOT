@@ -23,11 +23,11 @@ public class HomeServlet extends HttpServlet {
             throws ServletException, IOException {
         FlowControl.forward(WELCOME_PAGE, req, res);
         
-        /***/
-        EntityManagerFactory factory = Persistence.createEntityManagerFactory("ASDA_JSPPU");
-        EntityManager manager = factory.createEntityManager();
-        manager.close();
-        factory.close();
-        /***/
+        try ( /***/ EntityManagerFactory factory = Persistence.createEntityManagerFactory("ASDA_JSPPU")) {
+            EntityManager manager = factory.createEntityManager();
+            manager.close();
+            /***/
+        }
+
     }
 }

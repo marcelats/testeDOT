@@ -100,7 +100,6 @@ define(["jquery", "jsPlumb", "IdManager"],
             graph.mapNodes = novosMapNodes;
             console.log("novosMapNode:");
             console.log(novosMapNodes);
-//console.log(nos e arestas pra ver se ta certo)
             // 4. Atualiza a interface (DOM)
             $(".idDiv").each(function() {
                 const $div = $(this);
@@ -149,7 +148,7 @@ define(["jquery", "jsPlumb", "IdManager"],
             linkNodes: function(connection) {
                 if(connection){
                     if(graph.mapNodes[connection.sourceId].type==="out"){console.log("caso 1 jsonmanager");return 0;}
-                if(graph.mapNodes[connection.sourceId].type==="source" && graph.mapNodes[connection.targetId].type==="out"){console.log("caso 2 jsonmanager");return 0;}
+                if(graph.mapNodes[connection.sourceId].type==="source" && graph.mapNodes[connection.targetId].type === "out"){console.log("caso 2 jsonmanager");return 0;}
                 if(graph.mapNodes[connection.targetId].type==="source"){console.log("caso 3 jsonmanager");return 0;}
                 }
                     

@@ -31,19 +31,6 @@
                     </div>
                 </fieldset>
 
-                <%--<fieldset>
-                    <legend>Choice next resource</legend>
-                    <div class="field">
-                        <label for="server_probability" class="labelLeft">Probability</label>
-                        <input id="server_probability" type="radio" name="probability">
-                    </div>
-
-                    <div class="field">
-                        <label for="server_cycle" class="labelLeft">Cycle</label>
-                        <input id="server_cycle" type="radio" name="probability">
-                    </div>
-                </fieldset>--%>
-
                 <fieldset>
                     <legend>Arrival distribution</legend>
                     <div class="field">
@@ -94,14 +81,14 @@
                         <input id="server_stdDeviation" type="text" class="inputText small">
                     </div>
 
-                                    <div class="field">
+                    <div class="field">
                         <label for="server_sequence" class="labelLeft">Random number generation seed</label>
                         <input disabled id="server_sequence" type="text" class="inputText small">
                     </div>
                 </fieldset><br>
                 <div class="field">
-                        <label for="probability" class="labelLeft">Probability</label>
-                        <input id="probability" type="text" class="inputText small">
+                    <label for="probability" class="labelLeft">Probability</label>
+                    <input id="probability" type="text" class="inputText small">
                 </div>
 
 

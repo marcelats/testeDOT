@@ -555,7 +555,7 @@ atualizarWarmup();
   observeVisibilityTargets();
   
 
-document.addEventListener("DOMContentLoaded", function () {
+/*document.addEventListener("DOMContentLoaded", function () {
     console.log("oi1");
     const fileItems = document.querySelectorAll('.file-item');
     const inputField = document.getElementById('opOpen-filename');
@@ -568,9 +568,13 @@ document.addEventListener("DOMContentLoaded", function () {
             inputField.value = fileName;
         });
     });
+    
+});*/
+
+$("#textEditor").parent().css({
+    width: "900px",
+    maxWidth: "none"
 });
-
-
   
     /*const fieldset = document.getElementById("queueStatsFieldset");
     if (fieldset) {

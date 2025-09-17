@@ -4,8 +4,8 @@
  * author: Felipe Osorio Thomé
  */
 
-define(["jquery", "LightBoxManager", "JsonManager", "OpSave", "Cons", "IdManager"],
-    function($, lightBoxManager, jsonManager, opSave, cons, idManager) {
+define(["jquery", "LightBoxManager", "JsonManager", "OpSave", "Cons", "IdManager", "jsPlumb"],
+    function($, lightBoxManager, jsonManager, opSave, cons, idManager, jsPlumb) {
         "use strict";
 
         var lastAction = null, callback = null;
@@ -51,6 +51,7 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpSave", "Cons", "IdManager
                             jsonManager.setSaved(true);
                             $("#" + cons.DRAW_AREA).empty();
                             idManager.setStartCid(-1);
+                            jsPlumb.reset(); 
                             document.title = "ASDA";
                         }
 
@@ -64,6 +65,7 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpSave", "Cons", "IdManager
                     jsonManager.setSaved(true);
                     idManager.setStartCid(-1);
                     $("#" + cons.DRAW_AREA).empty();
+                    jsPlumb.reset(); 
                     document.title = "ASDA";
                 }
             },

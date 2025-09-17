@@ -22,11 +22,6 @@
                         <label for="multiServer_nbrServers" class="labelLeft">Number of servers</label>
                         <input id="multiServer_nbrServers"type="text" class="inputText small" value="1">
                     </div>
-
-                    <%--<div class="field">
-                        <label for="multiServer_nbrQueues" class="labelLeft">Number of queues</label>
-                        <input id="multiServer_nbrQueues"type="text" class="inputText small">
-                    </div>--%>
                 </fieldset>
 
                 <fieldset>
@@ -42,18 +37,6 @@
                     </div>
                 </fieldset>
 
-                <%--<fieldset>
-                    <legend>Choice next resource</legend>
-                    <div class="field">
-                        <label for="multiServer_probability" class="labelLeft">Probability</label>
-                        <input id="multiServer_probability" type="radio" name="probability">
-                    </div>
-
-                    <div class="field">
-                        <label for="multiServer_cycle" class="labelLeft">Cycle</label>
-                        <input id="multiServer_cycle" type="radio" name="probability">
-                    </div>
-                </fieldset>--%>
                 <fieldset>
                     <legend>Arrival distribution</legend>
                     <div class="field">
@@ -110,12 +93,9 @@
                     
                 </fieldset><br>
                 <div class="field">
-                        <label for="probability" class="labelLeft">Probability</label>
-                        <input id="probability" type="text" class="inputText small">
+                    <label for="probability" class="labelLeft">Probability</label>
+                    <input id="probability" type="text" class="inputText small">
                 </div>
-                
-                
-
                 <input id="btCancel" type="button" value="Cancel" class="button">
                 <input id ="btSubmit" type="button" value="Ok" class="button">
             </form>

@@ -36,13 +36,13 @@
   <legend>Model type</legend>
 
   <div class="fieldRow">
-    <input id="opParam_execTimeOp" type="radio" name="modeltype">
+    <input id="opParam_execTimeOp" type="radio" name="modeltype" value="execTime">
     <label for="opParam_execTimeOp">Execution time</label>
     <input id="opParam_execTime" type="text" class="inputText small" >
   </div>
 
   <div class="fieldRow">
-    <input id="opParam_maxEntitiesOp" type="radio" name="modeltype">
+    <input id="opParam_maxEntitiesOp" type="radio" name="modeltype" value="maxEntities">
     <label for="opParam_maxEntitiesOp">Max number of entities</label>
     <input id="opParam_maxEntities" type="text" class="inputText small">
   </div>

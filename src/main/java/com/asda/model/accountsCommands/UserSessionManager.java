@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpSession;
 public class UserSessionManager {
 
     // Singleton
-    static private UserSessionManager INSTANCE = new UserSessionManager();
+    private static final UserSessionManager INSTANCE = new UserSessionManager();
     static final public String SESSION_USER_ATTRIBUTE = "user";
     static final public String REQUEST_LOGINTARGET_ATTRIBUTE = "loginTarget";
 

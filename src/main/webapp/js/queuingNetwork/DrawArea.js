@@ -1,14 +1,13 @@
-define(["ActiveTool", "PropertiesArea", "DivManager", "IdManager", "JsonManager", "Cons", "Utils"],
-function(activeTool, propertiesArea, divManager, idManager, jsonManager, cons, utils) {
+define(["ActiveTool", "DivManager", "IdManager", "JsonManager", "Cons", "Utils"],
+function(activeTool, divManager, idManager, jsonManager, cons, utils) {
     "use strict";
 
     var elementManager = null;
 
     var DrawArea = {
         initialize: function(manager) {
-    elementManager = manager;
-}
-,
+            elementManager = manager;
+        },
         ctrl: function(event, element) {
             var tool = activeTool.getTool();
             if (typeof element === "undefined") {
@@ -39,8 +38,7 @@ function(activeTool, propertiesArea, divManager, idManager, jsonManager, cons, u
         jsonManager.addNode(element);
     }
 
-    function remElement(element) {
-        //elementManager.remove(element);     
+    function remElement(element) {   
         jsonManager.removeNode(element);
     }
     function linkElements(element) {

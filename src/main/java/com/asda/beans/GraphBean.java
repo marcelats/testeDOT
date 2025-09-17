@@ -12,6 +12,8 @@ import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import org.hibernate.validator.constraints.NotEmpty;
 
 /**
@@ -26,11 +28,15 @@ import org.hibernate.validator.constraints.NotEmpty;
     @NamedQuery(name="graphs.findGraph",
                query="SELECT g FROM GraphBean g WHERE g.graphName = :name AND g.user = :user"),
     @NamedQuery(name="graphs.findGraphs",
-               query="SELECT g FROM GraphBean g WHERE g.user = :user OR g.publicGraph = true"),
+               query="SELECT g FROM GraphBean g WHERE g.user = :user OR g.publicGraph = true ORDER BY g.createdAt DESC"),
     @NamedQuery(name="graphs.setPublic",
                query="UPDATE GraphBean g SET g.publicGraph = true WHERE g.graphName = :name"),
     @NamedQuery(name="graphs.setPrivate",
                query="UPDATE GraphBean g SET g.publicGraph = false WHERE g.graphName = :name"),
+    @NamedQuery(
+    name = "graphs.togglePublic",
+    query = "UPDATE GraphBean g SET g.publicGraph = NOT g.publicGraph WHERE g.graphName = :name AND g.user = :user"
+),
     @NamedQuery(name="graphs.deleteGraph",
                query="DELETE FROM GraphBean WHERE graphName = :name"),
     @NamedQuery(name="graphs.renameGraph",
@@ -62,6 +68,9 @@ public class GraphBean implements Serializable {
     
     @Column(name = "publicGraph")
     private boolean publicGraph;
+    
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 
     public GraphBean() {
     }
@@ -104,5 +113,15 @@ public class GraphBean implements Serializable {
 
     public void setPublicGraph(boolean publicGraph) {
         this.publicGraph = publicGraph;
+    }
+    
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+    
+    public String getCreatedAtFormatado() {
+        if (createdAt == null) return "";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        return createdAt.format(formatter);
     }
 }

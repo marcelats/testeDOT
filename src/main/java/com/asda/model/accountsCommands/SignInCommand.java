@@ -24,36 +24,36 @@ public class SignInCommand implements Command {
 
     @Override
     public CommandResponse execute(HttpServletRequest req, HttpServletResponse res)
-            throws CommandException {
-        AccountBean account = new AccountBean();
+        throws CommandException {
+            AccountBean account = new AccountBean();
 
-        if(!req.getParameter("si_name").equals("")) {
-            account.setName(req.getParameter("si_name"));
-        }
-        if(!req.getParameter("si_email").equals("")) {
-            account.setEmail(req.getParameter("si_email"));
-        }
-        if(!req.getParameter("si_course").equals("")) {
-            account.setCourse(req.getParameter("si_course"));
-        }
-        if(!req.getParameter("si_class").equals("")) {
-            account.setUserClass(req.getParameter("si_class"));
-        }
-        if(!req.getParameter("si_password").equals("")) {
-            account.setPasswordHash(req.getParameter("si_password"));
-        }
-        account.setRegistrationDate(Calendar.getInstance());
+            if(!req.getParameter("si_name").equals("")) {
+                account.setName(req.getParameter("si_name"));
+            }
+            if(!req.getParameter("si_email").equals("")) {
+                account.setEmail(req.getParameter("si_email"));
+            }
+            if(!req.getParameter("si_course").equals("")) {
+                account.setCourse(req.getParameter("si_course"));
+            }
+            if(!req.getParameter("si_class").equals("")) {
+                account.setUserClass(req.getParameter("si_class"));
+            }
+            if(!req.getParameter("si_password").equals("")) {
+                account.setPasswordHash(req.getParameter("si_password"));
+            }
+            account.setRegistrationDate(Calendar.getInstance());
 
-        factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
-        manager = factory.createEntityManager();
+            factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
+            manager = factory.createEntityManager();
 
-        manager.getTransaction().begin();
-        manager.persist(account);
-        manager.getTransaction().commit();
+            manager.getTransaction().begin();
+            manager.persist(account);
+            manager.getTransaction().commit();
 
-        manager.close();
-        factory.close();
+            manager.close();
+            factory.close();
 
-        return aResponse;
-    }
+            return aResponse;
+        }
 }

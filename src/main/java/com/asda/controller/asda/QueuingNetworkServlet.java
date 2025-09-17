@@ -8,7 +8,6 @@ import com.asda.model.asdaCommands.Init;
 import com.asda.model.asdaCommands.OpenBox;
 import com.asda.model.asdaCommands.OpenGraph;
 import com.asda.model.asdaCommands.OpenProperties;
-import com.asda.model.asdaCommands.PrivateGraph;
 import com.asda.model.asdaCommands.PublicGraph;
 import com.asda.model.asdaCommands.SaveGraph;
 import com.asda.model.asdaCommands.DeleteGraph;
@@ -75,7 +74,6 @@ public class QueuingNetworkServlet extends HttpServlet {
         commands.put("save", new SaveGraph());
         commands.put("open", new OpenGraph());
         commands.put("public", new PublicGraph());
-        commands.put("private", new PrivateGraph());
         commands.put("delete", new DeleteGraph());
         commands.put("rename", new RenameGraph());
         commands.put("verify", new VerificarGraphServlet());

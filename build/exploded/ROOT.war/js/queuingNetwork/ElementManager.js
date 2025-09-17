@@ -152,7 +152,7 @@ define(["jquery", "jsPlumb", "DrawArea", "PropertiesArea", "JsonManager", "Utils
                 overlays: [["PlainArrow", {location: 1, width: 15, length: 12}]]
             };
 
-                
+                console.log(this.prevElement);
                 var sourceType;
 if (this.prevElement) {
     var id = parseInt($(this.prevElement).attr("id")); // agora funciona
@@ -172,6 +172,7 @@ if (element) {
                 this.prevElement = element;
                 /* Tells jsPlumb to create the first end point */
                 this.prevEndPoint = jsPlumb.addEndpoint(element, sourceOption);
+                console.log("this.prevEndPoint === null");
             } else {
                 
                 /* Avoid links between the same element or links that already exists */
@@ -186,18 +187,21 @@ if (element) {
 
 if (this.prevElement) {
     connection.sourceId = $(this.prevElement).attr("id"); // agora funciona
+    console.log($(this.prevElement).attr("id"));
 }
 
                 console.log(element);
 
 if (element) {
     connection.targetId = $(element).attr("id"); // agora funciona
-    
+    console.log($(element).attr("id"));
 }
                     /* Reinitialize variables for a future link */
                     this.prevElement = null;
                     this.prevEndPoint = null;
                 } else {
+                    if(this.prevElement === element) console.log("this.prevElement === element");
+                    if(checkExistingLinks(this.prevElement, element)) console.log("checkExistingLinks(this.prevElement, element)");
                     this.prevElement = null;
                     this.prevEndPoint = null;
                 }

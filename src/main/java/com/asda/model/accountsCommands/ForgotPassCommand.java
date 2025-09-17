@@ -12,8 +12,6 @@ import jakarta.servlet.http.HttpServletResponse;
  */
 public class ForgotPassCommand implements Command {
 
-    private CommandResponse aResponse;
-
     @Override
     public CommandResponse execute(HttpServletRequest req, HttpServletResponse res)
             throws CommandException {

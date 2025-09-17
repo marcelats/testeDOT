@@ -1,13 +1,9 @@
 package com.asda;
-
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
-
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-
 import org.glassfish.jersey.media.multipart.FormDataParam;
-
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -56,7 +52,7 @@ public class Enviador {
         // 3. Lê resposta do container Python (o arquivo codigo.py)
         int status = conn.getResponseCode();
         if (status != 200) {
-            return Response.status(Response.Status.BAD_GATEWAY).entity("Erro ao chamar container").build();
+            return Response.status(Response.Status.BAD_GATEWAY).entity("Error when calling container").build();
         }
 
         InputStream respostaPython = conn.getInputStream();

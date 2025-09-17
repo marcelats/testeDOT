@@ -9,7 +9,6 @@ import com.asda.CommandResponse;
 import com.asda.beans.AccountBean;
 import com.asda.controller.asda.JpaContextListener;
 import com.asda.model.accountsCommands.UserSessionManager;
-
 import java.io.IOException;
 
 
@@ -22,53 +21,54 @@ public class VerificarGraphServlet extends HttpServlet implements Command {
 
     @Override
     public CommandResponse execute(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException, CommandException {
-        
-
-HttpSession session = req.getSession();
+ 
+        HttpSession session = req.getSession();
         UserSessionManager sessionMgr = UserSessionManager.getInstance();
         AccountBean account = sessionMgr.getAccountUser(session);
 
-   
         if (req.getParameter("filename") != null) {
             String filename = req.getParameter("filename");
             String graphJson = req.getParameter("graphJson");
 
             em = JpaContextListener.getEmf().createEntityManager();
             
-        try {
-            em.getTransaction().begin();
-System.out.println("filename: " + filename);
-System.out.println("graphJson: " + graphJson);
-System.out.println("user ID: " + account);
+            try {
+                em.getTransaction().begin();
+                System.out.println("filename: " + filename);
+                System.out.println("graphJson: " + graphJson);
+                System.out.println("user ID: " + account);
 
-em.createNativeQuery(
-    "INSERT INTO graphs (graph_name, graph_json, user_id, publicGraph) " +
-    "VALUES (:filename, :graphJson, :user, false) " +
-    "ON CONFLICT (user_id, graph_name) DO UPDATE " +
-    "SET graph_json = :graphJson, user_id = :user, publicGraph = false"
-)
-.setParameter("filename", filename)
-.setParameter("graphJson", graphJson)
-.setParameter("user", account.getUserId()) // <- deve ser ID
-.executeUpdate(); // <- ESSENCIAL
+                em.createNativeQuery(
+                    "INSERT INTO graphs (graph_name, graph_json, user_id, publicGraph) " +
+                    "VALUES (:filename, :graphJson, :user, false) " +
+                    "ON CONFLICT (user_id, graph_name) DO UPDATE " +
+                    "SET graph_json = :graphJson, user_id = :user, publicGraph = false"
+                )
+                .setParameter("filename", filename)
+                .setParameter("graphJson", graphJson)
+                .setParameter("user", account.getUserId()) // <- deve ser ID
+                .executeUpdate(); // <- ESSENCIAL
 
-em.getTransaction().commit();
-em.close();
+                em.getTransaction().commit();
+                em.close();
 
 
-return aResponse; // Se você já respondeu direto, não precisa retornar um CommandResponse
+                return aResponse; // Se você já respondeu direto, não precisa retornar um CommandResponse
 
-        } catch (NoResultException e) {
+            } catch (NoResultException e) {
 
-            throw new CommandException("The graph name is invalid.");
+                throw new CommandException("The graph name is invalid.");
 
-        } catch (Exception e) {
+            } catch (Exception e) {
 
-            e.printStackTrace();
-            throw new CommandException("An error occurred.");
-        }
-        finally{em.close();}
+                e.printStackTrace();
+                throw new CommandException("An error occurred.");
+            }
+            finally{
+                em.close();
+            }
    
-    }return null;
-
-    }}
+        }
+        return null;
+    }
+}

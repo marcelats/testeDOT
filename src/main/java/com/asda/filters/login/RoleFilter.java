@@ -21,7 +21,7 @@ import jakarta.servlet.http.HttpSession;
 public class RoleFilter implements Filter {
 
     private String role, denyPage;
-    private UserSessionManager sessionMgr;
+    private final UserSessionManager sessionMgr;
 
     public RoleFilter() {
         sessionMgr = UserSessionManager.getInstance();

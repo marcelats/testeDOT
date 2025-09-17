@@ -12,6 +12,7 @@ define(["jquery", "jsPlumb", "IdManager"],
             this.name = "untitled";
             this.parameters = {};
             this.mapNodes = {};
+            //this.radio = "";
         }
 
         function Node(id, type, x, y) {

@@ -28,50 +28,48 @@ public class OpenBox implements Command {
     private EntityManager em;
     @Override
     public CommandResponse execute(HttpServletRequest req, HttpServletResponse res)
-            throws CommandException, ServletException, IOException {
-        System.out.println("execute do openbox.java");
-        String type = req.getParameter(TYPE);
-        HttpSession session = req.getSession();
-        UserSessionManager sessionMgr = UserSessionManager.getInstance();
-        AccountBean account = sessionMgr.getAccountUser(session);
-        List<GraphBean> graph = findGraphs(account);   
-        req.setAttribute("arquivos", graph);
-        //essa linha fez o save virar open
-        //req.getRequestDispatcher("/WEB-INF/view/opSave.jsp").forward(req, res);
-        //req.getRequestDispatcher("/WEB-INF/view/opOpen.jsp").forward(req, res);
+        throws CommandException, ServletException, IOException {
+            System.out.println("execute do openbox.java");
+            String type = req.getParameter(TYPE);
+            HttpSession session = req.getSession();
+            UserSessionManager sessionMgr = UserSessionManager.getInstance();
+            AccountBean account = sessionMgr.getAccountUser(session);
+            List<GraphBean> graph = findGraphs(account);   
+            req.setAttribute("arquivos", graph);
+            req.setAttribute("currentUserId", account.getUserId());
 
-        switch (type) {
-            case "new":
-                aResponse = new CommandResponse();
-                aResponse.setForward(true);
-                aResponse.setPage(DIRECTORY + "opNew.jsp");
-                break;
-            case "save":
-                aResponse = new CommandResponse();
-                aResponse.setForward(true);
-                aResponse.setPage(DIRECTORY + "opSave.jsp");
-                break;
-            case "open":
-                aResponse = new CommandResponse();
-                aResponse.setForward(true);
-                aResponse.setPage(DIRECTORY + "opOpen.jsp");
-                break;
-            case "parameters":
-                aResponse = new CommandResponse();
-                aResponse.setForward(true);
-                aResponse.setPage(DIRECTORY + "opParam.jsp");
-                break;
-            case "arrival":
-                aResponse = new CommandResponse();
-                aResponse.setForward(true);
-                aResponse.setPage(DIRECTORY + "chegada.jsp");
-                break;
-            case "editor":
-                aResponse = new CommandResponse();
-                aResponse.setForward(true);
-                aResponse.setPage(DIRECTORY + "textEditor.jsp");
-                break;
-        }
+            switch (type) {
+                case "new":
+                    aResponse = new CommandResponse();
+                    aResponse.setForward(true);
+                    aResponse.setPage(DIRECTORY + "opNew.jsp");
+                    break;
+                case "save":
+                    aResponse = new CommandResponse();
+                    aResponse.setForward(true);
+                    aResponse.setPage(DIRECTORY + "opSave.jsp");
+                    break;
+                case "open":
+                    aResponse = new CommandResponse();
+                    aResponse.setForward(true);
+                    aResponse.setPage(DIRECTORY + "opOpen.jsp");
+                    break;
+                case "parameters":
+                    aResponse = new CommandResponse();
+                    aResponse.setForward(true);
+                    aResponse.setPage(DIRECTORY + "opParam.jsp");
+                    break;
+                case "arrival":
+                    aResponse = new CommandResponse();
+                    aResponse.setForward(true);
+                    aResponse.setPage(DIRECTORY + "chegada.jsp");
+                    break;
+                case "editor":
+                    aResponse = new CommandResponse();
+                    aResponse.setForward(true);
+                    aResponse.setPage(DIRECTORY + "textEditor.jsp");
+                    break;
+            }
         System.out.println("Arquivos recebidos: " + graph);
 
 
