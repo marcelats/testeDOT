@@ -1,7 +1,7 @@
 require.config({
-  paths: {
-    JSZip: "https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min"
-  }
+    paths: {
+        JSZip: "https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min"
+    }
 });
 
 define(["jquery","LightBoxManager","Cons","JSZip"],
@@ -73,24 +73,25 @@ function($, lightBoxManager, cons,JSZip) {
                         window.listaArquivos.forEach(arquivo => {
                             if (arquivo.nome !== "Controle.java") {
                                   // Adiciona cada arquivo ao ZIP
-                                  novoZip.file(arquivo.nome, arquivo.conteudo);
-                                }});
-                                novoZip.file("Controle.java", blobCode);
-                                // Gera o ZIP e inicia o download
-                                novoZip.generateAsync({ type: "blob" })
-                                  .then(blob => {
-                                    const url = URL.createObjectURL(blob);
-                                    const a = document.createElement("a");
-                                    a.href = url;
-                                    a.download = "code.zip";
-                                    document.body.appendChild(a);
-                                    a.click();
-                                    document.body.removeChild(a);
-                                    URL.revokeObjectURL(url);
-                                  })
-                                  .catch(err => {
-                                    console.error("Erro ao gerar o zip:", err);
-                                  }); 
+                                novoZip.file(arquivo.nome, arquivo.conteudo);
+                            }
+                        });
+                        novoZip.file("Controle.java", blobCode);
+                        // Gera o ZIP e inicia o download
+                        novoZip.generateAsync({ type: "blob" })
+                        .then(blob => {
+                            const url = URL.createObjectURL(blob);
+                            const a = document.createElement("a");
+                            a.href = url;
+                            a.download = "code.zip";
+                            document.body.appendChild(a);
+                            a.click();
+                            document.body.removeChild(a);
+                            URL.revokeObjectURL(url);
+                        })
+                        .catch(err => {
+                            console.error("Erro ao gerar o zip:", err);
+                        }); 
                     } 
                     
                     document.body.appendChild(a);
@@ -103,7 +104,7 @@ function($, lightBoxManager, cons,JSZip) {
             });
         },
 
-        execute: function(action) {              
+        execute: function() {              
             lightBoxManager.openBox(cons.SHADOWING, cons.BOX_CONTAINER,
                 "qnetwork?cmd=open-box&type=editor",
                 function() {
@@ -122,9 +123,7 @@ function($, lightBoxManager, cons,JSZip) {
                             body: formData
                         })
                         .then(res => res.blob())
-                        .then(blobCode => {
-                            
-                          
+                        .then(blobCode => {         
                             const url = URL.createObjectURL(blobCode);
                            
                             const a = document.createElement("a");
@@ -163,8 +162,8 @@ function($, lightBoxManager, cons,JSZip) {
                                     if (textarea) {
                                         textarea.value = texto;
                                         
-                    const blobCode = new Blob([texto], { type: "text/plain" });
-                    window.codeBlob = blobCode;
+                                        const blobCode = new Blob([texto], { type: "text/plain" });
+                                        window.codeBlob = blobCode;
                                     } else {
                                         console.error("Textarea ainda não foi carregado.");
                                     }
@@ -174,16 +173,16 @@ function($, lightBoxManager, cons,JSZip) {
                             {
                                 JSZip.loadAsync(blobCode).then(zip => {
                                 // Encontra o arquivo Controle.java (case-sensitive!)
-                                const file = zip.file("Controle.java");
-                                if (!file) {
-                                  throw new Error("Arquivo Controle.java não encontrado no zip");
-                                }
-                                // Lê o conteúdo como texto
-                                return file.async("text");
-                              })
-                              .then(conteudoTexto => {
-                                  const textarea = document.getElementById("textEditor");
-                                if (textarea) {
+                                    const file = zip.file("Controle.java");
+                                    if (!file) {
+                                        throw new Error("Arquivo Controle.java não encontrado no zip");
+                                    }
+                                    // Lê o conteúdo como texto
+                                    return file.async("text");
+                                })
+                                .then(conteudoTexto => {
+                                    const textarea = document.getElementById("textEditor");
+                                    if (textarea) {
                                         textarea.value = conteudoTexto;
                                         const blobCode = new Blob([textarea.value], { type: "text/plain" });
                                         window.codeBlob = blobCode;
@@ -191,24 +190,25 @@ function($, lightBoxManager, cons,JSZip) {
                                     } else {
                                         console.error("Textarea ainda não foi carregado.");
                                     }
-                              })
-                              .catch(error => {
-                                console.error("Erro:", error);
-                              });
-                              JSZip.loadAsync(blobCode)
+                                })
+                                .catch(error => {
+                                    console.error("Erro:", error);
+                                });
+                                JSZip.loadAsync(blobCode)
                                 .then(zip => {
-                                  const arquivosJava = [];
-                                  zip.forEach((caminho, file) => {
-                                    if (file.name.endsWith(".java")) {
-                                      arquivosJava.push(file.async("text").then(texto => ({
-                                        nome: file.name,
-                                        conteudo: texto
-                                      })));
-                                    }
-                                  });
-                                  return Promise.all(arquivosJava);
+                                    const arquivosJava = [];
+                                    zip.forEach((caminho, file) => {
+                                        if (file.name.endsWith(".java")) {
+                                            arquivosJava.push(file.async("text").then(texto => ({
+                                                nome: file.name,
+                                                conteudo: texto
+                                            })));
+                                        }
+                                    });
+                                    return Promise.all(arquivosJava);
                                 }).then(listaArquivos => {
-                                    window.listaArquivos = listaArquivos;});
+                                    window.listaArquivos = listaArquivos;
+                                });
                             }
                             else
                             {
@@ -218,8 +218,8 @@ function($, lightBoxManager, cons,JSZip) {
                                     if (textarea) {
                                         textarea.value = texto;
                                         
-                    const blobCode = new Blob([texto], { type: "text/plain" });
-                    window.codeBlob = blobCode;
+                                        const blobCode = new Blob([texto], { type: "text/plain" });
+                                        window.codeBlob = blobCode;
                                     } else {
                                         console.error("Textarea ainda não foi carregado.");
                                     }

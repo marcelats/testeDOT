@@ -13,11 +13,12 @@
     <body>
         <div class="boxContent">
            <span class="boxTitle">Arrivals</span>
-           <div><input id ="prev-bt" type="button" value="Prev" class="button">
-           <input id ="next-bt" type="button" value="Next" class="button">
-           <input id ="new-bt" type="button" value="New" class="button">
-           <input id ="save-bt" type="button" value="Save" class="button">
-           <input id ="del-bt" type="button" value="Del" class="button">
+           <div>
+                <input id ="prev-bt" type="button" value="Prev" class="button">
+                <input id ="next-bt" type="button" value="Next" class="button">
+                <input id ="new-bt" type="button" value="New" class="button">
+                <input id ="save-bt" type="button" value="Save" class="button">
+                <input id ="del-bt" type="button" value="Del" class="button">
            </div>
            
            <div class="field">

@@ -17,8 +17,6 @@
                 <span class="boxTitle">Save</span>
                 <span id="opSave-btClose"><img src="img/btClose.png"/></span>
             </div>
-
-            </div>
         </div>
     </body>
 </html>

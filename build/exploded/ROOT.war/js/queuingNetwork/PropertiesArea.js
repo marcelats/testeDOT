@@ -19,31 +19,31 @@ define(["JsonManager", "Cons"],
                     propertiesArea.ctrl("cancel");
                 });
                 document.addEventListener("DOMContentLoaded", function () {
-    const serverSelect = document.getElementById("server_distribution");
-    if (serverSelect) {
-        for (let option of serverSelect.options) {
-            if (option.text === "HyperExponential" || option.text === "Erlang") {
-                option.disabled = true;
-            }
-        }
-    }
-});
+                    const serverSelect = document.getElementById("server_distribution");
+                    if (serverSelect) {
+                        for (let option of serverSelect.options) {
+                            if (option.text === "HyperExponential" || option.text === "Erlang") {
+                                option.disabled = true;
+                            }
+                        }
+                    }
+                });
 
                 const arrivalSelect = document.getElementById("arrival_distribution");
                 if(arrivalSelect){
                     for (let option of arrivalSelect.options) {
-                if (option.text === "HyperExponential" || option.text === "Erlang") {
-                    option.disabled = true;
-                }
-            }
+                        if (option.text === "HyperExponential" || option.text === "Erlang") {
+                            option.disabled = true;
+                        }
+                    }
                 }
                 const serverSelect = document.getElementById("server_distribution");
                 if(serverSelect){
                     for (let option of serverSelect.options) {
-                if (option.text === "HyperExponential" || option.text === "Erlang") {
-                    option.disabled = true;
-                }
-            }
+                        if (option.text === "HyperExponential" || option.text === "Erlang") {
+                            option.disabled = true;
+                        }
+                    }
                 }
             },
             ctrl: function(element) {
@@ -71,18 +71,18 @@ define(["JsonManager", "Cons"],
 
                         jsonManager.setNodeProperties(tempElement, properties);
                         const btnCode = document.getElementById("opCode");
-                            btnCode.style.opacity = '0.3';
-                            btnCode.style.pointerEvents = 'none';
-                            const btnExecute = document.getElementById("opExecute");
-                            btnExecute.style.opacity = '0.3';
-                            btnExecute.style.pointerEvents = 'none';
+                        btnCode.style.opacity = '0.3';
+                        btnCode.style.pointerEvents = 'none';
+                        const btnExecute = document.getElementById("opExecute");
+                        btnExecute.style.opacity = '0.3';
+                        btnExecute.style.pointerEvents = 'none';
                            
                         const arrival_sequence = document.getElementById("arrival_sequence");
-                            arrival_sequence.style.opacity = '0.3';
-                            arrival_sequence.style.pointerEvents = 'none';
-                            const server_sequence = document.getElementById("server_sequence");
-                            server_sequence.style.opacity = '0.3';
-                            server_sequence.style.pointerEvents = 'none';
+                        arrival_sequence.style.opacity = '0.3';
+                        arrival_sequence.style.pointerEvents = 'none';
+                        const server_sequence = document.getElementById("server_sequence");
+                        server_sequence.style.opacity = '0.3';
+                        server_sequence.style.pointerEvents = 'none';
                     }
                 }
             }
@@ -101,24 +101,23 @@ define(["JsonManager", "Cons"],
                 function() {
                     prepareForm(element);
                     const serverSelect = document.getElementById("server_distribution");
-        if (serverSelect) {
-            for (let option of serverSelect.options) {
-                if (["HyperExponential", "Erlang"].includes(option.text.trim())) {
-                    option.disabled = true;
-                }
-            }
-        }
-        const arrivalSelect = document.getElementById("arrival_distribution");
-        if (arrivalSelect) {
-            for (let option of arrivalSelect.options) {
-                if (["HyperExponential", "Erlang"].includes(option.text.trim())) {
-                    option.disabled = true;
-                }
-            }
-        }
+                    if (serverSelect) {
+                        for (let option of serverSelect.options) {
+                            if (["HyperExponential", "Erlang"].includes(option.text.trim())) {
+                                option.disabled = true;
+                            }
+                        }
+                    }
+                    const arrivalSelect = document.getElementById("arrival_distribution");
+                    if (arrivalSelect) {
+                        for (let option of arrivalSelect.options) {
+                            if (["HyperExponential", "Erlang"].includes(option.text.trim())) {
+                                option.disabled = true;
+                            }
+                        }
+                    }
                 }
             );
-
         }
 
         function prepareForm(element) {

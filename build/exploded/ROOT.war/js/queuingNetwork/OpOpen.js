@@ -57,15 +57,13 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "I
                         console.log(authorId);
                         console.log(userId);
                         if (authorId !== userId) {
-                            alert("Somente o autor pode alterar a visibilidade.");
+                            alert("Only the author can alter the visibility");
                             return;
                         }
 
-                        // Bloqueia novos cliques até terminar
                         if (checkbox.dataset.busy === "true") return;
                         checkbox.dataset.busy = "true";
 
-                        // Alterna visualmente para feedback imediato
                         const currentlyPublic = checkbox.textContent === "✔";
                         checkbox.textContent = currentlyPublic ? "" : "✔";
 
@@ -75,16 +73,14 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "I
                             data: { graphName: filename },
                             success: function() {
                                 jsonManager.setSaved(true);
-                                // aqui você poderia atualizar o estado real se necessário
                             },
                             error: function(xhr, ajaxOptions, thrownError) {
-                                // reverte visual caso erro
                                 checkbox.textContent = currentlyPublic ? "✔" : "";
                                 var errorHeader = xhr.getResponseHeader('fot-error');
-                                alert(errorHeader != null ? errorHeader : thrownError);
+                                alert(errorHeader !== null ? errorHeader : thrownError);
                             },
                             complete: function() {
-                                checkbox.dataset.busy = "false"; // libera clique
+                                checkbox.dataset.busy = "false"; 
                             }
                         });
                     } else if (row) {
@@ -120,8 +116,8 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "I
                     lastAction = action;
                     if (action === "submit") {
                         var filename = $("#opOpen-filename").val(),
-                            re = new RegExp(cons.REG_EXP_FILENAME),
-                            author = $("#opOpen-author").val();
+                        re = new RegExp(cons.REG_EXP_FILENAME),
+                        author = $("#opOpen-author").val();
                         if (filename.match(re) === null) {
                             alert("You need to enter a valid filename.");
                         }else if(author.match(re) === null) {
@@ -140,7 +136,7 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "I
                     if (action === "copy") {
                         var filename = $("#opOpen-filename").val(),
                             re = new RegExp(cons.REG_EXP_FILENAME),
-                        author = $("#opOpen-author").val();
+                            author = $("#opOpen-author").val();
                         if (filename.match(re) === null) {
                             alert("You need enter a valid filename.");
                         }
@@ -160,12 +156,11 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "I
                                     jsonManager.setGraph(data);
                                     jsonManager.setSaved(true);
                                     constructGraph(data);
-                                    var tempFilename = jsonManager.getName();
                                     saveAs(filename,0);       
                                 },
-                                error: function(xhr, ajaxOptions, thrownError) {
+                                error: function(xhr, thrownError) {
                                     var errorHeader = xhr.getResponseHeader('fot-error');
-                                    if (errorHeader != null) {
+                                    if (errorHeader !== null) {
                                         alert(errorHeader);
                                     } else {
                                         alert(thrownError);
@@ -196,12 +191,12 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "I
                                     jsonManager.setSaved(true);
                                     document.title = "ASDA - " + filename;
                                 },
-                                error: function(xhr, ajaxOptions, thrownError) {
+                                error: function(xhr, thrownError) {
                                     var errorHeader = xhr.getResponseHeader('fot-error');
 
                                     jsonManager.setName(tempFilename);
 
-                                    if (errorHeader != null) {
+                                    if (errorHeader !== null) {
                                         alert(errorHeader);
                                     } else {
                                         alert(thrownError);
@@ -210,7 +205,7 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "I
                             });
                         }
                     }
-                    if (action === "private") {
+                    /*if (action === "private") {
                         var filename = $("#opOpen-filename").val(),
                             re = new RegExp(cons.REG_EXP_FILENAME);
                         if (filename.match(re) === null) {
@@ -242,7 +237,7 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "I
                                 }
                             });
                         }
-                    }
+                    }*/
                     
                     if (action === "delete") {
                         const confirmDelete = confirm("Are you sure you want to delete " + $("#opOpen-filename").val() +"?");
@@ -258,7 +253,7 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "I
                         var filename = $("#opOpen-filename").val(),
                             re = new RegExp(cons.REG_EXP_FILENAME);
                         if (filename.match(re) === null) {
-                            alert("You need enter a valid filename.");
+                            alert("You need to enter a valid filename.");
                         }
                          else {
                             var tempFilename = jsonManager.getName();
@@ -278,19 +273,18 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "I
 
                                     document.title = "ASDA - "+filename;
                                 },
-                                error: function(xhr, ajaxOptions, thrownError) {
+                                error: function(xhr, thrownError) {
                                     var errorHeader = xhr.getResponseHeader('fot-error');
 
                                     jsonManager.setName(tempFilename);
 
-                                    if (errorHeader != null) {
+                                    if (errorHeader !== null) {
                                         alert(errorHeader);
                                     } else {
                                         alert(thrownError);
                                     }
                                 }
                             });
-                            console.log("saindo do ajax");
                         }
                     }
 
@@ -306,7 +300,7 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "I
             delete: function(filename,author){
                 var re = new RegExp(cons.REG_EXP_FILENAME);
                 if (filename.match(re) === null) {
-                    alert("You need enter a valid filename.");
+                    alert("You need to enter a valid filename.");
                 }
                 else {
                     $.ajax({
@@ -317,15 +311,11 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "I
                             graphName: filename
                         },
                         success: function() {
-                            //lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
-                            //jsonManager.setSaved(true);
-                            //document.title = "ASDA - "+filename;
                             $('.file-row-open[data-filename="' + filename + '"][data-authorname="' + author + '"]').remove();      
                         },
-                        error: function(xhr, ajaxOptions, thrownError) {
+                        error: function(xhr, thrownError) {
                             var errorHeader = xhr.getResponseHeader('fot-error');
-                            jsonManager.setName(tempFilename);
-                            if (errorHeader != null) {
+                            if (errorHeader !== null) {
                                 alert(errorHeader);
                             } else {
                                 alert(thrownError);
@@ -344,7 +334,7 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "I
                 type: "POST",
                 data: {
                     graphName: filename,
-                   author: author
+                    author: author
                 },
                 dataType: "json",
                 success: function(data) {
@@ -359,9 +349,9 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "I
                     constructGraph(data);
                     $("#opParamBox").values(jsonManager.getGraphParameters());
                 },
-                error: function(xhr, ajaxOptions, thrownError) {
+                error: function(xhr, thrownError) {
                     var errorHeader = xhr.getResponseHeader('fot-error');
-                    if (errorHeader != null) {
+                    if (errorHeader !== null) {
                         alert(errorHeader);
                     } else {
                         alert(thrownError);
@@ -402,32 +392,9 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "I
                 }
             }
         }
-        function saveAs(filename, i = 0) {
-            if (i !== 0) jsonManager.setName(filename + "_" + i);
-            $.ajax({
-                url: "qnetwork?cmd=save",
-                type: "POST",
-                data: "graphJson=" + jsonManager.stringifyGraph(),
-                async: true, // nunca usar false
-                success: function () {
-                    lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
-                    jsonManager.setSaved(true);
-
-                    if (i === 0) document.title = "ASDA - " + filename;
-                    else document.title = "ASDA - " + filename + "_" + i;
-                },
-                error: function () {
-                    if (i < 10) { // limite de tentativas
-                        setTimeout(() => saveAs(filename, i + 1), 500); 
-                    } else {
-                        alert("Erro ao salvar após várias tentativas.");
-                    }
-                }
-            });
-        }
-
+        
         function saveAs(filename, i){
-            if(i!==0)jsonManager.setName(filename+"_"+i);
+            if(i!==0)jsonManager.setName(filename + "_" + i);
             $.ajax({
                 url: "qnetwork?cmd=save",
                 type: "POST",
@@ -437,12 +404,12 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "I
                     lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
                     jsonManager.setSaved(true);
 
-                    if(i===0)document.title = "ASDA - "+filename;
-                    else document.title = "ASDA - "+filename+"_"+i;
+                    if(i === 0) document.title = "ASDA - " + filename;
+                    else document.title = "ASDA - " + filename + "_" + i;
                     return;
                 },
-                error: function(xhr, ajaxOptions, thrownError) {
-                    saveAs(filename,i+1);
+                error: function() {
+                    saveAs(filename, i+1);
                     return;
                 }
             });

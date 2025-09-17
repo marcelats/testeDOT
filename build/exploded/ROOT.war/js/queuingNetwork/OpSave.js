@@ -15,13 +15,12 @@ define(["jquery", "LightBoxManager", "JsonManager", "Cons", "OpOpen"],
                     OpSave.execute("submit");
                 });
                 document.addEventListener("click", function(e) {
-  if (e.target && e.target.classList.contains("file-item-save")) {
-    var filename = e.target.getAttribute("data-filename");
-    console.log("filename:", filename);
-    document.getElementById("opSave-filename").value = filename;
-  }
-});
-
+                    if (e.target && e.target.classList.contains("file-item-save")) {
+                        var filename = e.target.getAttribute("data-filename");
+                        console.log("filename:", filename);
+                        document.getElementById("opSave-filename").value = filename;
+                    }
+                });
             },
             execute: function(action) {
                 if (typeof action !== "string") {
@@ -40,43 +39,27 @@ define(["jquery", "LightBoxManager", "JsonManager", "Cons", "OpOpen"],
                             re = new RegExp(cons.REG_EXP_FILENAME);
 
                         if (filename.match(re) === null) {
-                            alert("You need enter a valid filename.");
-                            
-                        //console.log(jsonManager.);
+                            alert("You need to enter a valid filename.");
                             
                         } 
-                        
-                        
-                        
                         else {
                             jsonManager.setName(filename);
-                            // capturar o radio selecionado
-                            
-/*let valorSalvo = $('input[name="modeltype"]:checked').val();
-console.log("valorSalvo save:");
-console.log(valorSalvo);
-// salvar no objeto
-jsonManager.getGraph().radio = valorSalvo;
-console.log("graph: ", jsonManager.stringifyGraph());*/
                             $.ajax({
-  url: 'qnetwork?cmd=verify',
-  type: 'POST',
-  data: { filename: filename, graphJson: jsonManager.stringifyGraph() },
-  success: function (res) {
-    // res agora é um objeto JSON com a propriedade "existe"
-    lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
+                                url: 'qnetwork?cmd=verify',
+                                type: 'POST',
+                                data: { filename: filename, graphJson: jsonManager.stringifyGraph() },
+                                success: function () {
+                                    lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
 
-                    jsonManager.setSaved(true);
+                                    jsonManager.setSaved(true);
 
-                    document.title = "ASDA - "+ filename;
-  },
-  error: function (err) {
-    console.error('Erro:', err);
-    alert('Erro ao verificar o graph.');
-  }
-});
-
-                            //save(filename);
+                                    document.title = "ASDA - "+ filename;
+                                },
+                                error: function (err) {
+                                    console.error('Erro:', err);
+                                    alert('Erro ao verificar o graph.');
+                                }
+                            });
                         }
                         
                         if (typeof callback === "function") {
@@ -90,40 +73,6 @@ console.log("graph: ", jsonManager.stringifyGraph());*/
                 return lastAction;
             }
         };
-
-        /* --- Private methods. --- */
-
-        function save(filename) {
-            var tempFilename = jsonManager.getName();
-
-            jsonManager.setName(filename);
-
-            $.ajax({
-                url: "qnetwork?cmd=save",
-                type: "POST",
-                data: "graphJson=" + jsonManager.stringifyGraph(),
-                async: false,
-                success: function() {
-                    lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
-
-                    jsonManager.setSaved(true);
-
-                    document.title = "ASDA - "+filename;
-                },
-                error: function(xhr, ajaxOptions, thrownError) {
-                    var errorHeader = xhr.getResponseHeader('fot-error');
-
-                    jsonManager.setName(tempFilename);
-
-                    if (errorHeader != null) {
-                        alert(errorHeader);
-                    } else {
-                        alert(thrownError);
-                    }
-                }
-            });
-        }
-
 
         return OpSave;
     }
