@@ -37,6 +37,9 @@ public class OpenBox implements Command {
             List<GraphBean> graph = findGraphs(account);   
             req.setAttribute("arquivos", graph);
             req.setAttribute("currentUserId", account.getUserId());
+            System.out.println("req: " + req);
+            System.out.println("account: " + account);
+            System.out.println(account.getUserId());
 
             switch (type) {
                 case "new":
