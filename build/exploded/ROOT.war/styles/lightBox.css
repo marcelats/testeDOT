@@ -280,3 +280,5 @@ fieldset {
     margin: 0 10px;
 }
 
+.boxContent.arrivalModal { z-index: 2000; }
+.boxContent.paramModal   { z-index: 3000; }

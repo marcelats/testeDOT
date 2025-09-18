@@ -1,4 +1,4 @@
-<div id="opParamBox" class="boxContent" style="display: none;">
+<div id="opParamBox" class="boxContent paramModal" style="display: none;">
     <div class="btCloseDiv cf">
         <span class="boxTitle">Parametrize the model</span>
         <span id="opParam-btClose"><img src="img/btClose.png"/></span>
