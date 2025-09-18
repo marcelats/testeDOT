@@ -66,6 +66,8 @@ html, body {
     width: 900px;
     height: 600px;
     margin: 0 auto;
+    position: relative;
+    z-index: 2000;
 }
 
 .boxContentTextEditor {
@@ -73,6 +75,11 @@ html, body {
     height: 600px;
     margin: 0 auto;
 }
+
+.ui-widget-overlay {
+    z-index: 1000 !important;
+}
+
 
 .filesWindow{height: 400px;}
 
