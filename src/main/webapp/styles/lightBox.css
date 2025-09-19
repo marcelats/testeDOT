@@ -280,5 +280,5 @@ fieldset {
     margin: 0 10px;
 }
 
-.boxContent.arrivalModal { z-index: 2000 !important; }
-.boxContent.paramModal   { z-index: 3000 !important; }
+.boxContent.arrivalModal { z-index: 3000 !important; }
+.boxContent.paramModal   { z-index: 2000 !important; }
