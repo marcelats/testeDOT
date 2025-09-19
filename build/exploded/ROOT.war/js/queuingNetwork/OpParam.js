@@ -8,7 +8,7 @@ define(["jquery", "LightBoxManager", "JsonManager", "Arrival"],
             initialize: function() {
                 $("#opParamBox").dialog({
                     autoOpen: false,
-                    modal: true,
+                    modal: false,
                     width: 300,
                     resizable: false,
                     dialogClass: "no-titlebar", // remove cabeçalho nativo
