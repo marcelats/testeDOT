@@ -77,7 +77,7 @@ html, body {
 }
 
 .ui-widget-overlay {
-    z-index: 1000 !important;
+    z-index: 100 !important;
 }
 
 
