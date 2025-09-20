@@ -10,8 +10,8 @@
                 <legend>Language</legend>
                 <select id="opParam_library" class="inputText">
                     <!--<option value="R">R</option>-->
-                    <option value="Java">Java</option>
                     <option value="Python">Python</option>
+                    <option value="Java">Java</option>
                     <option value="C SMPL">C SMPL</option>
                     <option value="C SMPLX">C SMPLX</option>
                 </select>
