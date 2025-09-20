@@ -51,11 +51,11 @@ function($, lightBoxManager, cons,JSZip) {
                         const a = document.createElement("a");
                         a.href = url;
                     }
-                    if(window.langSelecionada === 'Python')
+                    if(window.langSelecionada === 'Python'|| !window.langSelecionada)
                     {
                         a.download = "code.py";
                     }
-                    else if(window.langSelecionada === 'R' || !window.langSelecionada)
+                    else if(window.langSelecionada === 'R')
                     {
                         a.download = "code.r";
                     }
@@ -116,7 +116,7 @@ function($, lightBoxManager, cons,JSZip) {
                         formData.append("arquivo", blobGraph, "graph.gv");
                         const opParam = document.querySelector("#opParam_library");
                         if(window.langSelecionada)formData.append('lang', window.langSelecionada);
-                        else formData.append('lang', 'R');
+                        else formData.append('lang', 'Python');
                         console.log(window.langSelecionada);
                         fetch("/ROOT/api/enviar", {
                             method: "POST",
@@ -128,9 +128,9 @@ function($, lightBoxManager, cons,JSZip) {
                            
                             const a = document.createElement("a");
                             a.href = url;
-                            if(window.langSelecionada === 'Python')
+                            if(window.langSelecionada === 'R')
                             {
-                                a.download = "code.py";
+                                a.download = "code.r";
                             }
                             else if(window.langSelecionada === 'Java')
                             {
@@ -146,7 +146,7 @@ function($, lightBoxManager, cons,JSZip) {
                             }
                             else 
                             {
-                                a.download = "code.r";
+                                a.download = "code.py";
                             }
                             document.body.appendChild(a);
                             a.click();

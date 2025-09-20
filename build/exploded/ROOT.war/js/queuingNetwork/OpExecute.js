@@ -28,9 +28,9 @@ define(["jquery","JSZip"],
                     const formData = new FormData();
                     formData.append('lang', window.langSelecionada);
                     console.log(window.langSelecionada);
-                    if(window.langSelecionada === 'Python')
+                    if(window.langSelecionada === 'R')
                     {
-                        formData.append("arquivo", blobCode, "code.py");
+                        formData.append("arquivo", blobCode, "code.r");
                     }
                     else if(window.langSelecionada === 'Java')
                     {
@@ -59,7 +59,7 @@ define(["jquery","JSZip"],
                     }
                     else
                     {
-                        formData.append("arquivo", blobCode, "code.r");
+                        formData.append("arquivo", blobCode, "code.py");
                     }
                     fetch("/ROOT/api/executar", {
                           method: "POST",

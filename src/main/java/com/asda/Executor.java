@@ -20,8 +20,8 @@ public class Executor {
         // 1. Salva temporariamente o graph.gv
         Path tempPath;
         switch (lang) {
-            case "Python":
-                tempPath = Files.createTempFile("code", ".py");
+            case "R":
+                tempPath = Files.createTempFile("code", ".r");
                 break;
             case "Java":
                 tempPath = Files.createTempFile("code", ".zip");
@@ -33,7 +33,7 @@ public class Executor {
                 tempPath = Files.createTempFile("code", ".c");
                 break;
             default:
-                tempPath = Files.createTempFile("code", ".r");
+                tempPath = Files.createTempFile("code", ".py");
                 break;
         }
         //System.out.println(new String(fileInputStream.readAllBytes(), StandardCharsets.UTF_8));
@@ -54,8 +54,8 @@ public class Executor {
             // Cabeçalho da parte do arquivo
             out.writeBytes("--" + boundary + "\r\n");
             switch (lang) {
-            case "Python":
-                out.writeBytes("Content-Disposition: form-data; name=\"arquivo\"; filename=\"code.py\"\r\n");
+            case "R":
+                out.writeBytes("Content-Disposition: form-data; name=\"arquivo\"; filename=\"code.r\"\r\n");
                 break;
             case "Java":
                 out.writeBytes("Content-Disposition: form-data; name=\"arquivo\"; filename=\"code.zip\"\r\n");
@@ -67,7 +67,7 @@ public class Executor {
                 out.writeBytes("Content-Disposition: form-data; name=\"arquivo\"; filename=\"code.c\"\r\n");
                 break;
             default:
-                out.writeBytes("Content-Disposition: form-data; name=\"arquivo\"; filename=\"code.r\"\r\n");
+                out.writeBytes("Content-Disposition: form-data; name=\"arquivo\"; filename=\"code.py\"\r\n");
                 break;
         }       
             out.writeBytes("Content-Type: application/zip\r\n\r\n");

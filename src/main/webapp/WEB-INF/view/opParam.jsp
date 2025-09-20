@@ -9,7 +9,7 @@
             <fieldset>
                 <legend>Language</legend>
                 <select id="opParam_library" class="inputText">
-                    <option value="R">R</option>
+                    <!--<option value="R">R</option>-->
                     <option value="Java">Java</option>
                     <option value="Python">Python</option>
                     <option value="C SMPL">C SMPL</option>
