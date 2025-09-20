@@ -30,7 +30,7 @@ define(["jquery", "JsonManager"],
                         }         
                     }  
                 }
-
+                var count = 0;
                 var parameters = jsonManager.getGraphParameters();
                 var numCycles = parameters["opParam_numCycles"] || 0;
                 var batchSize = parameters["opParam_batchSize"] || 0;
@@ -73,7 +73,8 @@ define(["jquery", "JsonManager"],
                             content += `    ${node.id} [label=Source comment=1]\n`;
                             break;
                         case "server":
-                            content += `    ${node.id} [label=CPU comment=" 2`;
+                            content += `    ${node.id} [label=CPU${count} comment=" 2`;
+                            count+=1;
                             switch (node.properties.arrival_distribution)
                             {
                                 case "Normal":
@@ -125,8 +126,7 @@ define(["jquery", "JsonManager"],
                             content += `    ${node.id} [label=Destination comment=3]\n`;
                             break;
                         case "multiServer":
-
-                            content += `" 2`;
+                            content += `    ${node.id} [label=CPU comment=" 2`;
                             switch (node.properties.multiServer_arrival_distribution)
                             {
                                 case "Normal":
