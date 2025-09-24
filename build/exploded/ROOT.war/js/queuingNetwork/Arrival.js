@@ -5,8 +5,7 @@ function($, jsonManager) {
     "use strict";
 
     var lastAction = null;
-    window.arrivals = [];
-    window.arrivalIndex = 0;
+    
     var arrival = {
         initialize: function () {
             console.log("initiliaze do arrival");   
@@ -24,10 +23,6 @@ function($, jsonManager) {
               window.isObserving = false; // flag de controle
             }
         },
-        getArrivals: function(){
-            return arrivals;
-        },
-        
         execute: function () {
             console.log("execute do arrival");
             console.log("window.arrivals");
@@ -138,21 +133,24 @@ function($, jsonManager) {
                     exibirAtual();
                 } else {
                     console.log("Lista vazia após remoção.");
+                    document.getElementById("number_clients").value = null;
+                    document.getElementById("arrival_time").value = null;
+                    document.getElementById("service_center").value = null;
                 } 
             });
 
             function preencherSelect(select) {
-                const opcoes = [];
-                Object.values(jsonManager.getGraph().mapNodes).forEach(no => {
+
+                /*Object.values(jsonManager.getGraph().mapNodes).forEach(no => {
                     if (no.type === "source") {
                         Object.keys(no.mapTargets).forEach(target => {
                             const jaExiste = opcoes.some(opcao => opcao.value === String(target));
                             if (!jaExiste) {
-                                opcoes.push({ value: String(target), text: String(target) });
+                                window.opcoes.push({ value: String(target), text: String(target) });
                             }
                         });
                     }
-                });
+                });*/
 
                 select.innerHTML = "";
                 opcoes.forEach(opcao => {

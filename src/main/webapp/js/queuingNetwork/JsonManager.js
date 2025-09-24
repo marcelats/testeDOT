@@ -24,6 +24,9 @@ define(["jquery", "jsPlumb", "IdManager"],
         }
 
         var graph = new Graph(), saved = true;
+        window.opcoes = [];
+        window.arrivals = [];
+        window.arrivalIndex = 0;
 
         var JsonManager = {
             setGraph: function(pGraph) {
@@ -63,7 +66,27 @@ define(["jquery", "jsPlumb", "IdManager"],
 
             jsPlumb.detachAllConnections(element);
             father.removeChild(element);
-
+            if(window.opcoes.includes(graph.mapNodes[element.id].id))
+            { 
+                window.opcoes = windows.opcoes.filter(id => id !== graph.mapNodes[element.id].id);
+                window.arrivals.forEach(a => {
+                    if (a.serviceCenter === graph.mapNodes[element.id].id) {
+                        window.arrivals = window.arrivals.filter(a => a.serviceCenter !== graph.mapNodes[element.id].id);
+                    }
+                });
+            }
+            if (graph.mapNodes[element.id].type === "source") {
+                Object.keys(graph.mapNodes[element.id].mapTargets).forEach(target => {
+                    if (window.opcoes.includes(target)) {
+                        window.opcoes = window.opcoes.filter(id => id !== target);
+                        window.arrivals.forEach(a => {
+                            if (a.serviceCenter === target) {
+                                window.arrivals = window.arrivals.filter(a => a.serviceCenter !== target);
+                            }
+                        });
+                    }
+                });
+            }
             // 1. Remove do graph.mapNodes
             delete graph.mapNodes[element.id];
 
@@ -139,28 +162,32 @@ define(["jquery", "jsPlumb", "IdManager"],
 
                 saved = false;
                 const btnCode = document.getElementById("opCode");
-                            btnCode.style.opacity = '0.3';
-                            btnCode.style.pointerEvents = 'none';
-                            const btnExecute = document.getElementById("opExecute");
-                            btnExecute.style.opacity = '0.3';
-                            btnExecute.style.pointerEvents = 'none';
+                btnCode.style.opacity = '0.3';
+                btnCode.style.pointerEvents = 'none';
+                const btnExecute = document.getElementById("opExecute");
+                btnExecute.style.opacity = '0.3';
+                btnExecute.style.pointerEvents = 'none';
+
             },
             linkNodes: function(connection) {
                 if(connection){
                     if(graph.mapNodes[connection.sourceId].type==="out"){console.log("caso 1 jsonmanager");return 0;}
-                if(graph.mapNodes[connection.sourceId].type==="source" && graph.mapNodes[connection.targetId].type === "out"){console.log("caso 2 jsonmanager");return 0;}
-                if(graph.mapNodes[connection.targetId].type==="source"){console.log("caso 3 jsonmanager");return 0;}
+                    if(graph.mapNodes[connection.sourceId].type==="source" && graph.mapNodes[connection.targetId].type === "out"){console.log("caso 2 jsonmanager");return 0;}
+                    if(graph.mapNodes[connection.targetId].type==="source"){console.log("caso 3 jsonmanager");return 0;}
                 }
                     
                 graph.mapNodes[connection.sourceId].mapTargets[connection.targetId] = 1;
 
                 saved = false;
                 const btnCode = document.getElementById("opCode");
-                            btnCode.style.opacity = '0.3';
-                            btnCode.style.pointerEvents = 'none';
-                            const btnExecute = document.getElementById("opExecute");
-                            btnExecute.style.opacity = '0.3';
-                            btnExecute.style.pointerEvents = 'none';
+                btnCode.style.opacity = '0.3';
+                btnCode.style.pointerEvents = 'none';
+                const btnExecute = document.getElementById("opExecute");
+                btnExecute.style.opacity = '0.3';
+                btnExecute.style.pointerEvents = 'none';
+                if(graph.mapNodes[connection.sourceId].type==="source") 
+                    window.opcoes.push({ value: String(graph.mapNodes[connection.targetId].id), 
+                        text: String(graph.mapNodes[connection.targetId].id) });
             },
             changeNodePosition: function(element) {
                 graph.mapNodes[element.id].x = $(element).css("left");
