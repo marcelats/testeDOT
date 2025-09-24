@@ -111,7 +111,7 @@ define(["jquery", "jsPlumb", "IdManager"],
                 no.id = novoId;
                 window.arrivals.forEach(a => {
                     if (a.serviceCenter === oldId) {
-                        a.serviceCenter = newId;
+                        a.serviceCenter = novoId;
                     }
                 });
 
