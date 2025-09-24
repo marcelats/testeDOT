@@ -66,9 +66,10 @@ define(["jquery", "jsPlumb", "IdManager"],
 
             jsPlumb.detachAllConnections(element);
             father.removeChild(element);
+
             if(window.opcoes.includes(graph.mapNodes[element.id].id))
             { 
-                window.opcoes = windows.opcoes.filter(id => id !== graph.mapNodes[element.id].id);
+                window.opcoes = window.opcoes.filter(id => id !== graph.mapNodes[element.id].id);
                 window.arrivals.forEach(a => {
                     if (a.serviceCenter === graph.mapNodes[element.id].id) {
                         window.arrivals = window.arrivals.filter(a => a.serviceCenter !== graph.mapNodes[element.id].id);
@@ -87,6 +88,7 @@ define(["jquery", "jsPlumb", "IdManager"],
                     }
                 });
             }
+
             // 1. Remove do graph.mapNodes
             delete graph.mapNodes[element.id];
 
@@ -107,6 +109,17 @@ define(["jquery", "jsPlumb", "IdManager"],
 
                 // Atualiza id no objeto
                 no.id = novoId;
+                window.arrivals.forEach(a => {
+                    if (a.serviceCenter === oldId) {
+                        a.serviceCenter = newId;
+                    }
+                });
+
+                window.opcoes.forEach(a => {
+                    if (a === oldId) {
+                        a = novoId;
+                    }
+                });
 
                 // Atualiza targets
                 const novosTargets = {};
