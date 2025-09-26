@@ -46,6 +46,8 @@ public class Executor {
         conn.setDoOutput(true);
         conn.setRequestMethod("POST");
         conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
+        conn.setConnectTimeout(5000); // até 5 segundos para conectar
+        conn.setReadTimeout(20000);   // até 20 segundos aguardando resposta
 
         try (DataOutputStream out = new DataOutputStream(conn.getOutputStream())) {
             out.writeBytes("--" + boundary + "\r\n");
@@ -76,20 +78,28 @@ public class Executor {
             out.flush();
         }
 
-        // 3. Lê resposta do container Python (o arquivo codigo.py)
-        int status = conn.getResponseCode();
-        if (status != 200) {
-            return Response.status(Response.Status.BAD_GATEWAY).entity("Error when calling container").build();
+        try {
+            int status = conn.getResponseCode();
+            if (status != 200) {
+                return Response.status(Response.Status.BAD_GATEWAY)
+                        .entity("Error when calling container")
+                        .build();
+            }
+
+            try (InputStream respostaPython = conn.getInputStream()) {
+                byte[] resultado = respostaPython.readAllBytes();
+                return Response.ok(new ByteArrayInputStream(resultado))
+                        .type("text/x-python")
+                        .header("Content-Disposition", "attachment; filename=\"report.txt\"")
+                        .build();
+            }
+
+        } catch (java.net.SocketTimeoutException e) {
+            return Response.status(Response.Status.GATEWAY_TIMEOUT)
+                    .entity("Execution timed out")
+                    .build();
         }
 
-        InputStream respostaPython = conn.getInputStream();
-        byte[] resultado = respostaPython.readAllBytes(); // código em bytes
-
-        // 4. Retorna o código como download
-        return Response.ok(new ByteArrayInputStream(resultado))
-        .type("text/x-python")
-        .header("Content-Disposition", "attachment; filename=\"report.txt\"")
-        .build();
     }
 }
 
