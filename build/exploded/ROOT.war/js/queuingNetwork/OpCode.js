@@ -152,7 +152,7 @@ function($, lightBoxManager, cons,JSZip) {
                             a.click();
                             document.body.removeChild(a);
                             URL.revokeObjectURL(url);
-                            
+                            window.dispatchEvent(new Event("codeEditorClicou"));
                             
                             if(window.langSelecionada === 'Python' || window.langSelecionada === 'R' || !window.langSelecionada)
                             {
@@ -233,7 +233,7 @@ function($, lightBoxManager, cons,JSZip) {
                 }
             );
     
-            window.dispatchEvent(new Event("codeEditorClicou"));
+            
 
         },
 
