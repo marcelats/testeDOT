@@ -12,7 +12,7 @@ function($, jsonManager) {
             if (!window.observer) {
                 console.log("novo mutation observer");
                 window.observer = new MutationObserver((obs) => {
-                const select = document.getElementById("service_center");
+                    const select = document.getElementById("service_center");
                     if (select) {
                         preencherSelect(select);
                         obs.disconnect(); // desconecta quando encontrar
@@ -24,9 +24,10 @@ function($, jsonManager) {
             }
         },
         execute: function () {
+            preencherSelect(document.getElementById("service_center"));
             console.log("execute do arrival");
-            console.log("window.arrivals");
-            console.log(window.arrivals);
+            console.log("jsonManager.getGraph().arrivals");
+            console.log(jsonManager.getGraph().arrivals);
             exibirAtual();
             const number_clients = document.getElementById("number_clients");
             number_clients.style.opacity = '0.5';
@@ -81,11 +82,11 @@ function($, jsonManager) {
                     return;
                 }
                 const novoItem = { numberClients, arrivalTime, serviceCenter };
-                window.arrivals.push(novoItem);
+                jsonManager.getGraph().arrivals.push(novoItem);
                 console.log("push");
-                window.arrivalIndex = window.arrivals.length - 1;
+                jsonManager.getGraph().arrivalIndex = jsonManager.getGraph().arrivals.length - 1;
                 console.log("Item adicionado:", novoItem);
-                console.log("Lista atual:", window.arrivals);
+                console.log("Lista atual:", jsonManager.getGraph().arrivals);
 
                 number_clients.style.opacity = '0.5';
                 number_clients.style.pointerEvents = 'none';
@@ -98,8 +99,8 @@ function($, jsonManager) {
             });    
             $(document).off("click", "#next-bt");
             $(document).on("click", "#next-bt", function() {
-                if (window.arrivalIndex < window.arrivals.length - 1) {
-                    window.arrivalIndex++;
+                if (jsonManager.getGraph().arrivalIndex < jsonManager.getGraph().arrivals.length - 1) {
+                    jsonManager.getGraph().arrivalIndex++;
                     exibirAtual();
                 } else {
                     console.log("Último item já exibido.");
@@ -107,8 +108,8 @@ function($, jsonManager) {
             });
             $(document).off("click", "#prev-bt");
             $(document).on("click", "#prev-bt", function() {
-                if (window.arrivalIndex > 0) {
-                    window.arrivalIndex--;
+                if (jsonManager.getGraph().arrivalIndex > 0) {
+                    jsonManager.getGraph().arrivalIndex--;
                     exibirAtual();
                 } else {
                     console.log("Primeiro item já exibido.");
@@ -116,32 +117,42 @@ function($, jsonManager) {
             });
             $(document).off("click", "#del-bt");
             $(document).on("click", "#del-bt", function() {
-                if (window.arrivals.length === 0) {
+                if (jsonManager.getGraph().arrivals.length === 0) {
                     console.log("Lista vazia. Nada para remover.");
                     return;
                 }
 
-                console.log(`Removendo item ${window.arrivalIndex + 1}`);
-                window.arrivals.splice(window.arrivalIndex, 1);
+                console.log(`Removendo item ${jsonManager.getGraph().arrivalIndex + 1}`);
+                jsonManager.getGraph().arrivals.splice(jsonManager.getGraph().arrivalIndex, 1);
 
                 // Ajustar índice após remoção
-                if (window.arrivalIndex >= window.arrivals.length) {
-                    window.arrivalIndex = window.arrivals.length - 1;
+                if (jsonManager.getGraph().arrivalIndex >= jsonManager.getGraph().arrivals.length) {
+                    jsonManager.getGraph().arrivalIndex = jsonManager.getGraph().arrivals.length - 1;
                 }
 
-                if (window.arrivals.length > 0) {
+                if (jsonManager.getGraph().arrivals.length > 0) {
                     exibirAtual();
                 } else {
                     console.log("Lista vazia após remoção.");
-                    document.getElementById("number_clients").value = null;
-                    document.getElementById("arrival_time").value = null;
-                    document.getElementById("service_center").value = null;
+                    document.getElementById("number_clients").value = "";
+                    document.getElementById("arrival_time").value = "";
+                    document.getElementById("service_center").selectedIndex = -1; // nenhuma opção selecionada
+                    const $sel = $("#service_center");
+                    if ($sel.find("option[value='']").length === 0) {
+                      $sel.prepend($("<option>", { value: "", text: "" }));
+                    }
+                    $sel.val("");
+                    try {
+                      $sel.selectmenu("refresh");
+                    } catch (e) {
+                      $sel.trigger("change");
+                    }
                 } 
             });
 
             function preencherSelect(select) {
 
-                /*Object.values(jsonManager.getGraph().mapNodes).forEach(no => {
+                /*Object.values(jsonManager.getGraph()..mapNodes).forEach(no => {
                     if (no.type === "source") {
                         Object.keys(no.mapTargets).forEach(target => {
                             const jaExiste = opcoes.some(opcao => opcao.value === String(target));
@@ -153,7 +164,10 @@ function($, jsonManager) {
                 });*/
 
                 select.innerHTML = "";
-                opcoes.forEach(opcao => {
+                console.log("graph e graph.opcoes:");
+                console.log(jsonManager.getGraph());
+                console.log(jsonManager.getGraph().opcoes);
+                jsonManager.getGraph().opcoes.forEach(opcao => {
                     const option = document.createElement("option");
                     option.value = opcao.value;
                     option.textContent = opcao.text;
@@ -161,17 +175,33 @@ function($, jsonManager) {
                 });
             }
             function exibirAtual() {
-                if (window.arrivals.length === 0) {
+                if (jsonManager.getGraph().arrivals.length === 0) {
                     console.log("Lista vazia.");
+                    const $sel = $("#service_center");
+                    if ($sel.find("option[value='']").length === 0) {
+                      $sel.prepend($("<option>", { value: "", text: "" }));
+                    }
+                    $sel.val("");
+                    try {
+                      $sel.selectmenu("refresh");
+                    } catch (e) {
+                      $sel.trigger("change");
+                    }
                     return;
                 }
-                if (window.arrivalIndex >= 0 && window.arrivalIndex < window.arrivals.length) {
-                    const item = window.arrivals[window.arrivalIndex];
-                    console.log(`Exibindo item ${window.arrivalIndex + 1} de ${window.arrivals.length}`);
+                if (jsonManager.getGraph().arrivalIndex >= 0 && jsonManager.getGraph().arrivalIndex < jsonManager.getGraph().arrivals.length) {
+                    const item = jsonManager.getGraph().arrivals[jsonManager.getGraph().arrivalIndex];
+                    console.log(`Exibindo item ${jsonManager.getGraph().arrivalIndex + 1} de ${jsonManager.getGraph().arrivals.length}`);
                     console.log(`numberClients: ${item.numberClients}, arrivalTime: ${item.arrivalTime}, serviceCenter: ${item.serviceCenter}`);
                     document.getElementById("number_clients").value = item.numberClients;
                     document.getElementById("arrival_time").value = item.arrivalTime;
+                    // jQuery
                     document.getElementById("service_center").value = item.serviceCenter;
+                    $("#service_center").val(item.serviceCenter).trigger("change");
+                    console.log("item.serviceCenter");
+                    console.log(item.serviceCenter);
+                    console.log("opcoes");
+                    console.log(jsonManager.getGraph().opcoes);
                 } else {
                     console.log("Nenhum item para exibir.");
                 }

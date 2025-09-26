@@ -176,16 +176,16 @@ define(["jquery", "jsPlumb", "DrawArea", "PropertiesArea", "JsonManager", "Utils
                 /* Avoid links between the same element or links that already exists */
                 if (this.prevElement !== element && !checkExistingLinks(this.prevElement, element)) {
                     if(sourceType==="out"){console.log("caso 1 elementmanager");return 0;}
-                if(targetType==="source"){console.log("caso 2 elementmanager");return 0;}
-                if(sourceType==="source" && targetType==="out"){console.log("caso 3 elementmanager");return 0;}
+                    if(targetType==="source"){console.log("caso 2 elementmanager");return 0;}
+                    if(sourceType==="source" && targetType==="out"){console.log("caso 3 elementmanager");return 0;}
                     /* Tells jsPlumb to create the second end point */
-                targetEndPoint = jsPlumb.addEndpoint(element, targetOption);
+                    targetEndPoint = jsPlumb.addEndpoint(element, targetOption);
                     /* Finally, connects elements */
-                connection = jsPlumb.connect({source: this.prevEndPoint, target: targetEndPoint}, linkConnector);
+                    connection = jsPlumb.connect({source: this.prevEndPoint, target: targetEndPoint}, linkConnector);
 
-                if (this.prevElement) {
-                    connection.sourceId = $(this.prevElement).attr("id"); // agora funciona
-                    console.log($(this.prevElement).attr("id"));
+                    if (this.prevElement) {
+                        connection.sourceId = $(this.prevElement).attr("id"); // agora funciona
+                        console.log($(this.prevElement).attr("id"));
                 }
 
                 console.log(element);

@@ -124,15 +124,14 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "I
                             alert("You need to enter a valid author.");
                         }
                         else {
+                            
                             open(filename, author);
                             const btnCode = document.getElementById("opCode");
                             btnCode.style.opacity = '0.3';
                             btnCode.style.pointerEvents = 'none';
                             const btnExecute = document.getElementById("opExecute");
                             btnExecute.style.opacity = '0.3';
-                            btnExecute.style.pointerEvents = 'none';
-                            window.arrivals = [];
-                            window.arrivalIndex = 0;
+                            btnExecute.style.pointerEvents = 'none';                            
                         }
                     }
                     if (action === "copy") {
@@ -341,7 +340,9 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "I
                 dataType: "json",
                 success: function(data) {
                     lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
-
+                    window.opcoes = [];
+                    window.arrivals = [];
+                    window.arrivalIndex = 0;
                     jsonManager.setGraph(data);
                     jsonManager.setSaved(true);
 

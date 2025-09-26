@@ -213,7 +213,7 @@ define(["jquery", "JsonManager"],
                 });
                 if(selectedValue === 'C SMPL' || selectedValue === 'C SMPLX' || selectedValue === 'C ParSMPL'|| selectedValue === 'C SIMPACK' || selectedValue === 'C SIMPACK2')
                 {
-                    const arrivals = window.arrivals;
+                    const arrivals = jsonManager.getGraph().arrivals;
                     if (arrivals === 0) 
                         {
                             alert("Necessario adicionar pelo menos uma chegada");

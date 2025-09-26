@@ -12,6 +12,9 @@ define(["jquery", "jsPlumb", "IdManager"],
             this.name = "untitled";
             this.parameters = {};
             this.mapNodes = {};
+            this.arrivals = [];
+            this.opcoes = [];
+            this.arrivalIndex = 0;
         }
 
         function Node(id, type, x, y) {
@@ -24,9 +27,6 @@ define(["jquery", "jsPlumb", "IdManager"],
         }
 
         var graph = new Graph(), saved = true;
-        window.opcoes = [];
-        window.arrivals = [];
-        window.arrivalIndex = 0;
 
         var JsonManager = {
             setGraph: function(pGraph) {
@@ -55,40 +55,70 @@ define(["jquery", "jsPlumb", "IdManager"],
 
                 saved = false;
                 const btnCode = document.getElementById("opCode");
-                            btnCode.style.opacity = '0.3';
-                            btnCode.style.pointerEvents = 'none';
-                            const btnExecute = document.getElementById("opExecute");
-                            btnExecute.style.opacity = '0.3';
-                            btnExecute.style.pointerEvents = 'none';
+                btnCode.style.opacity = '0.3';
+                btnCode.style.pointerEvents = 'none';
+                const btnExecute = document.getElementById("opExecute");
+                btnExecute.style.opacity = '0.3';
+                btnExecute.style.pointerEvents = 'none';
             },
             removeNode: function(element) {
                  var father = element.parentNode;
 
             jsPlumb.detachAllConnections(element);
             father.removeChild(element);
-
-            if(window.opcoes.includes(graph.mapNodes[element.id].id))
-            { 
-                window.opcoes = window.opcoes.filter(id => id !== graph.mapNodes[element.id].id);
-                window.arrivals.forEach(a => {
-                    if (a.serviceCenter === graph.mapNodes[element.id].id) {
-                        window.arrivals = window.arrivals.filter(a => a.serviceCenter !== graph.mapNodes[element.id].id);
+            console.log("antes de remover nos");
+            console.log("arrivals atual:", graph.arrivals);
+            console.log("opcoes atual:", graph.opcoes);
+            if(graph.opcoes.some(op => op.value === element.id))
+            {
+                graph.opcoes = graph.opcoes.filter(op => op.value !== element.id);
+                console.log("removeu se o no era opcoes");
+                console.log("opcoes atual:", graph.opcoes);
+                graph.arrivals.forEach(a => {
+                    if (a.serviceCenter === element.id) {
+                        graph.arrivals = graph.arrivals.filter(a => a.serviceCenter !== element.id);
+                        console.log("removeu se o no era arrivals");
+                        console.log("arrivals atual:", graph.arrivals);
                     }
                 });
             }
+            console.log("mapTargets");
+            console.log(graph.mapNodes[element.id].mapTargets);
             if (graph.mapNodes[element.id].type === "source") {
                 Object.keys(graph.mapNodes[element.id].mapTargets).forEach(target => {
-                    if (window.opcoes.includes(target)) {
-                        window.opcoes = window.opcoes.filter(id => id !== target);
-                        window.arrivals.forEach(a => {
-                            if (a.serviceCenter === target) {
-                                window.arrivals = window.arrivals.filter(a => a.serviceCenter !== target);
+                    console.log("graph.opcoes");
+                    console.log(graph.opcoes);
+                    console.log("target:");
+                    console.log(target);
+                    if (graph.opcoes.some(op => op.value === target)) {
+                        var isInSource = false;
+                        Object.values(graph.mapNodes).forEach(node => {
+                            if (node.type === "source") {
+                                if (String(target) in node.mapTargets && String(node.id) !== element.id) {
+                                    isInSource = true;
+                                    console.log("isinsource=true");
+                                    console.log(node.id, typeof node.id);
+                                    console.log(element.id, typeof element.id);
+                                }
                             }
                         });
+                        if(!isInSource){
+                            graph.opcoes = graph.opcoes.filter(op => op.value !== target);
+                            console.log("removeu se o target era opcoes");
+                            console.log("opcoes atual:", graph.opcoes);
+                            graph.arrivals.forEach(a => {
+                                console.log(a.serviceCenter, typeof a.serviceCenter);
+                                console.log(target, typeof target);
+                                if (String(a.serviceCenter) === target) {
+                                    graph.arrivals = graph.arrivals.filter(a => String(a.serviceCenter) !== target);
+                                    console.log("removeu se o target era arrivals");
+                                    console.log("arrivals atual:", graph.arrivals);
+                                }
+                            });
+                        }      
                     }
                 });
             }
-
             // 1. Remove do graph.mapNodes
             delete graph.mapNodes[element.id];
 
@@ -109,17 +139,20 @@ define(["jquery", "jsPlumb", "IdManager"],
 
                 // Atualiza id no objeto
                 no.id = novoId;
-                window.arrivals.forEach(a => {
+                graph.arrivals.forEach(a => {
                     if (a.serviceCenter === oldId) {
                         a.serviceCenter = novoId;
                     }
                 });
 
-                window.opcoes.forEach(a => {
+                graph.opcoes.forEach(a => {
                     if (a === oldId) {
                         a = novoId;
                     }
                 });
+                console.log("atualizando ids");
+                console.log("arrivals atual:", graph.arrivals);
+                console.log("opcoes atual:", graph.opcoes);
 
                 // Atualiza targets
                 const novosTargets = {};
@@ -199,8 +232,16 @@ define(["jquery", "jsPlumb", "IdManager"],
                 btnExecute.style.opacity = '0.3';
                 btnExecute.style.pointerEvents = 'none';
                 if(graph.mapNodes[connection.sourceId].type==="source") 
-                    window.opcoes.push({ value: String(graph.mapNodes[connection.targetId].id), 
-                        text: String(graph.mapNodes[connection.targetId].id) });
+                    if(!graph.opcoes.some(op => op.value === String(connection.targetId)))
+                    {
+                        console.log("graph.opcoes:", graph.opcoes);
+                        console.log("connection.targetId:", connection.targetId, typeof connection.targetId);
+                        if(graph.opcoes[0])console.log("comparação direta:", graph.opcoes[0].value === String(connection.targetId));
+
+                        graph.opcoes.push({ value: String(connection.targetId), 
+                            text: String(connection.targetId) });
+                    }
+                console.log("opcoes atual:", graph.opcoes);
             },
             changeNodePosition: function(element) {
                 graph.mapNodes[element.id].x = $(element).css("left");
@@ -233,6 +274,9 @@ define(["jquery", "jsPlumb", "IdManager"],
             },
             clearGraph: function() {
                 graph = new Graph();
+                console.log("graph e graph.opcoes:");
+                console.log(graph);
+                console.log(graph.opcoes);
             }
         };
 
