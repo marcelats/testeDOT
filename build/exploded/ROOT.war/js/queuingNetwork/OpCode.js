@@ -123,16 +123,10 @@ function($, lightBoxManager, cons,JSZip) {
                             body: formData
                         })
 
-                
-                .then(response => {
-    if (!response.ok) {
-        // aqui o status pode ser 502, 500, etc.
-        return response.text().then(msg => {
-            throw new Error(`Erro ${response.status}: ${msg}`);
-        });
-    }
-    return response.blob(); // se for arquivo vindo do backend
-})
+                        .then(response => {
+                            if (response.ok) window.dispatchEvent(new Event("codeEditorClicou"));
+                            return response.blob(); // se for arquivo vindo do backend
+                        })
 
                         .then(blobCode => {         
                             const url = URL.createObjectURL(blobCode);
@@ -163,7 +157,7 @@ function($, lightBoxManager, cons,JSZip) {
                             a.click();
                             document.body.removeChild(a);
                             URL.revokeObjectURL(url);
-                            window.dispatchEvent(new Event("codeEditorClicou"));
+                            
                             
                             if(window.langSelecionada === 'Python' || window.langSelecionada === 'R' || !window.langSelecionada)
                             {
