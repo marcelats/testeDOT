@@ -122,7 +122,18 @@ function($, lightBoxManager, cons,JSZip) {
                             method: "POST",
                             body: formData
                         })
-                        .then(res => res.blob())
+
+                
+                .then(response => {
+    if (!response.ok) {
+        // aqui o status pode ser 502, 500, etc.
+        return response.text().then(msg => {
+            throw new Error(`Erro ${response.status}: ${msg}`);
+        });
+    }
+    return response.blob(); // se for arquivo vindo do backend
+})
+
                         .then(blobCode => {         
                             const url = URL.createObjectURL(blobCode);
                            
