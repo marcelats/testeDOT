@@ -31,7 +31,7 @@
                     </div>
                 </fieldset>
 
-                <fieldset>
+                <fieldset disabled id="arrival_fieldset">
                     <legend>Arrival distribution</legend>
                     <div class="field">
                         <select id="arrival_distribution" class="inputText">
@@ -45,21 +45,21 @@
 
                     <div class="field">
                         <label for="arrival_average" class="labelLeft">Average</label>
-                        <input id="arrival_average" type="text" class="inputText small">
+                        <input type="text" id="arrival_average" class="inputText small">
                     </div>
 
                     <div class="field" id="arrival_stdDeviation">
                         <label for="arrival_stdDeviation" class="labelLeft">Standard deviation</label>
-                        <input id="arrival_stdDeviation" type="text" class="inputText small">
+                        <input type="text" id="arrival_stdDeviation" class="inputText small">
                     </div>
 
                     <div class="field">
                         <label for="arrival_sequence" class="labelLeft">Random number generation seed</label>
-                        <input disabled id="arrival_sequence" type="text" class="inputText small">
+                        <input disabled type="text" id="arrival_sequence" class="inputText small">
                     </div>
                 </fieldset>
                 
-                <fieldset>
+                <fieldset id="fieldset_sd">
                     <legend>Service distribution</legend>
                     <div class="field">
                         <select id="server_distribution" class="inputText">
@@ -73,17 +73,17 @@
 
                     <div class="field">
                         <label for="server_average" class="labelLeft">Average</label>
-                        <input id="server_average" type="text" class="inputText small">
+                        <input type="text" id="server_average" class="inputText small">
                     </div>
 
-                    <div class="field" id="server_stdDeviation">
+                    <div class="field">
                         <label for="server_stdDeviation" class="labelLeft">Standard deviation</label>
-                        <input id="server_stdDeviation" type="text" class="inputText small">
+                        <input type="text" id="server_stdDeviation" class="inputText small">
                     </div>
 
                     <div class="field">
                         <label for="server_sequence" class="labelLeft">Random number generation seed</label>
-                        <input disabled id="server_sequence" type="text" class="inputText small">
+                        <input disabled type="text" id="server_sequence" class="inputText small">
                     </div>
                 </fieldset><br>
                 <div class="field">

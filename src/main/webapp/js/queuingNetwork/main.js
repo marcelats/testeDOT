@@ -155,11 +155,20 @@ require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "El
 
             const fieldset = document.getElementById("queueStatsFieldset");
             if (fieldset) {
-                if(allowed.includes(selected)) fieldset.disabled = false;
-                fieldset.style.opacity = allowed.includes(selected) ? '1' : '0.3';
-                fieldset.style.pointerEvents = allowed.includes(selected) ? 'auto' : 'none';
-                fieldset.tabIndex = allowed.includes(selected) ? 0 : -1;
-                fieldset.disabled = allowed.includes(selected) ? false : true;
+                if(allowed.includes(selected)) 
+                {
+                    fieldset.disabled = false;
+                    fieldset.style.opacity = '1';
+                    fieldset.style.pointerEvents = 'auto';
+                    fieldset.tabIndex = 0;
+                }
+                else
+                {
+                    fieldset.disabled = true;
+                    fieldset.style.opacity = '0.3';
+                    fieldset.style.pointerEvents = 'none';
+                    fieldset.tabIndex = -1;
+                }
             }
             const arrivalSelect = document.getElementById("arrival_distribution");
             if(arrivalSelect){
@@ -168,7 +177,7 @@ require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "El
                         if (option.text === "HyperExponential" || option.text === "Erlang") {
                             option.disabled = false;
                         }
-                    }
+                    }  
                 }else{
                     for (let option of arrivalSelect.options) {
                         if (option.text === "HyperExponential" || option.text === "Erlang") {
@@ -199,6 +208,7 @@ require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "El
                             option.disabled = true;
                         }
                     }
+                
                     if (serverSelect.selectedOptions[0].disabled) {
                         for (let opt of serverSelect.options) {
                             if (!opt.disabled) {
@@ -223,6 +233,7 @@ require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "El
                             option.disabled = true;
                         }
                     }
+                
                     if (multiserverArrivalSelect.selectedOptions[0].disabled) {
                         for (let opt of multiserverArrivalSelect.options) {
                             if (!opt.disabled) {
@@ -239,7 +250,7 @@ require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "El
                 if(allowed.includes(selected)){
                     for (let option of multiserverSelect.options) {
                         if (option.text === "HyperExponential" || option.text === "Erlang") {
-                        option.disabled = false;
+                            option.disabled = false;
                         }
                     }
                 }else{
@@ -260,17 +271,32 @@ require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "El
             }
             const arrival_sequence = document.getElementById("arrival_sequence");
             if (arrival_sequence) {
-                if(allowed.includes(selected)) arrival_sequence.disabled = false;
-                arrival_sequence.style.opacity = allowed.includes(selected) ? '1' : '0.3';
-                arrival_sequence.style.pointerEvents = allowed.includes(selected) ? 'auto' : 'none';
-                arrival_sequence.tabIndex = allowed.includes(selected) ? 0 : -1;
+                if(allowed.includes(selected)){          
+                    arrival_sequence.disabled = false;
+                    arrival_sequence.style.opacity = '1';
+                    arrival_sequence.style.pointerEvents = 'auto';
+                    arrival_sequence.tabIndex = 0;
+                } 
+                else{
+                    arrival_sequence.disabled = true;
+                    arrival_sequence.style.opacity = '0.3';
+                    arrival_sequence.style.pointerEvents = 'none';
+                    arrival_sequence.tabIndex = -1;
+                } 
             }
             const server_sequence = document.getElementById("server_sequence");
             if (server_sequence) {
-                if(allowed.includes(selected)) server_sequence.disabled = false;
-                server_sequence.style.opacity = allowed.includes(selected) ? '1' : '0.3';
-                server_sequence.style.pointerEvents = allowed.includes(selected) ? 'auto' : 'none';
-                server_sequence.tabIndex = allowed.includes(selected) ? 0 : -1;
+                if(allowed.includes(selected)){
+                    server_sequence.disabled = false;
+                    server_sequence.style.opacity = '1';
+                    server_sequence.style.pointerEvents = 'auto';
+                    server_sequence.tabIndex = 0;
+                }else{
+                    server_sequence.disabled = true;
+                    server_sequence.style.opacity = '0.3';
+                    server_sequence.style.pointerEvents = 'none';
+                    server_sequence.tabIndex = -1;
+                }
             }
 
             const opParam_batchSize = document.getElementById("opParam_batchSize");
@@ -279,29 +305,35 @@ require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "El
                 opParam_batchSize.style.pointerEvents = allowed.includes(selected) ? 'auto' : 'none';
                 opParam_batchSize.tabIndex = allowed.includes(selected) ? 0 : -1;
             }
-        }
+        } 
 
         function updateserver_sd(distribution) {
             const selected = distribution.value;
             console.log("Selecionado:", selected);
 
+            // Dentro desse fieldset, procura o elemento com a classe server_stdDeviation
             const server_sd = document.getElementById("server_stdDeviation");
+
             if (!server_sd) {
-              console.warn("server_sd não encontrado.");
-              return;
+                console.warn("server_sd não encontrado no mesmo fieldset.");
+                return;
             }
-            if (selected !== 'Exponential') {
-              server_sd.style.opacity = '1';
-              server_sd.style.pointerEvents = 'auto';
-              server_sd.tabIndex = 0;
-              server_sd.disabled = false;
+
+            if (selected !== "Exponential") {
+                console.log("não exponential");
+                server_sd.style.opacity = "1";
+                server_sd.style.pointerEvents = "auto";
+                server_sd.tabIndex = 0;
+                server_sd.disabled = false;
             } else {
-              server_sd.style.opacity = '0.3';
-              server_sd.style.pointerEvents = 'none';
-              server_sd.tabIndex = -1;
-              server_sd.disabled = true;
+                console.log("exponential");
+                server_sd.style.opacity = "0.3";
+                server_sd.style.pointerEvents = "none";
+                server_sd.tabIndex = -1;
+                server_sd.disabled = true;
             }
         }
+
 
         function updatearrival_sd(distribution) {
             const selected = distribution.value;
@@ -309,19 +341,19 @@ require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "El
 
             const arrival_sd = document.getElementById("arrival_stdDeviation");
             if (!arrival_sd) {
-              console.warn("arrival_sd não encontrado.");
-              return;
+                console.warn("arrival_sd não encontrado.");
+                return;
             }
             if (selected !== 'Exponential') {
-              arrival_sd.style.opacity = '1';
-              arrival_sd.style.pointerEvents = 'auto';
-              arrival_sd.tabIndex = 0;
-              arrival_sd.disabled = false;
+                arrival_sd.style.opacity = '1';
+                arrival_sd.style.pointerEvents = 'auto';
+                arrival_sd.tabIndex = 0;
+                arrival_sd.disabled = false;
             } else {
-              arrival_sd.style.opacity = '0.3';
-              arrival_sd.style.pointerEvents = 'none';
-              arrival_sd.tabIndex = -1;
-              arrival_sd.disabled = true;
+                arrival_sd.style.opacity = '0.3';
+                arrival_sd.style.pointerEvents = 'none';
+                arrival_sd.tabIndex = -1;
+                arrival_sd.disabled = true;
             }
         }
   
@@ -329,43 +361,42 @@ require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "El
             const selected = distribution.value;
             console.log("Selecionado:", selected);
 
-            const multiserver_sd = document.getElementById("multiServerSD");
+            const multiserver_sd = document.getElementById("multiServer_stdDeviation");
             if (!multiserver_sd) {
-              console.warn("server_sd não encontrado.");
-              return;
+                console.warn("server_sd não encontrado.");
+                return;
             }
             if (selected !== 'Exponential') {
-              multiserver_sd.style.opacity = '1';
-              multiserver_sd.style.pointerEvents = 'auto';    
-              multiserver_sd.tabIndex = 0;
-              multiserver_sd.disabled = false;
+                multiserver_sd.style.opacity = '1';
+                multiserver_sd.style.pointerEvents = 'auto';    
+                multiserver_sd.tabIndex = 0;
+                multiserver_sd.disabled = false;
             } else {
-              multiserver_sd.style.opacity = '0.3';
-              multiserver_sd.style.pointerEvents = 'none';
-              multiserver_sd.tabIndex = -1;
-              multiserver_sd.disabled = true;
+                multiserver_sd.style.opacity = '0.3';
+                multiserver_sd.style.pointerEvents = 'none';
+                multiserver_sd.tabIndex = -1;
+                multiserver_sd.disabled = true;
             }
         }
   
         function updatemsarrival_sd(distribution) {
             const selected = distribution.value;
             console.log("Selecionado:", selected);
-
-            const msarrival_sd = document.getElementById("multiServerArrivalSD");
+            const msarrival_sd = document.getElementById("msarrival_stdDeviation");
             if (!msarrival_sd) {
-              console.warn("server_sd não encontrado.");
-              return;
+                console.warn("server_sd não encontrado.");
+                return;
             }
             if (selected !== 'Exponential') {
-              msarrival_sd.style.opacity = '1';
-              msarrival_sd.style.pointerEvents = 'auto';  
-              msarrival_sd.tabIndex = 0;
-              msarrival_sd.disabled = false;
+                msarrival_sd.style.opacity = '1';
+                msarrival_sd.style.pointerEvents = 'auto';  
+                msarrival_sd.tabIndex = 0;
+                msarrival_sd.disabled = false;
             } else {
-              msarrival_sd.style.opacity = '0.3';
-              msarrival_sd.style.pointerEvents = 'none';
-              msarrival_sd.tabIndex = -1;
-              msarrival_sd.disabled = true;
+                msarrival_sd.style.opacity = '0.3';
+                msarrival_sd.style.pointerEvents = 'none';
+                msarrival_sd.tabIndex = -1;
+                msarrival_sd.disabled = true;
             }
         }
 
@@ -393,8 +424,9 @@ require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "El
         }
   
         function attachSSListener(distribution) {
+            console.log("attachSSListener");
             if (distribution.dataset.listenerAttached === "true") return;
-
+            console.log("sem listener attached");
             distribution.addEventListener("change", () => {
                 updateserver_sd(distribution);
                 console.log(`Distribuicao selecionada: ${distribution.value}`);
@@ -454,6 +486,7 @@ require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "El
             const observer = new MutationObserver(check);
             observer.observe(document.body, { childList: true, subtree: true });
         }
+
   
         function observeSA() {
             const check = () => {

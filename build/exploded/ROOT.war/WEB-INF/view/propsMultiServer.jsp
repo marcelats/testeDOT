@@ -20,7 +20,7 @@
                     <legend>Server type</legend>
                     <div class="field">
                         <label for="multiServer_nbrServers" class="labelLeft">Number of servers</label>
-                        <input id="multiServer_nbrServers"type="text" class="inputText small" value="1">
+                        <input id="multiServer_nbrServers" type="text" class="inputText small" value="1">
                     </div>
                 </fieldset>
 
@@ -37,7 +37,7 @@
                     </div>
                 </fieldset>
 
-                <fieldset>
+                <fieldset disabled id="ms_arrival_fieldset">
                     <legend>Arrival distribution</legend>
                     <div class="field">
                         <select id="ms_arrival_distribution" class="inputText">
@@ -54,14 +54,14 @@
                         <input id="arrival_average" type="text" class="inputText small">
                     </div>
 
-                    <div class="field" id="multiServerArrivalSD">
+                    <div class="field" class="multiServerArrivalSD">
                         <label for="arrival_stdDeviation" class="labelLeft">Standard deviation</label>
-                        <input id="arrival_stdDeviation" type="text" class="inputText small">
+                        <input type="text" id="msarrival_stdDeviation" class="inputText small">
                     </div>
 
                     <div class="field">
                         <label for="arrival_sequence" class="labelLeft">Random number generation seed</label>
-                        <input id="arrival_sequence" type="text" class="inputText small">
+                        <input type="text" id="arrival_sequence" class="inputText small">
                     </div>
                 </fieldset>
                 
@@ -82,9 +82,9 @@
                         <input id="multiServer_average" type="text" class="inputText small">
                     </div>
 
-                    <div class="field" id="multiServerSD">
+                    <div class="field" class="multiServerSD">
                         <label for="multiServer_stdDeviation" class="labelLeft">Standard deviation</label>
-                        <input id="multiServer_stdDeviation" type="text" class="inputText small">
+                        <input type="text" id="multiServer_stdDeviation" class="inputText small">
                     </div>
                     <div class="field">
                         <label for="multiServer_sequence" class="labelLeft">Random number generation seed</label>

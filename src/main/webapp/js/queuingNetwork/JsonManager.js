@@ -106,6 +106,10 @@ define(["jquery", "jsPlumb", "IdManager"],
                             graph.opcoes = graph.opcoes.filter(op => op.value !== target);
                             console.log("removeu se o target era opcoes");
                             console.log("opcoes atual:", graph.opcoes);
+                            const arrivalFieldset = document.getElementById("arrival_fieldset");
+                            if(arrivalFieldset) arrivalFieldset.disabled = true;
+                            const ms_arrivalFieldset = document.getElementById("ms_arrival_fieldset");
+                            if(ms_arrivalFieldset) ms_arrivalFieldset.disabled = true;
                             graph.arrivals.forEach(a => {
                                 console.log(a.serviceCenter, typeof a.serviceCenter);
                                 console.log(target, typeof target);
@@ -232,6 +236,7 @@ define(["jquery", "jsPlumb", "IdManager"],
                 btnExecute.style.opacity = '0.3';
                 btnExecute.style.pointerEvents = 'none';
                 if(graph.mapNodes[connection.sourceId].type==="source") 
+                {
                     if(!graph.opcoes.some(op => op.value === String(connection.targetId)))
                     {
                         console.log("graph.opcoes:", graph.opcoes);
@@ -240,7 +245,14 @@ define(["jquery", "jsPlumb", "IdManager"],
 
                         graph.opcoes.push({ value: String(connection.targetId), 
                             text: String(connection.targetId) });
+                        
+                        const arrivalFieldset = document.getElementById("arrival_fieldset");
+                        if(arrivalFieldset) arrivalFieldset.disabled = false;
+                        const ms_arrivalFieldset = document.getElementById("ms_arrival_fieldset");
+                        if(ms_arrivalFieldset) ms_arrivalFieldset.disabled = false;
+                        
                     }
+                }
                 console.log("opcoes atual:", graph.opcoes);
             },
             changeNodePosition: function(element) {

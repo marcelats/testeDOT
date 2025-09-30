@@ -18,7 +18,7 @@ define(["JsonManager", "Cons"],
                 $(document).on("click", "#btCancel", function() {
                     propertiesArea.ctrl("cancel");
                 });
-                document.addEventListener("DOMContentLoaded", function () {
+                /*document.addEventListener("DOMContentLoaded", function () {
                     const serverSelect = document.getElementById("server_distribution");
                     if (serverSelect) {
                         for (let option of serverSelect.options) {
@@ -44,7 +44,7 @@ define(["JsonManager", "Cons"],
                             option.disabled = true;
                         }
                     }
-                }
+                }*/
             },
             ctrl: function(element) {
                 /* Invoked from an element. */
@@ -77,12 +77,12 @@ define(["JsonManager", "Cons"],
                         btnExecute.style.opacity = '0.3';
                         btnExecute.style.pointerEvents = 'none';
                            
-                        const arrival_sequence = document.getElementById("arrival_sequence");
+                        /*const arrival_sequence = document.getElementById("arrival_sequence");
                         arrival_sequence.style.opacity = '0.3';
                         arrival_sequence.style.pointerEvents = 'none';
                         const server_sequence = document.getElementById("server_sequence");
                         server_sequence.style.opacity = '0.3';
-                        server_sequence.style.pointerEvents = 'none';
+                        server_sequence.style.pointerEvents = 'none';*/
                     }
                 }
             }
@@ -99,8 +99,8 @@ define(["JsonManager", "Cons"],
             $("#" + cons.PROPERTIES_AREA).load(
                 "qnetwork?cmd=open-properties&type=" + element.name,
                 function() {
-                    prepareForm(element);
-                    const serverSelect = document.getElementById("server_distribution");
+                    prepareForm(element);              
+                    /*const serverSelect = document.getElementById("server_distribution");
                     if (serverSelect) {
                         for (let option of serverSelect.options) {
                             if (["HyperExponential", "Erlang"].includes(option.text.trim())) {
@@ -115,7 +115,7 @@ define(["JsonManager", "Cons"],
                                 option.disabled = true;
                             }
                         }
-                    }
+                    }*/
                 }
             );
         }
