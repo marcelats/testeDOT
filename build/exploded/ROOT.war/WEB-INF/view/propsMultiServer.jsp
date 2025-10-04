@@ -50,18 +50,18 @@
                     </div>
 
                     <div class="field">
-                        <label for="arrival_average" class="labelLeft">Average</label>
-                        <input id="arrival_average" type="text" class="inputText small">
+                        <label for="ms_arrival_average" class="labelLeft">Average</label>
+                        <input id="ms_arrival_average" type="text" class="inputText small">
                     </div>
 
                     <div class="field" class="multiServerArrivalSD">
-                        <label for="arrival_stdDeviation" class="labelLeft">Standard deviation</label>
-                        <input type="text" id="msarrival_stdDeviation" class="inputText small">
+                        <label for="ms_arrival_stdDeviation" class="labelLeft">Standard deviation</label>
+                        <input type="text" id="ms_arrival_stdDeviation" class="inputText small">
                     </div>
 
                     <div class="field">
-                        <label for="arrival_sequence" class="labelLeft">Random number generation seed</label>
-                        <input type="text" id="arrival_sequence" class="inputText small">
+                        <label for="ms_arrival_sequence" class="labelLeft">Random number generation seed</label>
+                        <input type="text" id="ms_arrival_sequence" class="inputText small">
                     </div>
                 </fieldset>
                 
@@ -93,8 +93,8 @@
                     
                 </fieldset><br>
                 <div class="field">
-                    <label for="probability" class="labelLeft">Probability</label>
-                    <input id="probability" type="text" class="inputText small">
+                    <label for="ms_probability" class="labelLeft">Probability</label>
+                    <input id="ms_probability" type="text" class="inputText small">
                 </div>
                 <input id="btCancel" type="button" value="Cancel" class="button">
                 <input id ="btSubmit" type="button" value="Ok" class="button">

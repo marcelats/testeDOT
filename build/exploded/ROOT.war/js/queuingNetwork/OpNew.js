@@ -53,6 +53,12 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpSave", "Cons", "IdManager
                             idManager.setStartCid(-1);
                             jsPlumb.reset(); 
                             document.title = "ASDA";
+                            const btnCode = document.getElementById("opCode");
+                            btnCode.style.opacity = '0.3';
+                            btnCode.style.pointerEvents = 'none';
+                            const btnExecute = document.getElementById("opExecute");
+                            btnExecute.style.opacity = '0.3';
+                            btnExecute.style.pointerEvents = 'none';
                         }
 
                         if (typeof callback === "function") {
@@ -67,6 +73,13 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpSave", "Cons", "IdManager
                     $("#" + cons.DRAW_AREA).empty();
                     jsPlumb.reset(); 
                     document.title = "ASDA";
+                    const btnCode = document.getElementById("opCode");
+                    btnCode.style.opacity = '0.3';
+                    btnCode.style.pointerEvents = 'none';
+                    const btnExecute = document.getElementById("opExecute");
+                    btnExecute.style.opacity = '0.3';
+                    btnExecute.style.pointerEvents = 'none';
+                    window.flag = false;
                 }
             },
             getLastAction: function() {

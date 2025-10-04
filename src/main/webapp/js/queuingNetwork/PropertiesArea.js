@@ -18,33 +18,7 @@ define(["JsonManager", "Cons"],
                 $(document).on("click", "#btCancel", function() {
                     propertiesArea.ctrl("cancel");
                 });
-                /*document.addEventListener("DOMContentLoaded", function () {
-                    const serverSelect = document.getElementById("server_distribution");
-                    if (serverSelect) {
-                        for (let option of serverSelect.options) {
-                            if (option.text === "HyperExponential" || option.text === "Erlang") {
-                                option.disabled = true;
-                            }
-                        }
-                    }
-                });
 
-                const arrivalSelect = document.getElementById("arrival_distribution");
-                if(arrivalSelect){
-                    for (let option of arrivalSelect.options) {
-                        if (option.text === "HyperExponential" || option.text === "Erlang") {
-                            option.disabled = true;
-                        }
-                    }
-                }
-                const serverSelect = document.getElementById("server_distribution");
-                if(serverSelect){
-                    for (let option of serverSelect.options) {
-                        if (option.text === "HyperExponential" || option.text === "Erlang") {
-                            option.disabled = true;
-                        }
-                    }
-                }*/
             },
             ctrl: function(element) {
                 /* Invoked from an element. */
@@ -65,24 +39,51 @@ define(["JsonManager", "Cons"],
                     closeDiv();
 
                     if (element === "submit") {
-                        var properties = $("#" + cons.PROPERTIES_AREA).values();
                         var callerId = $("#" + cons.HIDDEN_FIELD_ID).val();
                         var tempElement = document.getElementById(callerId);
+                        console.log(tempElement);
+                        var source = jsonManager.getGraph().mapNodes[callerId].source;
+                        console.log(source);
+                        if(source !== -1)
+                        {
+                            var max = 100 - Object.values(jsonManager.getGraph().mapNodes[source].mapTargets).reduce((total, valor) => total + valor, 0);
+                            var input = "";
+                            if(jsonManager.getGraph().mapNodes[callerId].type === "server") input = parseFloat(document.getElementById("probability").value);
+                            else input = parseFloat(document.getElementById("ms_probability").value);
+                            if(input > max) {
+                                alert("The sum of the probabilities for each node cannot exceed 100.");
+                                return;
+                            }
+                            console.log(jsonManager.getGraph().mapNodes[source]);
+                            jsonManager.getGraph().mapNodes[source].mapTargets[callerId] = input;
+                            var zeroes = [];
+                            for (const [key, value] of Object.entries(jsonManager.getGraph().mapNodes[source].mapTargets)) {
+                                if (value === 0) {
+                                    zeroes.push(key);
+                                }
+                            }
+                            console.log(jsonManager.getGraph().mapNodes[source].mapTargets);
+                            console.log(zeroes);
+                            if (zeroes.length == 1) {
+                                jsonManager.getGraph().mapNodes[source].mapTargets[zeroes[0]] = max - input;
+                                if(jsonManager.getGraph().mapNodes[callerId].type === "server") jsonManager.getGraph().mapNodes[zeroes[0]].properties.probability = max - input;
+                                else jsonManager.getGraph().mapNodes[zeroes[0]].properties.ms_probability = max - input;
+                            }
+                        }
+                        
 
+                        var properties = $("#" + cons.PROPERTIES_AREA).values();
+                        
+                        
                         jsonManager.setNodeProperties(tempElement, properties);
+
                         const btnCode = document.getElementById("opCode");
                         btnCode.style.opacity = '0.3';
                         btnCode.style.pointerEvents = 'none';
                         const btnExecute = document.getElementById("opExecute");
                         btnExecute.style.opacity = '0.3';
                         btnExecute.style.pointerEvents = 'none';
-                           
-                        /*const arrival_sequence = document.getElementById("arrival_sequence");
-                        arrival_sequence.style.opacity = '0.3';
-                        arrival_sequence.style.pointerEvents = 'none';
-                        const server_sequence = document.getElementById("server_sequence");
-                        server_sequence.style.opacity = '0.3';
-                        server_sequence.style.pointerEvents = 'none';*/
+                        window.flag = false;
                     }
                 }
             }
@@ -100,22 +101,32 @@ define(["JsonManager", "Cons"],
                 "qnetwork?cmd=open-properties&type=" + element.name,
                 function() {
                     prepareForm(element);              
-                    /*const serverSelect = document.getElementById("server_distribution");
-                    if (serverSelect) {
-                        for (let option of serverSelect.options) {
-                            if (["HyperExponential", "Erlang"].includes(option.text.trim())) {
-                                option.disabled = true;
-                            }
+                    if(jsonManager.getGraph().opcoes.some(opcao => opcao.value === String(element.id)))
+                    {
+                        if(element.name === "server") 
+                        {
+                            const arrivalFieldset = document.getElementById("arrival_fieldset");
+                            if(arrivalFieldset) arrivalFieldset.disabled = false;
+                        }
+                        if(element.name === "multiServer")
+                        {
+                            const ms_arrivalFieldset = document.getElementById("ms_arrival_fieldset");
+                            if(ms_arrivalFieldset) ms_arrivalFieldset.disabled = false;
                         }
                     }
-                    const arrivalSelect = document.getElementById("arrival_distribution");
-                    if (arrivalSelect) {
-                        for (let option of arrivalSelect.options) {
-                            if (["HyperExponential", "Erlang"].includes(option.text.trim())) {
-                                option.disabled = true;
-                            }
+                    else
+                    {
+                        if(element.name === "server") 
+                        {
+                            const arrivalFieldset = document.getElementById("arrival_fieldset");
+                            if(arrivalFieldset) arrivalFieldset.disabled = true;
                         }
-                    }*/
+                        if(element.name === "multiServer")
+                        {
+                            const ms_arrivalFieldset = document.getElementById("ms_arrival_fieldset");
+                            if(ms_arrivalFieldset) ms_arrivalFieldset.disabled = true;
+                        }
+                    }
                 }
             );
         }

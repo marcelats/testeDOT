@@ -152,6 +152,10 @@ require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "El
                 multiServer.style.pointerEvents = allowed.includes(selected) ? 'auto' : 'none';
                 multiServer.tabIndex = allowed.includes(selected) ? 0 : -1;
             }
+            
+            const warmup = document.getElementById("warmup_fieldset");
+            if(warmup) if(allowed.includes(selected)) warmup.disabled = false;
+            else warmup.disabled = true;
 
             const fieldset = document.getElementById("queueStatsFieldset");
             if (fieldset) {
@@ -298,6 +302,35 @@ require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "El
                     server_sequence.tabIndex = -1;
                 }
             }
+            const ms_arrival_sequence = document.getElementById("ms_arrival_sequence");
+            if (ms_arrival_sequence) {
+                if(allowed.includes(selected)){          
+                    ms_arrival_sequence.disabled = false;
+                    ms_arrival_sequence.style.opacity = '1';
+                    ms_arrival_sequence.style.pointerEvents = 'auto';
+                    ms_arrival_sequence.tabIndex = 0;
+                } 
+                else{
+                    ms_arrival_sequence.disabled = true;
+                    ms_arrival_sequence.style.opacity = '0.3';
+                    ms_arrival_sequence.style.pointerEvents = 'none';
+                    ms_arrival_sequence.tabIndex = -1;
+                } 
+            }
+            const multiServer_sequence = document.getElementById("multiServer_sequence");
+            if (multiServer_sequence) {
+                if(allowed.includes(selected)){
+                    multiServer_sequence.disabled = false;
+                    multiServer_sequence.style.opacity = '1';
+                    multiServer_sequence.style.pointerEvents = 'auto';
+                    multiServer_sequence.tabIndex = 0;
+                }else{
+                    multiServer_sequence.disabled = true;
+                    multiServer_sequence.style.opacity = '0.3';
+                    multiServer_sequence.style.pointerEvents = 'none';
+                    multiServer_sequence.tabIndex = -1;
+                }
+            }
 
             const opParam_batchSize = document.getElementById("opParam_batchSize");
             if (opParam_batchSize) {
@@ -382,7 +415,7 @@ require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "El
         function updatemsarrival_sd(distribution) {
             const selected = distribution.value;
             console.log("Selecionado:", selected);
-            const msarrival_sd = document.getElementById("msarrival_stdDeviation");
+            const msarrival_sd = document.getElementById("ms_arrival_stdDeviation");
             if (!msarrival_sd) {
                 console.warn("server_sd não encontrado.");
                 return;

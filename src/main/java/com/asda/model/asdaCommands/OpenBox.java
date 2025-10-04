@@ -71,6 +71,10 @@ public class OpenBox implements Command {
                     aResponse = new CommandResponse();
                     aResponse.setForward(true);
                     aResponse.setPage(DIRECTORY + "textEditor.jsp");
+                case "showText":
+                    aResponse = new CommandResponse();
+                    aResponse.setForward(true);
+                    aResponse.setPage(DIRECTORY + "ShowText.jsp");
                     break;
             }
         System.out.println("Arquivos recebidos: " + graph);

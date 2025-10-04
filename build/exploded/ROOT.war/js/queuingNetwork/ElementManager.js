@@ -158,7 +158,7 @@ define(["jquery", "jsPlumb", "DrawArea", "PropertiesArea", "JsonManager", "Utils
                 var id = parseInt($(this.prevElement).attr("id")); // agora funciona
                 sourceType = jsonManager.getGraph().mapNodes[id].type;
                 console.log(jsonManager.getGraph().mapNodes[id].mapTargets);
-                if(Object.keys(jsonManager.getGraph().mapNodes[id].mapTargets).length !== 0) return 0;
+                if(sourceType === "source" && Object.keys(jsonManager.getGraph().mapNodes[id].mapTargets).length !== 0) return 0;
             }
           
             console.log(element);
@@ -183,6 +183,8 @@ define(["jquery", "jsPlumb", "DrawArea", "PropertiesArea", "JsonManager", "Utils
                     /* Tells jsPlumb to create the second end point */
                     targetEndPoint = jsPlumb.addEndpoint(element, targetOption);
                     /* Finally, connects elements */
+                    console.log(this.prevEndPoint, targetEndPoint);
+
                     connection = jsPlumb.connect({source: this.prevEndPoint, target: targetEndPoint}, linkConnector);
 
                     if (this.prevElement) {

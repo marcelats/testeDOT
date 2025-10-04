@@ -46,7 +46,7 @@
                 </div>
             </fieldset>
 
-            <fieldset>
+            <fieldset id="warmup_fieldset">
                 <legend>Warmup Time</legend>
 
                 <input id="opParam_timeAutomatic"type="radio" name="warmupTime">

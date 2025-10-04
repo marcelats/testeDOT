@@ -6,14 +6,15 @@
 //const fs = require('fs');
 let modelType = "True";
 let warmupTime = "False";
-define(["jquery", "JsonManager"],
-    function($, jsonManager) {
+define(["jquery", "JsonManager", "LightBoxManager", "Cons"],
+    function($, jsonManager, lightBoxManager, cons) {
         "use strict";
 
         var lastAction = null;
 
         var OpGen = {
             execute: function() {
+                
                 console.log("passando pelo execute do opgen");
                 const opParam = document.getElementById("opParam_library");
                 const selectedValue = opParam?.value;
@@ -46,13 +47,29 @@ define(["jquery", "JsonManager"],
 
                 // nenhum radio selecionado
                 if (!execTimeOp.checked && !maxEntitiesOp.checked) {
-                    alert("Selecione um tipo de modelo.");
+                    alert("Select a model type.");
                     return; // encerra fluxo
                 }
 
+                Object.entries(jsonManager.getGraph().mapNodes).forEach(([nodeId, node]) => {
+                    if (node.type === "server" || node.type === "multiServer") {
+                        const soma = Object.values(node.mapTargets)
+                        .reduce((a, v) => a + v, 0);
+
+                        // verifica intervalo
+                        if(node.mapTargets.length > 0){
+                            const ok = soma >= 99.5 && soma <= 100.5;
+                            if (!ok) {
+                                alert("The sum of the probabilities for each node must be 100."); 
+                                return;
+                            }
+                        }
+                    }
+                });
+
                 if (execTimeOp.checked) {
                     if (execTime === "" || Number(execTime) === 0) {
-                        alert("Preencha Execution time com um valor diferente de zero.");
+                        alert("Execution time must be different from zero");
                         return;
                     }
                     content = `digraph ${jsonManager.getGraph().name} {\n    comment=" ${execTime} ${numCycles} ${batchSize} 0 aberto ${warmupTime} ${definedValue} ${seed} " rankdir=LR\n`;
@@ -60,7 +77,7 @@ define(["jquery", "JsonManager"],
 
                 if (maxEntitiesOp.checked) {
                     if (maxEntities === "" || Number(maxEntities) === 0) {
-                        alert("Preencha Max number of entities com um valor diferente de zero.");
+                        alert("Max number of entities must be different from zero.");
                         return;
                     }
                     content = `digraph ${jsonManager.getGraph().name} {\n    comment=" 0 ${numCycles} ${batchSize} ${maxEntities} fechado ${warmupTime} ${definedValue} ${seed} " rankdir=LR\n`;
@@ -127,7 +144,7 @@ define(["jquery", "JsonManager"],
                             break;
                         case "multiServer":
                             content += `    ${node.id} [label=CPU comment=" 2`;
-                            switch (node.properties.multiServer_arrival_distribution)
+                            switch (node.properties.ms_arrival_distribution)
                             {
                                 case "Normal":
                                     content += ` 0`;
@@ -141,7 +158,7 @@ define(["jquery", "JsonManager"],
                                 default:
                                     content += ` 0`;    
                             }
-                            switch (node.properties.server_distribution)
+                            switch (node.properties.multiServer_distribution)
                             {
                                 case "Normal":
                                     content += ` 0`;
@@ -161,11 +178,11 @@ define(["jquery", "JsonManager"],
                             {
                                 if(node.properties.multiServer_emptyQueue === 'on')
                                 {
-                                    content += ` ${node.properties.arrival_average} ${node.properties.multiServer_average} ${node.properties.multiServer_nbrServers} true `;
+                                    content += ` ${node.properties.ms_arrival_average} ${node.properties.multiServer_average} ${node.properties.multiServer_nbrServers} true `;
                                 }
                                 else
                                 {
-                                    content += ` ${node.properties.arrival_average} ${node.properties.multiServer_average} ${node.properties.multiServer_nbrServers} false `;
+                                    content += ` ${node.properties.ms_arrival_average} ${node.properties.multiServer_average} ${node.properties.multiServer_nbrServers} false `;
                                 }
 
                             } 
@@ -173,24 +190,24 @@ define(["jquery", "JsonManager"],
                             {
                                 if(node.properties.multiServer_emptyQueue === 'on')
                                 {
-                                    content += ` ${node.properties.arrival_average} ${node.properties.multiServer_average} 1 true `;
+                                    content += ` ${node.properties.ms_arrival_average} ${node.properties.multiServer_average} 1 true `;
                                 }
                                 else
                                 {
-                                    content += ` ${node.properties.arrival_average} ${node.properties.multiServer_average} 1 false `;
+                                    content += ` ${node.properties.ms_arrival_average} ${node.properties.multiServer_average} 1 false `;
                                 }
                             }
                             if(node.properties.multiServer_length === 'on')
                             {content += `true `;}
                             else
                             {content += `false `;}    
-                            if(node.properties.arrival_sequence) content += `${node.properties.arrival_sequence} `;
+                            if(node.properties.ms_arrival_sequence) content += `${node.properties.ms_arrival_sequence} `;
                             else content +=`0 `;
                             if(node.properties.multiServer_sequence) content += `${node.properties.multiServer_sequence} `;
                             else content +=`0 `;
                             if(node.properties.multiServer_stdDeviation) content += `${node.properties.multiServer_stdDeviation} `;
                             else content +=`0 `;
-                            if(node.properties.arrival_stdDeviation) content += `${node.properties.arrival_stdDeviation} `;
+                            if(node.properties.ms_arrival_stdDeviation) content += `${node.properties.ms_arrival_stdDeviation} `;
                             else content +=`0 `;
                             content +=`"]\n`;
                             break;
@@ -204,7 +221,8 @@ define(["jquery", "JsonManager"],
                         var prob;
                         Object.values(jsonManager.getGraph().mapNodes).forEach(probnode=>{
                             if(probnode.id === targetId){
-                                prob = probnode.properties.probability;
+                                if(probnode.properties.probability) prob = probnode.properties.probability;
+                                if(probnode.properties.ms_probability) prob = probnode.properties.ms_probability;
                             }
                         });
                         if(prob)content += `    ${node.id} -> ${targetId} [comment=${prob}]\n`;
@@ -216,7 +234,7 @@ define(["jquery", "JsonManager"],
                     const arrivals = jsonManager.getGraph().arrivals;
                     if (arrivals === 0) 
                         {
-                            alert("Necessario adicionar pelo menos uma chegada");
+                            alert("Add at least one arrival");
                             return;
                         } 
                     var length = 0;
@@ -236,17 +254,22 @@ define(["jquery", "JsonManager"],
 
                 content += "\n}\n";
                 //baixar o .gv
-                const blob = new Blob([content], { type: "text/plain" }); // Criar um arquivo de texto
-                window.graphBlob = blob;
-                const url = URL.createObjectURL(blob); // Criar URL do Blob
-                const a = document.createElement("a"); // Criar link
-                a.href = url;
-                a.download = "graph.gv"; // Nome do arquivo
-                document.body.appendChild(a);
-                a.click(); // Simular clique
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url); // Liberar memória
-                window.dispatchEvent(new Event("genClicou"));
+                lightBoxManager.openBox(cons.SHADOWING, cons.BOX_CONTAINER,
+                "qnetwork?cmd=open-box&type=editor",
+                function() {
+                    // Callback: textarea carregado
+                    const blob = new Blob([content], { type: "text/plain" }); // Criar um arquivo de texto
+                    window.graphBlob = blob;
+                    blob.text().then(texto => {
+                        const textarea = document.getElementById("textShow");
+                        if (textarea) {
+                            textarea.value = texto;
+                            window.dispatchEvent(new Event("genClicou"));
+                        } else {
+                            console.error("Textarea ainda não foi carregado.");
+                        }
+                    });
+                });
             },
             getLastAction: function() {
                 return lastAction;

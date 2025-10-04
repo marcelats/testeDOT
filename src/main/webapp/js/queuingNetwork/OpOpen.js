@@ -131,7 +131,8 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "I
                             btnCode.style.pointerEvents = 'none';
                             const btnExecute = document.getElementById("opExecute");
                             btnExecute.style.opacity = '0.3';
-                            btnExecute.style.pointerEvents = 'none';                            
+                            btnExecute.style.pointerEvents = 'none';      
+                            window.flag = false;
                         }
                     }
                     if (action === "copy") {

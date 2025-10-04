@@ -4,8 +4,8 @@ require.config({
     }
 });
 
-define(["jquery","LightBoxManager","Cons","JSZip"],
-function($, lightBoxManager, cons,JSZip) {
+define(["jquery", "LightBoxManager", "Cons", "JSZip", "JsonManager"],
+function($, lightBoxManager, cons, JSZip, jsonManager) {
     "use strict";
 
     var lastAction = null;
@@ -53,20 +53,20 @@ function($, lightBoxManager, cons,JSZip) {
                     }
                     if(window.langSelecionada === 'Python'|| !window.langSelecionada)
                     {
-                        a.download = "code.py";
+                        a.download = jsonManager.getGraph().name + ".py";
                     }
                     else if(window.langSelecionada === 'R')
                     {
-                        a.download = "code.r";
+                        a.download = jsonManager.getGraph().name + ".r";
                     }
                      else if(window.langSelecionada === 'C SMPL' || window.langSelecionada === 'C SMPLX' || window.langSelecionada === 'C ParSMPL' || window.langSelecionada === 'C SIMPACK')
                     {
-                        a.download = "code.c";
+                        a.download = jsonManager.getGraph().name + ".c";
                     }
-                    else if (window.langSelecionada === 'C SIMPACK2')
+                    /*else if (window.langSelecionada === 'C SIMPACK2')
                     {
                         a.download = "code.cpp";
-                    }
+                    }*/
                     else 
                     {
                         const novoZip = new JSZip();
@@ -83,7 +83,7 @@ function($, lightBoxManager, cons,JSZip) {
                             const url = URL.createObjectURL(blob);
                             const a = document.createElement("a");
                             a.href = url;
-                            a.download = "code.zip";
+                            a.download = jsonManager.getGraph().name + ".zip";
                             document.body.appendChild(a);
                             a.click();
                             document.body.removeChild(a);
@@ -113,7 +113,7 @@ function($, lightBoxManager, cons,JSZip) {
 
                     if (blobGraph) {
                         const formData = new FormData();
-                        formData.append("arquivo", blobGraph, "graph.gv");
+                        formData.append("arquivo", blobGraph, jsonManager.getGraph().name + ".gv");
                         const opParam = document.querySelector("#opParam_library");
                         if(window.langSelecionada)formData.append('lang', window.langSelecionada);
                         else formData.append('lang', 'Python');
@@ -135,23 +135,23 @@ function($, lightBoxManager, cons,JSZip) {
                             a.href = url;
                             if(window.langSelecionada === 'R')
                             {
-                                a.download = "code.r";
+                                a.download = jsonManager.getGraph().name + ".r";
                             }
                             else if(window.langSelecionada === 'Java')
                             {
-                                a.download = "code.zip";
+                                a.download = jsonManager.getGraph().name + ".zip";
                             } 
                             else if(window.langSelecionada === 'C SMPL' || window.langSelecionada === 'C SMPLX' || window.langSelecionada === 'C ParSMPL' || window.langSelecionada === 'C SIMPACK')
                             {
-                                a.download = "code.c";
+                                a.download = jsonManager.getGraph().name + ".c";
                             }
-                            else if (window.langSelecionada === 'C SIMPACK2')
+                            /*else if (window.langSelecionada === 'C SIMPACK2')
                             {
                                 a.download = "code.cpp";
-                            }
+                            }*/
                             else 
                             {
-                                a.download = "code.py";
+                                a.download = jsonManager.getGraph().name + ".py";
                             }
                             document.body.appendChild(a);
                             a.click();

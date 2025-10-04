@@ -24,6 +24,7 @@ define(["jquery", "jsPlumb", "IdManager"],
             this.y = y;
             this.properties = {};
             this.mapTargets = {};
+            this.source = -1;
         }
 
         var graph = new Graph(), saved = true;
@@ -123,6 +124,37 @@ define(["jquery", "jsPlumb", "IdManager"],
                     }
                 });
             }
+            if (graph.mapNodes[element.id].type === "server" || graph.mapNodes[element.id].type === "multiServer") {
+                var source = graph.mapNodes[element.id].source;
+                if(source !== -1)
+                {
+                    if(Object.keys(graph.mapNodes[source].mapTargets).length === 2) 
+                    {
+                        graph.mapNodes[source].mapTargets[0] = 100;
+                        graph.mapNodes[source].mapTargets[1] = 100;
+                        if(graph.mapNodes[element.id].type === "server")
+                        {
+                            graph.mapNodes[source.mapTargets[0]].properties.probability = 100;
+                            graph.mapNodes[source.mapTargets[1]].properties.probability = 100;
+                        }
+                        else
+                        {
+                            graph.mapNodes[source.mapTargets[0]].properties.ms_probability = 100;
+                            graph.mapNodes[source.mapTargets[1]].properties.ms_probability = 100;
+                        }
+                    }
+                    if(Object.keys(source.mapTargets).length > 2) 
+                    {
+                        Object.keys(graph.mapNodes[source].mapTargets).forEach(key => {
+                            graph.mapNodes[source].mapTargets[key] = 0;
+                            if(graph.mapNodes[element.id].type === "server")
+                                graph.mapNodes[source.mapTargets[key]].properties.probability = 0;
+                            else 
+                                graph.mapNodes[source.mapTargets[key]].properties.ms_probability = 0;
+                        });
+                    }
+                }
+            }
             // 1. Remove do graph.mapNodes
             delete graph.mapNodes[element.id];
 
@@ -166,6 +198,7 @@ define(["jquery", "jsPlumb", "IdManager"],
                         novosTargets[novoTarget] = no.mapTargets[targetIdAntigo];
                     }
                 });
+                if(no.source !== -1) no.source = novoMapa.get(no.source);
                 no.mapTargets = novosTargets;
                 //console.log(no.mapTargets);
                 novosMapNodes[novoId] = no;
@@ -245,15 +278,42 @@ define(["jquery", "jsPlumb", "IdManager"],
 
                         graph.opcoes.push({ value: String(connection.targetId), 
                             text: String(connection.targetId) });
-                        
+                        /*
                         const arrivalFieldset = document.getElementById("arrival_fieldset");
-                        if(arrivalFieldset) arrivalFieldset.disabled = false;
+                        if(arrivalFieldset){ arrivalFieldset.disabled = false;
+                        console.log("ativou arrival_fieldset");}
+                    else console.log("nao encontrou arrival_fieldset");
                         const ms_arrivalFieldset = document.getElementById("ms_arrival_fieldset");
-                        if(ms_arrivalFieldset) ms_arrivalFieldset.disabled = false;
-                        
+                        if(ms_arrivalFieldset){ ms_arrivalFieldset.disabled = false;
+                        console.log("ativou ms_arrival_fieldset");}
+                        else console.log("nao encontrou ms_arrival_fieldset");*/
                     }
                 }
                 console.log("opcoes atual:", graph.opcoes);
+                if((graph.mapNodes[connection.sourceId].type==="server" || graph.mapNodes[connection.sourceId].type === "multiServer") 
+                && (graph.mapNodes[connection.targetId].type==="server" || graph.mapNodes[connection.targetId].type === "multiServer")){
+                    if(Object.keys(graph.mapNodes[connection.sourceId].mapTargets).length===1) 
+                    {
+                        const key = Object.keys(graph.mapNodes[connection.sourceId].mapTargets)[0];
+                        graph.mapNodes[connection.sourceId].mapTargets[key] = 100;
+
+                        if(graph.mapNodes[connection.targetId].type==="server")
+                            graph.mapNodes[connection.targetId].properties.probability = 100;
+                        else 
+                            graph.mapNodes[connection.targetId].properties.ms_probability = 100;
+                    }
+                    else
+                    {
+                        Object.keys(graph.mapNodes[connection.sourceId].mapTargets).forEach(key => {
+                            graph.mapNodes[connection.sourceId].mapTargets[key] = 0;
+                            if(graph.mapNodes[connection.targetId].type==="server")
+                                graph.mapNodes[key].properties.probability = 0;
+                            else 
+                                graph.mapNodes[key].properties.ms_probability = 0;
+                        });
+                    }
+                    graph.mapNodes[connection.targetId].source = connection.sourceId;
+                }
             },
             changeNodePosition: function(element) {
                 graph.mapNodes[element.id].x = $(element).css("left");

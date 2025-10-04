@@ -220,7 +220,7 @@ fieldset {
     margin: 12px 0;
 }
 
-#textEditor {
+#textEditor, #textShow {
     width: 100%;
     height: calc(100% - 57px);
     box-sizing: border-box; /* evita interferência do jQuery UI */

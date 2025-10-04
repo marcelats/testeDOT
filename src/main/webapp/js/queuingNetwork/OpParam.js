@@ -60,6 +60,7 @@ define(["jquery", "LightBoxManager", "JsonManager", "Arrival"],
                         const btnExecute = document.getElementById("opExecute");
                         btnExecute.style.opacity = '0.3';
                         btnExecute.style.pointerEvents = 'none';
+                        window.flag = false;
                     }
                     
                     if (action === "submitArrival") {
