@@ -158,7 +158,8 @@ define(["jquery", "jsPlumb", "DrawArea", "PropertiesArea", "JsonManager", "Utils
                 var id = parseInt($(this.prevElement).attr("id")); // agora funciona
                 sourceType = jsonManager.getGraph().mapNodes[id].type;
                 console.log(jsonManager.getGraph().mapNodes[id].mapTargets);
-                if(sourceType === "source" && Object.keys(jsonManager.getGraph().mapNodes[id].mapTargets).length !== 0) return 0;
+                if(sourceType === "source" && Object.keys(jsonManager.getGraph().mapNodes[id].mapTargets).length !== 0) 
+                    if(jsonManager.getGraph().mapNodes[id].mapTargets[0] !== id) return 0;
             }
           
             console.log(element);

@@ -44,6 +44,7 @@ define(["jquery", "LightBoxManager", "JsonManager", "Cons", "OpOpen"],
                         } 
                         else {
                             jsonManager.setName(filename);
+                            console.log(jsonManager.stringifyGraph());
                             $.ajax({
                                 url: 'qnetwork?cmd=verify',
                                 type: 'POST',

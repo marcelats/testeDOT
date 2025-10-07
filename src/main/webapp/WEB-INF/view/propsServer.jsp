@@ -86,11 +86,13 @@
                         <input disabled type="text" id="server_sequence" class="inputText small">
                     </div>
                 </fieldset><br>
-                <div class="field">
+                <!--<div class="field">
                     <label for="probability" class="labelLeft">Probability</label>
                     <input id="probability" type="text" class="inputText small">
+                </div>-->
+                <div class="field">
+                    <input id ="prob-bt" type="button" value="Probabilities" class="button">
                 </div>
-
 
                 <input id="btCancel" type="button" value="Cancel" class="button">
                 <input id ="btSubmit" type="button" value="Ok" class="button">

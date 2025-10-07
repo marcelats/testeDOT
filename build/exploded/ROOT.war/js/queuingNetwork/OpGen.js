@@ -51,21 +51,24 @@ define(["jquery", "JsonManager", "LightBoxManager", "Cons"],
                     return; // encerra fluxo
                 }
 
-                Object.entries(jsonManager.getGraph().mapNodes).forEach(([nodeId, node]) => {
+                const invalidNodeExists = Object.entries(jsonManager.getGraph().mapNodes).some(([nodeId, node]) => {
                     if (node.type === "server" || node.type === "multiServer") {
                         const soma = Object.values(node.mapTargets)
-                        .reduce((a, v) => a + v, 0);
+                            .reduce((a, v) => a + v, 0);
 
-                        // verifica intervalo
-                        if(node.mapTargets.length > 0){
+                        if (Object.values(node.mapTargets).length > 0) {
                             const ok = soma >= 99.5 && soma <= 100.5;
                             if (!ok) {
                                 alert("The sum of the probabilities for each node must be 100."); 
-                                return;
+                                return true; // parar iteração
                             }
                         }
                     }
+                    return false;
                 });
+
+                if (invalidNodeExists) return; // interrompe execute()
+
 
                 if (execTimeOp.checked) {
                     if (execTime === "" || Number(execTime) === 0) {
@@ -221,8 +224,8 @@ define(["jquery", "JsonManager", "LightBoxManager", "Cons"],
                         var prob;
                         Object.values(jsonManager.getGraph().mapNodes).forEach(probnode=>{
                             if(probnode.id === targetId){
-                                if(probnode.properties.probability) prob = probnode.properties.probability;
-                                if(probnode.properties.ms_probability) prob = probnode.properties.ms_probability;
+                                //if(probnode.properties.probability) prob = probnode.properties.probability;
+                                //if(probnode.properties.ms_probability) prob = probnode.properties.ms_probability;
                             }
                         });
                         if(prob)content += `    ${node.id} -> ${targetId} [comment=${prob}]\n`;

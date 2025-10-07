@@ -104,5 +104,8 @@
         <div id="shadow2" class="shadow2">
             <div id="boxArrival" class="box"></div>
         </div>
+        <div id="shadow3" class="shadow3">
+            <div id="boxProb" class="box"></div>
+        </div>
     </body>
 </html>

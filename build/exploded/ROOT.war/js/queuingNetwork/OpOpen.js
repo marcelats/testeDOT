@@ -385,10 +385,12 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "I
                     }
                 }
                 idManager.setStartCid(maiorId);
+                console.log(graph.mapNodes);
                 for (var keyNode in graph.mapNodes) {
                     var mapTargets = graph.mapNodes[keyNode].mapTargets;
                     if (!utils.mapIsEmpty(mapTargets)) {
                         for (var keyTarget in mapTargets) {
+                            console.log(keyNode, keyTarget);
                             drawArea.linkElements($("#" + keyNode));
                             drawArea.linkElements($("#" + keyTarget));
                         }

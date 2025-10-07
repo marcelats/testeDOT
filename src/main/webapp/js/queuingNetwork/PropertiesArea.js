@@ -5,8 +5,8 @@
  * author: Felipe Osorio Thomé
  */
 
-define(["JsonManager", "Cons"],
-    function(jsonManager, cons) {
+define(["JsonManager", "Cons", "LightBoxManager", "Probabilities"],
+    function(jsonManager, cons, lightBoxManager, prob) {
         "use strict";
 
         var propertiesArea = {
@@ -18,7 +18,96 @@ define(["JsonManager", "Cons"],
                 $(document).on("click", "#btCancel", function() {
                     propertiesArea.ctrl("cancel");
                 });
+                /*$(document).on("click", "#prob-btSubmit", function() {
+                      
+                
+                const mapTargets = jsonManager.getGraph().mapNodes[id].mapTargets;
+                console.log(jsonManager.getGraph().mapNodes[id].mapTargets);
+                const keys = Object.keys(mapTargets);
+                console.log(keys);
+                const key = keys[indexAtual];
+                console.log(key);
+                const value = mapTargets[key];
+                console.log(value);
+                const lastIndex = keys.length - 1;
+                console.log(lastIndex);
+                const prob_value = document.getElementById("target_server");
+                if (indexAtual === lastIndex) {
+                    console.log("→ Este é o último elemento!");
+                    indexAtual = 0;
+                    document.getElementById("saida").textContent = key;
+                    prob_value.disabled = true;
+                    prob_value.value = 100 - Object.values(mapTargets).reduce((total, valor) => total + valor, 0);
+                    $(document).on("click", "#prob-btSubmit", function() {
+                        lightBoxManager.closeBox("shadow3","boxProb");
+                    });
+                }
+                else
+                {
+                    console.log("nao eh o ultimo elemento");
+                    exibirAtual(keys, mapTargets, indexAtual, prob_value);
+                    //document.getElementById("saida").textContent = key;
+                    //prob_value.disabled = false;
+                    //prob_value.value = value;
+                    $(document).on("click", "#prob-btSubmit", function() {
+                        if(Object.values(mapTargets).reduce((total, valor) => total + valor, 0) + prob_value.value > 100){
+                            alert("The sum of probabilities for each node cannot exceed 100.");
+                            this.onclick = function() {
+                                console.log("this.onclick");
+                                    const input = document.getElementById("target_server");
+                                    const novoValor = parseFloat(input.value);
+                                    if (!isNaN(novoValor)) {
+                                        mapTargets[key] = novoValor;
+                                        
+                                        input.value = "";
+                                        input.style.display = "none";
+                                        this.onclick = null; // remove override
+                                        document.getElementById("prob-btSubmit").addEventListener("click", arguments.callee);
+                                        exibirAtual(keys, mapTargets, indexAtual, prob_value);
+                                    } else {
+                                        alert("Input a valid value");
+                                    }
+                                };
+                            }
+                        else
+                        {
+                            console.log("a soma nao excedeu");
+                            mapTargets[key] = prob_value.value;
+                            indexAtual += 1;
+                            
+                        }
+                    });
+                }
+            });    */
+ 
+ 
+                $(document).on("click", "#prob-bt", function() {
+                    if(Object.keys(jsonManager.getGraph().mapNodes[document.getElementById(cons.HIDDEN_FIELD_ID).value].mapTargets).length === 0)
+                        document.getElementById("prob-bt").disabled=true;
+                    else
+                    {
+                        
+                        lightBoxManager.openBox(  
+                            "shadow3",
+                            "boxProb",
+                            "qnetwork?cmd=open-box&type=prob", 
+                            function() {
+                                console.log("antes de prob.execute()");
+                                prob.execute(document.getElementById(cons.HIDDEN_FIELD_ID).value);
+                                console.log("depois de prob.execute()");
+                            }
+                        );
+                    }
+                });
+                
+            },
+            execute: function() {
+                
+                
+                    lightBoxManager.closeBox("shadow3","boxProb");
 
+
+  
             },
             ctrl: function(element) {
                 /* Invoked from an element. */
@@ -42,34 +131,28 @@ define(["JsonManager", "Cons"],
                         var callerId = $("#" + cons.HIDDEN_FIELD_ID).val();
                         var tempElement = document.getElementById(callerId);
                         console.log(tempElement);
-                        var source = jsonManager.getGraph().mapNodes[callerId].source;
+                        /*var source = jsonManager.getGraph().mapNodes[callerId].source;
                         console.log(source);
                         if(source !== -1)
                         {
-                            var max = 100 - Object.values(jsonManager.getGraph().mapNodes[source].mapTargets).reduce((total, valor) => total + valor, 0);
+                            
+                            console.log(jsonManager.getGraph().mapNodes[source]);
+                            
+                            
+                            var max = 100 - Object.values(jsonManager.getGraph().mapNodes[source].mapTargets).reduce((total, valor) => total + valor, 0)
+                                    + jsonManager.getGraph().mapNodes[source].mapTargets[callerId];
                             var input = "";
                             if(jsonManager.getGraph().mapNodes[callerId].type === "server") input = parseFloat(document.getElementById("probability").value);
                             else input = parseFloat(document.getElementById("ms_probability").value);
                             if(input > max) {
+                                console.log(input, typeof input);
+                                console.log(max, typeof max);
                                 alert("The sum of the probabilities for each node cannot exceed 100.");
                                 return;
                             }
-                            console.log(jsonManager.getGraph().mapNodes[source]);
                             jsonManager.getGraph().mapNodes[source].mapTargets[callerId] = input;
-                            var zeroes = [];
-                            for (const [key, value] of Object.entries(jsonManager.getGraph().mapNodes[source].mapTargets)) {
-                                if (value === 0) {
-                                    zeroes.push(key);
-                                }
-                            }
-                            console.log(jsonManager.getGraph().mapNodes[source].mapTargets);
-                            console.log(zeroes);
-                            if (zeroes.length == 1) {
-                                jsonManager.getGraph().mapNodes[source].mapTargets[zeroes[0]] = max - input;
-                                if(jsonManager.getGraph().mapNodes[callerId].type === "server") jsonManager.getGraph().mapNodes[zeroes[0]].properties.probability = max - input;
-                                else jsonManager.getGraph().mapNodes[zeroes[0]].properties.ms_probability = max - input;
-                            }
-                        }
+                            
+                        }*/
                         
 
                         var properties = $("#" + cons.PROPERTIES_AREA).values();
@@ -135,6 +218,26 @@ define(["JsonManager", "Cons"],
             document.getElementById(cons.HIDDEN_FIELD_ID).value = element.id;
             document.getElementById(cons.HIDDEN_FIELD_TYPE).value = element.name;
 
+            
+            /*var zeroes = [];
+            
+            var source = jsonManager.getGraph().mapNodes[element.id].source;
+            if(source !== -1)
+                for (const [key, value] of Object.entries(jsonManager.getGraph().mapNodes[source].mapTargets)) {
+                    if (value === 0) {
+                        zeroes.push(key);
+                    }
+                }
+            console.log(jsonManager.getGraph().mapNodes[source].mapTargets);
+            console.log(zeroes);
+            if (zeroes.length == 1) {
+                var max = 100 - Object.values(jsonManager.getGraph().mapNodes[source].mapTargets).reduce((total, valor) => total + valor, 0) 
+                        + jsonManager.getGraph().mapNodes[source].mapTargets[element.id];
+                jsonManager.getGraph().mapNodes[source].mapTargets[zeroes[0]] = max;
+                if(jsonManager.getGraph().mapNodes[element.id].type === "server")
+                    jsonManager.getGraph().mapNodes[zeroes[0]].properties.probability = max;
+                else jsonManager.getGraph().mapNodes[zeroes[0]].properties.ms_probability = max;
+            }*/
             $("#" + cons.PROPERTIES_AREA).values(jsonManager.getNodeProperties(element));
         }
 

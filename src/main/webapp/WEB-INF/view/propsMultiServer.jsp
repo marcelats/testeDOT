@@ -92,9 +92,12 @@
                     </div>
                     
                 </fieldset><br>
-                <div class="field">
+                <!--<div class="field">
                     <label for="ms_probability" class="labelLeft">Probability</label>
                     <input id="ms_probability" type="text" class="inputText small">
+                </div>-->
+                <div class="field">
+                    <input id ="ms_prob-bt" type="button" value="Probabilities" class="button">
                 </div>
                 <input id="btCancel" type="button" value="Cancel" class="button">
                 <input id ="btSubmit" type="button" value="Ok" class="button">
