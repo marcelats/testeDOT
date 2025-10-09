@@ -129,11 +129,11 @@ function($, lightBoxManager, cons, JSZip, jsonManager) {
                         })
 
                         .then(blobCode => {         
-                            const url = URL.createObjectURL(blobCode);
+                            //const url = URL.createObjectURL(blobCode);
                            
-                            const a = document.createElement("a");
-                            a.href = url;
-                            if(window.langSelecionada === 'R')
+                            //const a = document.createElement("a");
+                            //a.href = url;
+/*                            if(window.langSelecionada === 'R')
                             {
                                 a.download = jsonManager.getGraph().name + ".r";
                             }
@@ -145,18 +145,18 @@ function($, lightBoxManager, cons, JSZip, jsonManager) {
                             {
                                 a.download = jsonManager.getGraph().name + ".c";
                             }
-                            /*else if (window.langSelecionada === 'C SIMPACK2')
+                            else if (window.langSelecionada === 'C SIMPACK2')
                             {
                                 a.download = "code.cpp";
-                            }*/
+                            }
                             else 
                             {
                                 a.download = jsonManager.getGraph().name + ".py";
-                            }
-                            document.body.appendChild(a);
-                            a.click();
-                            document.body.removeChild(a);
-                            URL.revokeObjectURL(url);
+                            }*/
+                            //document.body.appendChild(a);
+                            //a.click();
+                            //document.body.removeChild(a);
+                            //URL.revokeObjectURL(url);
                             
                             
                             if(window.langSelecionada === 'Python' || window.langSelecionada === 'R' || !window.langSelecionada)

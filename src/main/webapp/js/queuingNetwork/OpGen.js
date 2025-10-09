@@ -288,7 +288,7 @@ setTimeout(() => {
     window.dispatchEvent(new Event("genClicou"));
   });
 });*/
-                                                                                                            onDOMReady(() => {
+onDOMReady(() => {
   waitForElement("textShow", function(el) {
     console.log("Elemento encontrado:", el);
     el.value = texto;

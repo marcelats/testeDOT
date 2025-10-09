@@ -88,18 +88,21 @@ function($, JSZip, jsonManager, lightBoxManager, cons) {
                         })
                         .then(res => res.blob())
                         .then(blobReport => {
-                            const url = URL.createObjectURL(blobReport);
+                            /*const url = URL.createObjectURL(blobReport);
                             const a = document.createElement("a");
                             a.href = url;
                             a.download = jsonManager.getGraph().name + ".txt";
                             document.body.appendChild(a);
                             a.click();
                             document.body.removeChild(a);
-                            URL.revokeObjectURL(url);
-                        })
-                        .catch(error => {
-                            console.error("Error when downloading report", error);
+                            URL.revokeObjectURL(url);*/
+                            blobReport.text().then(texto => {
+                                const textarea = document.getElementById("textShow");
+                                    if (textarea) {
+                                        textarea.value = texto;
+                            }});
                         });
+                        
                     }
                 }
             );
