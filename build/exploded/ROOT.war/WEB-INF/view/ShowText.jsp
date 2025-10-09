@@ -5,7 +5,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     </head>
     <body>
-        <div class="boxContentTextEditor">
+        <div class="boxContentTextEditor" id="modal_showText">
             <div class="btCloseDiv cf">
                 <span class="boxTitle">Graph File</span>
                 <span id="showText-btClose"><img src="img/btClose.png"/></span>

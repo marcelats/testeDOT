@@ -15,7 +15,13 @@ define(["jquery", "JsonManager", "LightBoxManager", "Cons"],
         var OpGen = {
             execute: function() {
                 
-                console.log("passando pelo execute do opgen");
+                
+                //baixar o .gv
+                lightBoxManager.openBox(cons.SHADOWING, cons.BOX_CONTAINER,
+                "qnetwork?cmd=open-box&type=showText",
+                function() {
+                    // Callback: textarea carregado
+                    console.log("passando pelo execute do opgen");
                 const opParam = document.getElementById("opParam_library");
                 const selectedValue = opParam?.value;
                 console.log(selectedValue);
@@ -56,7 +62,7 @@ define(["jquery", "JsonManager", "LightBoxManager", "Cons"],
                         const soma = Object.values(node.mapTargets)
                             .reduce((a, v) => a + v, 0);
 
-                        if (Object.values(node.mapTargets).length > 0) {
+                        if (Object.values(node.mapTargets).length > 1) {
                             const ok = soma >= 99.5 && soma <= 100.5;
                             if (!ok) {
                                 alert("The sum of the probabilities for each node must be 100."); 
@@ -222,12 +228,13 @@ define(["jquery", "JsonManager", "LightBoxManager", "Cons"],
                 Object.values(jsonManager.getGraph().mapNodes).forEach(node => {
                     Object.keys(node.mapTargets).forEach(targetId => {
                         var prob;
-                        Object.values(jsonManager.getGraph().mapNodes).forEach(probnode=>{
-                            if(probnode.id === targetId){
+                        //Object.values(jsonManager.getGraph().mapNodes).forEach(probnode=>{
+                        //    if(probnode.id === targetId){
                                 //if(probnode.properties.probability) prob = probnode.properties.probability;
                                 //if(probnode.properties.ms_probability) prob = probnode.properties.ms_probability;
-                            }
-                        });
+                        //    }
+                        //});
+                        prob = node.mapTargets[targetId];
                         if(prob)content += `    ${node.id} -> ${targetId} [comment=${prob}]\n`;
                         else content += `    ${node.id} -> ${targetId} [comment=1]\n`;
                     });
@@ -256,21 +263,41 @@ define(["jquery", "JsonManager", "LightBoxManager", "Cons"],
                 }
 
                 content += "\n}\n";
-                //baixar o .gv
-                lightBoxManager.openBox(cons.SHADOWING, cons.BOX_CONTAINER,
-                "qnetwork?cmd=open-box&type=editor",
-                function() {
-                    // Callback: textarea carregado
                     const blob = new Blob([content], { type: "text/plain" }); // Criar um arquivo de texto
                     window.graphBlob = blob;
                     blob.text().then(texto => {
-                        const textarea = document.getElementById("textShow");
+                        
+                        /*const textarea = document.getElementById("textShow");
+                        console.log("Tentando pegar textShow:", document.getElementById("textShow"));
+console.log("HTML do body:", document.body.innerHTML.includes("textShow"));
+setTimeout(() => {
+  console.log("Agora existe?", document.getElementById("textShow"));
+}, 1000);
                         if (textarea) {
                             textarea.value = texto;
                             window.dispatchEvent(new Event("genClicou"));
                         } else {
                             console.error("Textarea ainda não foi carregado.");
-                        }
+                        }*/
+                        console.log(texto);
+                        
+                        /*document.addEventListener("DOMContentLoaded", function() {
+  waitForElement("textShow", function(el) {
+    console.log("Elemento encontrado:", el);
+    el.value = texto;
+    window.dispatchEvent(new Event("genClicou"));
+  });
+});*/
+                                                                                                            onDOMReady(() => {
+  waitForElement("textShow", function(el) {
+    console.log("Elemento encontrado:", el);
+    el.value = texto;
+    window.dispatchEvent(new Event("genClicou"));
+  });
+});
+
+console.log("dps do domcontentloaded");
+                        
                     });
                 });
             },
@@ -290,4 +317,37 @@ define(["jquery", "JsonManager", "LightBoxManager", "Cons"],
     } else if (automatic.checked) {
       warmupTime = "False";
     }
+}
+
+function waitForElement(id, callback) {
+  console.log("entrou no waitforelement");
+  const el = document.getElementById(id);
+  if (el) return callback(el);
+
+  // Se o body ainda não existe, espera
+  if (!document.body) {
+    console.warn("Body ainda não existe, tentando novamente...");
+    setTimeout(() => waitForElement(id, callback), 50);
+    return;
+  }
+
+  const observer = new MutationObserver(() => {
+    console.log("checando mutações no DOM...");
+    const el = document.getElementById(id);
+    if (el) {
+      console.log("Elemento encontrado dentro do observer!");
+      observer.disconnect();
+      callback(el);
+    }
+  });
+
+  // 🔥 Observa o body inteiro, porque o modal é injetado dinamicamente
+  observer.observe(document.body, { childList: true, subtree: true });
+}
+function onDOMReady(callback) {
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", callback);
+  } else {
+    callback();
+  }
 }
