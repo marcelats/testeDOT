@@ -15,7 +15,7 @@ define(["jquery", "JsonManager", "LightBoxManager", "Cons"],
         var OpGen = {
             execute: function() {
                 
-                
+                console.log(jsonManager.getGraph());
                 //baixar o .gv
                 lightBoxManager.openBox(cons.SHADOWING, cons.BOX_CONTAINER,
                 "qnetwork?cmd=open-box&type=showText",

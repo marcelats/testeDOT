@@ -159,7 +159,16 @@ define(["JsonManager", "Cons", "LightBoxManager", "Probabilities"],
                         
                         
                         jsonManager.setNodeProperties(tempElement, properties);
-
+                        Object.keys(jsonManager.getGraph().mapNodes[callerId].mapTargets).forEach(target => {
+                            jsonManager.getGraph().mapNodes[target].properties.arrival_distribution = jsonManager.getGraph().mapNodes[parseInt(callerId)].properties.server_distribution;
+                            jsonManager.getGraph().mapNodes[target].properties.arrival_average = jsonManager.getGraph().mapNodes[parseInt(callerId)].properties.server_average;
+                            jsonManager.getGraph().mapNodes[target].properties.arrival_stdDeviation = jsonManager.getGraph().mapNodes[parseInt(callerId)].properties.server_stdDeviation;
+                            console.log(callerId, typeof callerId);
+                            console.log(jsonManager.getGraph().mapNodes[parseInt(callerId)]);
+                            console.log(jsonManager.getGraph().mapNodes[parseInt(callerId)].properties);
+                            console.log(jsonManager.getGraph().mapNodes[parseInt(callerId)].properties.server_average);
+                            console.log(jsonManager.getGraph().mapNodes[target]);
+                        });
                         const btnCode = document.getElementById("opCode");
                         btnCode.style.opacity = '0.3';
                         btnCode.style.pointerEvents = 'none';
