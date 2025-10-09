@@ -41,14 +41,37 @@ function($, lightBoxManager, cons, JSZip, jsonManager) {
             $(document).on("click", "#opCode-download", function() {
                 const textarea = document.getElementById("textEditor");
                 if (textarea) {
+                    console.log("textarea encontrado");
                     const textoAtual = textarea.value;
                     const blobCode = new Blob([textoAtual], { type: "text/plain" });
                     window.codeBlob = blobCode;
+                    
+                            //a.href = url;
+/*                            if(window.langSelecionada === 'R')
+                            {
+                                a.download = jsonManager.getGraph().name + ".r";
+                            }
+                            else if(window.langSelecionada === 'Java')
+                            {
+                                a.download = jsonManager.getGraph().name + ".zip";
+                            } 
+                            else if(window.langSelecionada === 'C SMPL' || window.langSelecionada === 'C SMPLX' || window.langSelecionada === 'C ParSMPL' || window.langSelecionada === 'C SIMPACK')
+                            {
+                                a.download = jsonManager.getGraph().name + ".c";
+                            }
+                            else if (window.langSelecionada === 'C SIMPACK2')
+                            {
+                                a.download = "code.cpp";
+                            }
+                            else 
+                            {
+                                a.download = jsonManager.getGraph().name + ".py";
+                            }*/
                     const url = URL.createObjectURL(blobCode);
                     const a = document.createElement("a");
                     if(window.langSelecionada === 'Python' || window.langSelecionada === 'R' || !window.langSelecionada)
                     { 
-                        const a = document.createElement("a");
+                        //const a = document.createElement("a");
                         a.href = url;
                     }
                     if(window.langSelecionada === 'Python'|| !window.langSelecionada)
@@ -69,6 +92,7 @@ function($, lightBoxManager, cons, JSZip, jsonManager) {
                     }*/
                     else 
                     {
+                        console.log("else opcode");
                         const novoZip = new JSZip();
                         window.listaArquivos.forEach(arquivo => {
                             if (arquivo.nome !== "Controle.java") {
