@@ -161,7 +161,7 @@ define(["jquery", "jsPlumb", "DrawArea", "PropertiesArea", "JsonManager", "Utils
                 console.log(Object.keys(jsonManager.getGraph().mapNodes[id].mapTargets)[0]);
                 console.log(id);
                 if(sourceType === "source" && Object.keys(jsonManager.getGraph().mapNodes[id].mapTargets).length !== 0) 
-                    if(Object.keys(jsonManager.getGraph().mapNodes[id].mapTargets)[0] !== parseInt($(element).attr("id"))) return 0;
+                    if(parseInt(Object.keys(jsonManager.getGraph().mapNodes[id].mapTargets)[0]) !== parseInt($(element).attr("id"))) return 0;
             }
           
             console.log(element);
