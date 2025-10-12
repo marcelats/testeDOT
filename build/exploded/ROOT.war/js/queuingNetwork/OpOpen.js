@@ -392,6 +392,7 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "I
                         for (var keyTarget in mapTargets) {
                             console.log(keyNode, keyTarget);
                             elementManager.prevElement = null;
+                            elementManager.prevEndPoint = null;
                             elementManager.linkElements($("#" + keyNode));
                             elementManager.linkElements($("#" + keyTarget));
                         }
