@@ -15,7 +15,7 @@ define(["jquery", "JsonManager", "LightBoxManager", "Cons"],
         var OpGen = {
             execute: function() {
                 
-                console.log(jsonManager.getGraph());
+                
                 //baixar o .gv
                 lightBoxManager.openBox(cons.SHADOWING, cons.BOX_CONTAINER,
                 "qnetwork?cmd=open-box&type=showText",
@@ -103,9 +103,6 @@ define(["jquery", "JsonManager", "LightBoxManager", "Cons"],
                             count+=1;
                             switch (node.properties.arrival_distribution)
                             {
-                                case "None":
-                                    content += ` None`;
-                                    break;
                                 case "Normal":
                                     content += ` 0`;
                                     break;
@@ -158,9 +155,6 @@ define(["jquery", "JsonManager", "LightBoxManager", "Cons"],
                             content += `    ${node.id} [label=CPU comment=" 2`;
                             switch (node.properties.ms_arrival_distribution)
                             {
-                                case "None":
-                                    content += ` None`;
-                                    break;
                                 case "Normal":
                                     content += ` 0`;
                                     break;
@@ -294,7 +288,7 @@ setTimeout(() => {
     window.dispatchEvent(new Event("genClicou"));
   });
 });*/
-onDOMReady(() => {
+                                                                                                            onDOMReady(() => {
   waitForElement("textShow", function(el) {
     console.log("Elemento encontrado:", el);
     el.value = texto;

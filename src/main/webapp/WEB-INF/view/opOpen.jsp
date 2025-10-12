@@ -59,7 +59,7 @@
                     </div>
 
                     <div class="form-buttons">
-                        <input id="opOpen-btSubmit" type="button" value="Open" class="button">
+                        <input id="opOpen-btSubmit" type="button" value="Edit" class="button">
                         <input id="opCopy-btSubmit" type="button" value="Copy" class="button">
                         <input id="opRename-btSubmit" type="button" value="Rename" class="button">
                         <input id="opDelete-btSubmit" type="button" value="Delete" class="button">
@@ -86,3 +86,4 @@
         </div>
     </body>
 </html>
+
