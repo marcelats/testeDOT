@@ -391,6 +391,7 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "I
                     if (!utils.mapIsEmpty(mapTargets)) {
                         for (var keyTarget in mapTargets) {
                             console.log(keyNode, keyTarget);
+                            elementManager.prevElement = null;
                             elementManager.linkElements($("#" + keyNode));
                             elementManager.linkElements($("#" + keyTarget));
                         }
