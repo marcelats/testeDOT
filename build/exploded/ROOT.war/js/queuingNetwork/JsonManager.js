@@ -288,6 +288,13 @@ define(["jquery", "jsPlumb", "IdManager"],
                         else console.log("nao encontrou ms_arrival_fieldset");*/
                     }
                 }
+                else
+                {
+                    graph.mapNodes[connection.targetId].properties.arrival_distribution = "None";
+                    graph.mapNodes[connection.targetId].properties.arrival_average = "None";
+                    graph.mapNodes[connection.targetId].properties.arrival_stdDeviation = 0;
+                    console.log(graph.mapNodes[connection.targetId]);
+                }
                 console.log("opcoes atual:", graph.opcoes);
                 /*if((graph.mapNodes[connection.sourceId].type==="server" || graph.mapNodes[connection.sourceId].type === "multiServer") 
                 && (graph.mapNodes[connection.targetId].type==="server" || graph.mapNodes[connection.targetId].type === "multiServer")){

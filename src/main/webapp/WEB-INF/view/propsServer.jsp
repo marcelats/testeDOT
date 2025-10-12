@@ -35,6 +35,7 @@
                     <legend>Arrival distribution</legend>
                     <div class="field">
                         <select id="arrival_distribution" class="inputText">
+                            <option value="None" style="display:none;"></option>
                             <option>Exponential</option>
                             <option>HyperExponential</option>
                             <option>Normal</option>
