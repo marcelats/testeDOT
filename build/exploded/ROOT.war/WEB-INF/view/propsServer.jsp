@@ -40,6 +40,7 @@
                             <option>Normal</option>
                             <option>Uniform</option>
                             <option>Erlang</option>
+                            <option value="None" style="display:none;"></option>
                         </select>
                     </div>
 

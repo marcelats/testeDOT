@@ -103,6 +103,14 @@ define(["jquery", "JsonManager", "LightBoxManager", "Cons"],
                             count+=1;
                             switch (node.properties.arrival_distribution)
                             {
+                                                               case "None":
+
+
+
+                                    content += ` None`;
+
+
+                                    break;
                                 case "Normal":
                                     content += ` 0`;
                                     break;
@@ -155,6 +163,14 @@ define(["jquery", "JsonManager", "LightBoxManager", "Cons"],
                             content += `    ${node.id} [label=CPU comment=" 2`;
                             switch (node.properties.ms_arrival_distribution)
                             {
+                                case "None":
+
+
+
+                                    content += ` None`;
+
+
+                                    break;
                                 case "Normal":
                                     content += ` 0`;
                                     break;

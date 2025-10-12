@@ -159,6 +159,20 @@ define(["JsonManager", "Cons", "LightBoxManager", "Probabilities"],
                         
                         
                         jsonManager.setNodeProperties(tempElement, properties);
+                        Object.keys(jsonManager.getGraph().mapNodes[callerId].mapTargets).forEach(target => {
+
+
+
+                            jsonManager.getGraph().mapNodes[target].properties.arrival_distribution = "None";
+
+
+                            jsonManager.getGraph().mapNodes[target].properties.arrival_average = "None";
+
+
+                            jsonManager.getGraph().mapNodes[target].properties.arrival_stdDeviation = 0;
+
+
+                        });
 
                         const btnCode = document.getElementById("opCode");
                         btnCode.style.opacity = '0.3';
