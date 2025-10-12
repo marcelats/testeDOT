@@ -1,5 +1,5 @@
-define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "IdManager", "DrawArea"],
-    function($, lightBoxManager, jsonManager, opNew, utils, cons, idManager, drawArea) {
+define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "IdManager", "DrawArea", "jsPlumb"],
+    function($, lightBoxManager, jsonManager, opNew, utils, cons, idManager, drawArea, jsPlumb) {
         "use strict";
 
         var lastAction = null, callback = null, elementManager = null;
@@ -368,6 +368,7 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "I
             elementManager.prevElement = null;
             elementManager.prevEndPoint = null;
             $("#" + cons.DRAW_AREA).empty();
+            jsPlumb.reset();
             if (!utils.mapIsEmpty(graph.mapNodes)) {
                 for (var key in graph.mapNodes) {
                     var position = {
