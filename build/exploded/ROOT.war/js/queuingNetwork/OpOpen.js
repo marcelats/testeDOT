@@ -365,6 +365,8 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "I
         }
 
         function constructGraph(graph) {
+            elementManager.prevElement = null;
+            elementManager.prevEndPoint = null;
             $("#" + cons.DRAW_AREA).empty();
             if (!utils.mapIsEmpty(graph.mapNodes)) {
                 for (var key in graph.mapNodes) {
@@ -391,8 +393,7 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "I
                     if (!utils.mapIsEmpty(mapTargets)) {
                         for (var keyTarget in mapTargets) {
                             console.log(keyNode, keyTarget);
-                            elementManager.prevElement = null;
-                            elementManager.prevEndPoint = null;
+                            
                             elementManager.linkElements($("#" + keyNode));
                             elementManager.linkElements($("#" + keyTarget));
                         }
