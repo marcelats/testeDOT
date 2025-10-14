@@ -105,13 +105,13 @@ require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "El
             const opParam = document.querySelector("#opParam_library");
             if (!opParam) return;
             const selected = opParam.value;
-            const seed = document.getElementById("seed");
+            /*const seed = document.getElementById("seed");
             if (seed) {
                 seed.style.opacity = allowed.includes(selected) ? '0.3' : '1';
                 seed.style.pointerEvents = allowed.includes(selected) ? 'none' : 'auto';
                 seed.tabIndex = allowed.includes(selected) ? -1 : 0;
                 seed.disabled = allowed.includes(selected) ? true : false;
-            }  
+            }  */
 
             document.getElementById("opParam_execTime").disabled = true;
             document.getElementById("opParam_maxEntities").disabled = true;

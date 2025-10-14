@@ -51,6 +51,39 @@ define(["jquery", "LightBoxManager", "JsonManager", "Arrival"],
                     lastAction = action;
                     
                     if (action === "submit") {
+                        
+                        const input_batchSize = document.getElementById("opParam_batchSize");      
+                        if(input_batchSize && !input_batchSize.disabled)  if (isNaN(input_batchSize.value) || input_batchSize.value < 0) {
+                            alert("Batch size cannot be negative and must be a number.");
+                            return;
+                          } 
+                        
+                        const input_seed = document.getElementById("opParam_seed");
+
+                        
+                          let valor = parseInt(input_seed.value, 10);
+                          input_seed.value = valor;
+
+                          if (isNaN(valor) || valor < 0 || valor > 15) {
+                            alert("Seed must be between 0 and 15.");
+                            return;
+                          } 
+                        
+                        const input_execTime = document.getElementById("opParam_execTime");      
+                        if(input_execTime && !input_execTime.disabled)  if (isNaN(input_execTime.value) || input_execTime.value < 0) {
+                            alert("Execution time cannot be negative and must be a number.");
+                            return;
+                          } 
+                          
+                        const input_maxEntities = document.getElementById("opParam_maxEntities");      
+                        if(input_maxEntities && !input_maxEntities.disabled)  if (isNaN(input_maxEntities.value) || input_maxEntities.value < 0) {
+                            alert("Max number of entities cannot be negative and must be a number.");
+                            return;
+                          } 
+                        
+                        
+
+                        
                         var parameters = $("#opParamBox").values();
                         jsonManager.setGraphParameters(parameters);
                         $("#opParamBox").dialog("close");

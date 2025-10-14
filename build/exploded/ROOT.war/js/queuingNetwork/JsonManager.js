@@ -15,6 +15,9 @@ define(["jquery", "jsPlumb", "IdManager"],
             this.arrivals = [];
             this.opcoes = [];
             this.arrivalIndex = 0;
+            this.n_sources = 0;
+            this.n_servers = 0;
+            this.n_outs = 0;
         }
 
         function Node(id, type, x, y) {
@@ -24,6 +27,7 @@ define(["jquery", "jsPlumb", "IdManager"],
             this.y = y;
             this.properties = {};
             this.mapTargets = {};
+            this.chega = 0;
         }
 
         var graph = new Graph(), saved = true;
@@ -60,9 +64,17 @@ define(["jquery", "jsPlumb", "IdManager"],
                 const btnExecute = document.getElementById("opExecute");
                 btnExecute.style.opacity = '0.3';
                 btnExecute.style.pointerEvents = 'none';
+                if(element.name === "source") graph.n_sources += 1;
+                else if(element.name === "out") graph.n_outs += 1;
+                else graph.n_servers +=1 ;
+                console.log(graph);
             },
             removeNode: function(element) {
                  var father = element.parentNode;
+                 if(element.name === "source") graph.n_sources -= 1;
+                else if(element.name === "out") graph.n_outs -= 1;
+                else graph.n_servers -=1 ;
+                console.log(graph);
 
             jsPlumb.detachAllConnections(element);
             father.removeChild(element);
@@ -259,7 +271,7 @@ define(["jquery", "jsPlumb", "IdManager"],
                 }
                     
                 graph.mapNodes[connection.sourceId].mapTargets[connection.targetId] = 0;
-
+                graph.mapNodes[connection.targetId].chega = 1;
                 saved = false;
                 const btnCode = document.getElementById("opCode");
                 btnCode.style.opacity = '0.3';

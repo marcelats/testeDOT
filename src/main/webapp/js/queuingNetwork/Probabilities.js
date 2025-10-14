@@ -47,7 +47,18 @@ function($, jsonManager, lightBoxManager) {
                     //prob_value.value = value;
                     $(document).off("click", "#prob-btSubmit");
                     $(document).on("click", "#prob-btSubmit", function() {
-                        if(Object.values(mapTargets).reduce((total, valor) => total + parseFloat(valor), 0) + parseFloat(prob_value.value) - mapTargets[key] > 100){
+                        const entries = Object.entries(mapTargets).sort(([a], [b]) => a - b); // garante a ordem numérica das chaves
+
+                        let soma = 0;
+                        for (const [k, valor] of entries) {
+                            if (k == key) break;
+                            soma += parseFloat(valor);
+                             // para quando chegar na chave desejada
+                        }
+                        if (isNaN(prob_value.value) || prob_value.value < 0) {
+                            alert("Probability cannot be negative and must be a number.");
+                            return;}
+                        if(soma + parseFloat(prob_value.value) > 100){
                             console.log(mapTargets);
                             console.log(parseFloat(prob_value.value));
                             console.log(mapTargets[key]);

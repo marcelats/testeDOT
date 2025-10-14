@@ -69,19 +69,39 @@ function($, jsonManager) {
             });
             $(document).off("click", "#save-bt");
             $(document).on("click", "#save-bt", function() {
-                const numberClients = document.getElementById("number_clients").value;
-                const arrivalTime = document.getElementById("arrival_time").value;
+                
+  
+                
+                const numberClients = document.getElementById("number_clients");
+                let valor_numberClients = parseInt(numberClients.value, 10);
+                          numberClients.value = valor_numberClients;
+
+                          if (isNaN(valor_numberClients) || valor_numberClients < 0) {
+                            alert("Number of clients cannot be negative and must be an integer.");
+                            return;
+                          }
+                
+                
+                const arrivalTime = document.getElementById("arrival_time");
+                
+                if(arrivalTime)  if (isNaN(arrivalTime.value) || arrivalTime.value < 0) {
+                            alert("Arrival time cannot be negative and must be a number.");
+                            return;
+                          } 
+                
                 const serviceCenter = document.getElementById("service_center").value;
 
-                console.log("Number of clients:", numberClients);
-                console.log("Arrival time:", arrivalTime);
+                console.log("Number of clients:", numberClients.value);
+                console.log("Arrival time:", arrivalTime.value);
                 console.log("Service center:", serviceCenter);
 
-                if (isNaN(numberClients) || isNaN(arrivalTime)) {
+                /*if (isNaN(numberClients) || isNaN(arrivalTime)) {
                     alert("Fill the fields with valid values");
                     return;
-                }
-                const novoItem = { numberClients, arrivalTime, serviceCenter };
+                }*/
+                const value_numberClients = numberClients.value;
+                const value_arrivalTime = arrivalTime.value;
+                const novoItem = { value_numberClients, value_arrivalTime, serviceCenter };
                 jsonManager.getGraph().arrivals.push(novoItem);
                 console.log("push");
                 jsonManager.getGraph().arrivalIndex = jsonManager.getGraph().arrivals.length - 1;

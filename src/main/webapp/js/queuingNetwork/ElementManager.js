@@ -179,7 +179,7 @@ define(["jquery", "jsPlumb", "DrawArea", "PropertiesArea", "JsonManager", "Utils
             } else {
                 
                 /* Avoid links between the same element or links that already exists */
-                if (this.prevElement !== element && !checkExistingLinks(this.prevElement, element)) {
+                if (!checkExistingLinks(this.prevElement, element)) {
                     if(sourceType==="out"){console.log("caso 1 elementmanager");return 0;}
                     if(targetType==="source"){console.log("caso 2 elementmanager");return 0;}
                     if(sourceType==="source" && targetType==="out"){console.log("caso 3 elementmanager");return 0;}
@@ -205,7 +205,7 @@ define(["jquery", "jsPlumb", "DrawArea", "PropertiesArea", "JsonManager", "Utils
                     this.prevElement = null;
                     this.prevEndPoint = null;
                 } else {
-                    if(this.prevElement === element) console.log("this.prevElement === element");
+                    //if(this.prevElement === element) console.log("this.prevElement === element");
                     if(checkExistingLinks(this.prevElement, element)) console.log("checkExistingLinks(this.prevElement, element)");
                     this.prevElement = null;
                     this.prevEndPoint = null;

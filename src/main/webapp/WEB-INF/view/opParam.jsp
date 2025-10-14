@@ -27,8 +27,8 @@
 
 
                 <div class="field" id="seed">
-                    <label for="opParam_seed" class="labelLeft">Seed</label>
-                    <input id="opParam_seed" type="text" class="inputText small">
+                    <label for="opParam_seed" class="labelLeft">Random number generation seed</label>
+                    <input id="opParam_seed" type="text" class="inputText small" min="0" max="15" step="1">
                 </div>                                 
             <fieldset>
                 <legend>Model type</legend>
@@ -49,7 +49,7 @@
             <fieldset id="warmup_fieldset">
                 <legend>Warmup Time</legend>
 
-                <input id="opParam_timeAutomatic"type="radio" name="warmupTime">
+                <input id="opParam_timeAutomatic"type="radio" name="warmupTime" checked>
                 <label for="opParam_timeAutomatic" class="labelLeft">Automatic</label>
 
                 <input id="opParam_timeDefined" type="radio" name="warmupTime">

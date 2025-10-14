@@ -125,7 +125,7 @@ define(["JsonManager", "Cons", "LightBoxManager", "Probabilities"],
                 }
                 /* Invoked from within propertiesArea div. */
                 else {
-                    closeDiv();
+                    
 
                     if (element === "submit") {
                         var callerId = $("#" + cons.HIDDEN_FIELD_ID).val();
@@ -153,8 +153,86 @@ define(["JsonManager", "Cons", "LightBoxManager", "Probabilities"],
                             jsonManager.getGraph().mapNodes[source].mapTargets[callerId] = input;
                             
                         }*/
+                        //server
+                        const input_server = document.getElementById("server_average");
                         
 
+
+                        if(input_server)  if (isNaN(input_server.value) || input_server.value < 0) {
+                            alert("Average cannot be negative and must be a number.");
+                            return;
+                          } 
+                          //multiserver
+                          const input_multiserver = document.getElementById("multiServer_average");
+                        
+
+
+                        if(input_multiserver)  if (isNaN(input_multiserver.value) || input_multiserver.value < 0) {
+                            alert("Average cannot be negative and must be a number.");
+                            return;
+                          } 
+                        //arrival
+                        const input_arrival = document.getElementById("arrival-average");
+                        if(input_arrival && !input_arrival.disabled)  if (isNaN(input_arrival.value) || input_arrival.value < 0) {
+                            alert("Arrival average cannot be negative and must be a number.");
+                            return;
+                          } 
+                        //ms arrival
+                         const input_msarrival = document.getElementById("ms_arrival_average");
+                        if(input_msarrival && !input_msarrival.disabled)  if (isNaN(input_msarrival.value) || input_msarrival.value < 0) {
+                            alert("Arrival average cannot be negative and must be a number.");
+                            return;
+                          } 
+                          
+                          //desvio padrao
+                          
+                          const input_serversd = document.getElementById("server_stdDeviation");
+                        
+
+
+                        if(input_serversd && !input_serversd.disabled){
+                            let valor_serversd = parseInt(input_serversd.value, 10);
+                            input_serversd.value = valor_serversd;
+                            if (isNaN(valor_serversd) || valor_serversd < 0) {
+                            alert("Standard deviation cannot be negative and must be an integer.");
+                            return;
+                          } 
+                        }  
+                          //multiserver
+                          const input_multiserversd = document.getElementById("multiServer_stdDeviation");
+                        
+
+                        if(input_multiserversd && !input_multiserversd.disabled){  let valor_multiserversd = parseInt(input_multiserversd.value, 10);
+                            input_multiserversd.value = valor_multiserversd;
+                            if (isNaN(valor_multiserversd) || valor_multiserversd < 0) {
+                            alert("Standard deviation cannot be negative and must be an integer.");
+                            return;
+                          } 
+                        }
+                      
+                        //arrival
+                        const input_arrivalsd = document.getElementById("arrival_stdDeviation");
+                        if(input_arrivalsd && !input_arrivalsd.disabled){console.log(input_arrivalsd);
+                            console.log("Valor bruto:", JSON.stringify(input_arrivalsd.value));
+
+                            let valor_arrivalsd = parseInt(input_arrivalsd.value, 10);
+                            
+                            if (isNaN(valor_arrivalsd) || valor_arrivalsd < 0) {
+                                console.log(valor_arrivalsd);
+                            alert("Arrival standard deviation cannot be negative and must be an integer.");
+                            return;
+                          } 
+                          input_arrivalsd.value = valor_arrivalsd;
+                        }
+                        //ms arrival
+                         const input_msarrivalsd = document.getElementById("ms_arrival_stdDeviation");
+                        if(input_msarrivalsd && !input_msarrivalsd.disabled) {  let valor_msarrivalsd = parseInt(input_msarrivalsd.value, 10);
+                            input_msarrivalsd.value = valor_msarrivalsd;
+                            if (isNaN(valor_msarrivalsd) || valor_msarrivalsd < 0) {
+                            alert("Arrival standard deviation cannot be negative and must be an integer.");
+                            return;
+                          } 
+                        }
                         var properties = $("#" + cons.PROPERTIES_AREA).values();
                         
                         
@@ -181,6 +259,7 @@ define(["JsonManager", "Cons", "LightBoxManager", "Probabilities"],
                         btnExecute.style.opacity = '0.3';
                         btnExecute.style.pointerEvents = 'none';
                         window.flag = false;
+                        closeDiv();
                     }
                 }
             }

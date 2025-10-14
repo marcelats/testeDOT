@@ -49,15 +49,15 @@
                         <input type="text" id="arrival_average" class="inputText small">
                     </div>
 
-                    <div class="field" id="arrival_stdDeviation">
+                    <div class="field">
                         <label for="arrival_stdDeviation" class="labelLeft">Standard deviation</label>
                         <input type="text" id="arrival_stdDeviation" class="inputText small">
                     </div>
 
-                    <div class="field">
+                    <!--<div class="field">
                         <label for="arrival_sequence" class="labelLeft">Random number generation seed</label>
                         <input disabled type="text" id="arrival_sequence" class="inputText small">
-                    </div>
+                    </div>-->
                 </fieldset>
                 
                 <fieldset id="fieldset_sd">
@@ -82,10 +82,10 @@
                         <input type="text" id="server_stdDeviation" class="inputText small">
                     </div>
 
-                    <div class="field">
+                    <!--<div class="field">
                         <label for="server_sequence" class="labelLeft">Random number generation seed</label>
                         <input disabled type="text" id="server_sequence" class="inputText small">
-                    </div>
+                    </div>-->
                 </fieldset><br>
                 <!--<div class="field">
                     <label for="probability" class="labelLeft">Probability</label>

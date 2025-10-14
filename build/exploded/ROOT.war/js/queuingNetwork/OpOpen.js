@@ -341,12 +341,13 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "I
                 dataType: "json",
                 success: function(data) {
                     lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
+                    
                     window.opcoes = [];
                     window.arrivals = [];
                     window.arrivalIndex = 0;
                     jsonManager.setGraph(data);
                     jsonManager.setSaved(true);
-
+                    window.langSelecionada = jsonManager.getGraph().parameters.opParam_library;
                     if (data.name !== "") {
                         document.title = "ASDA - " + data.name;
                     }

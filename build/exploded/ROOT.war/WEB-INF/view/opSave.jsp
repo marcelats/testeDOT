@@ -31,7 +31,7 @@
             </div>
 
             <div id="opSave-bottom" class="standardForm">
-                <form>
+                <form onsubmit="return false;">
                     <label>
                         <span>File name:</span>
                         <input id="opSave-filename" type="text" class="inputText large">

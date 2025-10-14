@@ -59,10 +59,10 @@
                         <input type="text" id="ms_arrival_stdDeviation" class="inputText small">
                     </div>
 
-                    <div class="field">
+                    <!--<div class="field">
                         <label for="ms_arrival_sequence" class="labelLeft">Random number generation seed</label>
                         <input type="text" id="ms_arrival_sequence" class="inputText small">
-                    </div>
+                    </div>-->
                 </fieldset>
                 
                 <fieldset>
@@ -86,10 +86,10 @@
                         <label for="multiServer_stdDeviation" class="labelLeft">Standard deviation</label>
                         <input type="text" id="multiServer_stdDeviation" class="inputText small">
                     </div>
-                    <div class="field">
+                    <!--<div class="field">
                         <label for="multiServer_sequence" class="labelLeft">Random number generation seed</label>
                         <input id="multiServer_sequence" type="text" class="inputText small">
-                    </div>
+                    </div>-->
                     
                 </fieldset><br>
                 <!--<div class="field">
