@@ -74,8 +74,9 @@ function($, jsonManager) {
                 
                 const numberClients = document.getElementById("number_clients");
                 let valor_numberClients = parseInt(numberClients.value, 10);
+                        console.log(valor_numberClients);
                           numberClients.value = valor_numberClients;
-
+                          console.log(numberClients.value);
                           if (isNaN(valor_numberClients) || valor_numberClients < 0) {
                             alert("Number of clients cannot be negative and must be an integer.");
                             return;
@@ -83,7 +84,7 @@ function($, jsonManager) {
                 
                 
                 const arrivalTime = document.getElementById("arrival_time");
-                
+                console.log(arrivalTime.value);
                 if(arrivalTime)  if (isNaN(arrivalTime.value) || arrivalTime.value < 0) {
                             alert("Arrival time cannot be negative and must be a number.");
                             return;
@@ -213,8 +214,8 @@ function($, jsonManager) {
                     const item = jsonManager.getGraph().arrivals[jsonManager.getGraph().arrivalIndex];
                     console.log(`Exibindo item ${jsonManager.getGraph().arrivalIndex + 1} de ${jsonManager.getGraph().arrivals.length}`);
                     console.log(`numberClients: ${item.numberClients}, arrivalTime: ${item.arrivalTime}, serviceCenter: ${item.serviceCenter}`);
-                    document.getElementById("number_clients").value = item.numberClients;
-                    document.getElementById("arrival_time").value = item.arrivalTime;
+                    document.getElementById("number_clients").value = item.value_numberClients;
+                    document.getElementById("arrival_time").value = item.value_arrivalTime;
                     // jQuery
                     document.getElementById("service_center").value = item.serviceCenter;
                     $("#service_center").val(item.serviceCenter).trigger("change");

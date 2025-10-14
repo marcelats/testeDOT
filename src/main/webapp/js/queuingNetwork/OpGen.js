@@ -147,6 +147,7 @@ define(["jquery", "JsonManager", "LightBoxManager", "Cons"],
                         case "server":
                             content += `    ${node.id} [label=CPU${node.id} comment=" 2`;
                             //count+=1;
+                            console.log(node.properties.arrival_distribution);
                             switch (node.properties.arrival_distribution)
                             {
                                                                case "None":
@@ -175,6 +176,7 @@ define(["jquery", "JsonManager", "LightBoxManager", "Cons"],
                                 default:
                                     content += ` 0`;    
                             }
+                            console.log(node.properties.server_distribution);
                             switch (node.properties.server_distribution)
                             {
                                 case "Normal":
@@ -342,10 +344,10 @@ console.log(typeof arrivals); // true se for array, false se não for
                     content += `Arrivals ${arrivals.length} `;
                     arrivals.forEach((obj, index) => {
                         console.log(`Objeto ${index}:`);
-                        console.log("numberClients:", obj.numberClients);
-                        console.log("arrivalTime:", obj.arrivalTime);
+                        console.log("numberClients:", obj.value_numberClients);
+                        console.log("arrivalTime:", obj.value_arrivalTime);
                         console.log("serviceCenter:", obj.serviceCenter);
-                        content += `${obj.numberClients} ${obj.arrivalTime} ${obj.serviceCenter} `;
+                        content += `${obj.value_numberClients} ${obj.value_arrivalTime} ${obj.serviceCenter} `;
                     });
                 }
 
