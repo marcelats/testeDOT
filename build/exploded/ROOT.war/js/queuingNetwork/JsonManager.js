@@ -271,6 +271,7 @@ define(["jquery", "jsPlumb", "IdManager"],
                 }
                     
                 graph.mapNodes[connection.sourceId].mapTargets[connection.targetId] = 0;
+                console.log(graph.mapNodes[connection.sourceId].mapTargets);
                 graph.mapNodes[connection.targetId].chega = 1;
                 saved = false;
                 const btnCode = document.getElementById("opCode");

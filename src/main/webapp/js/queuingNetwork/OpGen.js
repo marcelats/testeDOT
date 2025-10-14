@@ -207,13 +207,15 @@ define(["jquery", "JsonManager", "LightBoxManager", "Cons"],
                             else
                             {content += `false `;}
                             if(node.properties.arrival_sequence)content +=`${node.properties.arrival_sequence} `;
-                            else content +=`0 `;
-                            content +=`${seed} `;
+                            else content += `0 `;
+                            content += `${seed} `;
    
                             if(node.properties.arrival_stdDeviation) content +=`${node.properties.arrival_stdDeviation} `;
-                            else content +=`0 `;
+                            else content += `0 `;
                             if(node.properties.server_stdDeviation) content +=`${node.properties.server_stdDeviation} `;
-                            else content +=`0 `;
+                            else content += `0 `;
+                            if(jsonManager.getGraph().opcoes.some(obj => parseInt(obj.value) === parseInt(node.id))) content += `true `;
+                            else content += `false `;
                             content +=`"]\n`;
                             break;
                         case "out":
@@ -306,6 +308,8 @@ define(["jquery", "JsonManager", "LightBoxManager", "Cons"],
                             else content +=`0 `;
                             if(node.properties.ms_arrival_stdDeviation) content += `${node.properties.ms_arrival_stdDeviation} `;
                             else content +=`0 `;
+                            if(jsonManager.getGraph().opcoes.some(obj => parseInt(obj.value) === parseInt(node.id))) content += `true `;
+                            else content += `false `;
                             content +=`"]\n`;
                             break;
                         default:

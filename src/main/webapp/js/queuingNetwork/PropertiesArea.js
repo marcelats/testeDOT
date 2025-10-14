@@ -82,8 +82,29 @@ define(["JsonManager", "Cons", "LightBoxManager", "Probabilities"],
  
  
                 $(document).on("click", "#prob-bt", function() {
+                    console.log(Object.keys(jsonManager.getGraph().mapNodes[document.getElementById(cons.HIDDEN_FIELD_ID).value].mapTargets));
                     if(Object.keys(jsonManager.getGraph().mapNodes[document.getElementById(cons.HIDDEN_FIELD_ID).value].mapTargets).length === 0)
                         document.getElementById("prob-bt").disabled=true;
+                    else
+                    {
+                        
+                        lightBoxManager.openBox(  
+                            "shadow3",
+                            "boxProb",
+                            "qnetwork?cmd=open-box&type=prob", 
+                            function() {
+                                console.log("antes de prob.execute()");
+                                prob.execute(document.getElementById(cons.HIDDEN_FIELD_ID).value);
+                                console.log("depois de prob.execute()");
+                            }
+                        );
+                    }
+                });
+                
+                $(document).on("click", "#ms_prob-bt", function() {
+                    console.log(Object.keys(jsonManager.getGraph().mapNodes[document.getElementById(cons.HIDDEN_FIELD_ID).value].mapTargets));
+                    if(Object.keys(jsonManager.getGraph().mapNodes[document.getElementById(cons.HIDDEN_FIELD_ID).value].mapTargets).length === 0)
+                        document.getElementById("ms_prob-bt").disabled=true;
                     else
                     {
                         
