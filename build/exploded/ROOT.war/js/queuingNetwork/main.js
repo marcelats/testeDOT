@@ -113,16 +113,16 @@ require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "El
                 seed.disabled = allowed.includes(selected) ? true : false;
             }  */
 
-            document.getElementById("opParam_execTime").disabled = true;
-            document.getElementById("opParam_maxEntities").disabled = true;
+            //document.getElementById("opParam_execTime").disabled = true;
+            //document.getElementById("opParam_maxEntities").disabled = true;
             document.getElementById("opParam_definedValue").disabled = true;
-            const execTimeInput = document.getElementById("opParam_execTime");
-            const maxEntitiesInput = document.getElementById("opParam_maxEntities");
+            //const execTimeInput = document.getElementById("opParam_execTime");
+            //const maxEntitiesInput = document.getElementById("opParam_maxEntities");
             const definedValueInput = document.getElementById("opParam_definedValue");
 
             function atualizarModelType() {
-                execTimeInput.disabled = !document.getElementById("opParam_execTimeOp").checked;
-                maxEntitiesInput.disabled = !document.getElementById("opParam_maxEntitiesOp").checked;
+                //execTimeInput.disabled = !document.getElementById("opParam_execTimeOp").checked;
+                //maxEntitiesInput.disabled = !document.getElementById("opParam_maxEntitiesOp").checked;
             }
 
             function atualizarWarmup() {

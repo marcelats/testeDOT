@@ -30,21 +30,21 @@
                     <label for="opParam_seed" class="labelLeft">Random number generation seed</label>
                     <input id="opParam_seed" type="text" class="inputText small" min="0" max="15" step="1">
                 </div>                                 
-            <fieldset>
-                <legend>Model type</legend>
+            <!--<fieldset>
+                <legend>Model type</legend>-->
 
                 <div class="fieldRow">
-                    <input id="opParam_execTimeOp" type="radio" name="modeltype" value="execTime">
+                    <!--<input id="opParam_execTimeOp" type="radio" name="modeltype" value="execTime">-->
                     <label for="opParam_execTimeOp">Execution time</label>
                     <input id="opParam_execTime" type="text" class="inputText small" >
-                </div>
+                </div><br>
 
-                <div class="fieldRow">
+                <!--<div class="fieldRow">
                     <input id="opParam_maxEntitiesOp" type="radio" name="modeltype" value="maxEntities">
                     <label for="opParam_maxEntitiesOp">Max number of entities</label>
                     <input id="opParam_maxEntities" type="text" class="inputText small">
                 </div>
-            </fieldset>
+            </fieldset>-->
 
             <fieldset id="warmup_fieldset">
                 <legend>Warmup Time</legend>

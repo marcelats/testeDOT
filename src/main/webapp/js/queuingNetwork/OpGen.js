@@ -43,17 +43,17 @@ define(["jquery", "JsonManager", "LightBoxManager", "Cons"],
                 var definedValue = parameters["opParam_definedValue"] || 0;
                 var seed = parameters["opParam_seed"] || 0;
                 const execTimeOp = document.getElementById("opParam_execTimeOp");
-                const maxEntitiesOp = document.getElementById("opParam_maxEntitiesOp");
+                //const maxEntitiesOp = document.getElementById("opParam_maxEntitiesOp");
                 var execTime = 0;
                 if(document.getElementById("opParam_execTime")) execTime = document.getElementById("opParam_execTime").value.trim();
                 var maxEntities = 0;
-                if(document.getElementById("opParam_maxEntities")) maxEntities = document.getElementById("opParam_maxEntities").value.trim();
+                //if(document.getElementById("opParam_maxEntities")) maxEntities = document.getElementById("opParam_maxEntities").value.trim();
 
                 // nenhum radio selecionado
-                if (!execTimeOp.checked && !maxEntitiesOp.checked) {
+                /*if (!execTimeOp.checked && !maxEntitiesOp.checked) {
                     alert("Select a model type.");
                     return; // encerra fluxo
-                }
+                }*/
                 
                 /*if(execTimeOp.checked && jsonManager.getGraph().n_sources === 0){
                     alert("Model is open and has no sources");
@@ -122,21 +122,21 @@ define(["jquery", "JsonManager", "LightBoxManager", "Cons"],
                 if (invalidNodeExists) return; // interrompe execute()
 
 
-                if (execTimeOp.checked) {
+                //if (execTimeOp.checked) {
                     if (execTime === "" || Number(execTime) === 0) {
                         alert("Execution time must be different from zero");
                         return;
                     }
                     content = `digraph ${jsonManager.getGraph().name} {\n    comment=" ${execTime} ${numCycles} ${batchSize} 0 aberto ${warmupTime} ${definedValue} ${seed} " rankdir=LR\n`;
-                }
+                //}
 
-                if (maxEntitiesOp.checked) {
+                /*if (maxEntitiesOp.checked) {
                     if (maxEntities === "" || Number(maxEntities) === 0) {
                         alert("Max number of entities must be different from zero.");
                         return;
                     }
                     content = `digraph ${jsonManager.getGraph().name} {\n    comment=" 0 ${numCycles} ${batchSize} ${maxEntities} fechado ${warmupTime} ${definedValue} ${seed} " rankdir=LR\n`;
-                }               
+                }      */         
 
                 Object.values(jsonManager.getGraph().mapNodes).forEach(node => {
 
