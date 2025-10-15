@@ -46,11 +46,12 @@ function($, lightBoxManager, cons, JSZip, jsonManager) {
                     window.codeBlob = blobCode;
                     const url = URL.createObjectURL(blobCode);
                     const a = document.createElement("a");
-                    if(window.langSelecionada === 'Python' || window.langSelecionada === 'R' || !window.langSelecionada)
+                    a.href = url;
+                    /*if(window.langSelecionada === 'Python' || window.langSelecionada === 'R' || !window.langSelecionada)
                     { 
                         const a = document.createElement("a");
                         a.href = url;
-                    }
+                    }*/
                     if(window.langSelecionada === 'Python'|| !window.langSelecionada)
                     {
                         a.download = jsonManager.getGraph().name + ".py";
@@ -129,7 +130,7 @@ function($, lightBoxManager, cons, JSZip, jsonManager) {
                         })
 
                         .then(blobCode => {         
-                            const url = URL.createObjectURL(blobCode);
+                            /*const url = URL.createObjectURL(blobCode);
                            
                             const a = document.createElement("a");
                             a.href = url;
@@ -145,10 +146,10 @@ function($, lightBoxManager, cons, JSZip, jsonManager) {
                             {
                                 a.download = jsonManager.getGraph().name + ".c";
                             }
-                            /*else if (window.langSelecionada === 'C SIMPACK2')
+                            else if (window.langSelecionada === 'C SIMPACK2')
                             {
                                 a.download = "code.cpp";
-                            }*/
+                            }
                             else 
                             {
                                 a.download = jsonManager.getGraph().name + ".py";
@@ -156,7 +157,7 @@ function($, lightBoxManager, cons, JSZip, jsonManager) {
                             document.body.appendChild(a);
                             a.click();
                             document.body.removeChild(a);
-                            URL.revokeObjectURL(url);
+                            URL.revokeObjectURL(url);*/
                             
                             
                             if(window.langSelecionada === 'Python' || window.langSelecionada === 'R' || !window.langSelecionada)
