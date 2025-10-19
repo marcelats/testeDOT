@@ -1,5 +1,5 @@
-define(["jquery", "jquery-ui", "LightBoxManager", "JsonManager", "Arrival"],
-    function($, _, lightBoxManager, jsonManager, arrival) {
+define(["jquery", "jquery-ui","domReady!", "LightBoxManager", "JsonManager", "Arrival"],
+    function($, _,dr, lightBoxManager, jsonManager, arrival) {
         "use strict";
 
         var lastAction = null, callback = null;
