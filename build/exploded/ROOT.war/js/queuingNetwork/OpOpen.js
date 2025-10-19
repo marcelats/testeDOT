@@ -330,39 +330,46 @@ define(["jquery","jquery-ui", "LightBoxManager", "JsonManager", "OpNew", "Utils"
 
 
   // abre como dialog do jQuery UI
-  $dlg.dialog({
-    title: $("#opOpen-filename").val() + ".gv",
-    modal: false,              // cria a camada de overlay
-    draggable: true,          // permite arrastar
-    resizable: false,         // sem redimensionamento
-    closeOnEscape: false,     // não fecha com ESC
-    width: 400,
-    open: function (event, ui) {
-      // impedir que clique na overlay feche (por precaução)
-      $('.ui-widget-overlay').off('click');
+ $dlg.dialog({
+  title: $("#opOpen-filename").val() + ".gv",
+  modal: false,
+  draggable: true,
+  resizable: true,
+  closeOnEscape: false,
+  width: 500,
+  height: 'auto',
+  maxHeight: 500,
+  open: function () {
+    $('.ui-widget-overlay').off('click');
+  },
+  close: function () {
+    $(this).dialog('destroy').remove();
+  },
+  create: function () {
+    // deixa só a barra de título arrastável
+    $(this).parent().draggable('option', 'handle', '.ui-dialog-titlebar');
+  }
+});
 
-      // remover botões padrão (se quiser só o X no canto, não precisa desta linha)
-      // $(this).parent().find('.ui-dialog-buttonpane').remove();
+// Aplica rolagem e permite seleção no conteúdo
+$dlg.closest('.ui-dialog').find('.ui-dialog-content').css({
+  'max-height': '400px',   // limite de altura
+  'overflow-y': 'auto',    // rolagem vertical
+  'overflow-x': 'auto',    // se quiser também rolagem horizontal
+  'user-select': 'text',   // garante que texto possa ser selecionado
+  'cursor': 'auto'
+});
 
-      // garantir que apenas o botão de fechar esteja visível (X)
-      // (por padrão já existe o X; aqui só reforçamos estilo se quiser)
-    },
-    close: function (event, ui) {
-      // remover elemento do DOM ao fechar para não acumular
-      $(this).dialog('destroy').remove();
-    },
-    create: function () {
-      // opcional: deixa o título como handle (padrão já usa titlebar)
-      $(this).parent().draggable('option', 'handle', '.ui-dialog-titlebar');
-    }
+// Garante que só a barra de título desabilite seleção (não o conteúdo todo)
+$dlg.closest('.ui-dialog')
+  .find('.ui-dialog-titlebar')
+  .on('mousedown', function () {
+    $(this).css('user-select', 'none');
+  })
+  .on('mouseup', function () {
+    $(this).css('user-select', 'auto');
   });
 
-  // opcional: esconder a opção de fechar via botão "fechar" da dialogpane caso exista:
-  // $dlg.parent().find('.ui-dialog-buttonpane').remove();
-
-  // se quiser, desabilitar seleção de texto durante o drag para UX melhor:
-  $('.ui-dialog').on('mousedown', function () { $(this).css('user-select','none'); })
-                 .on('mouseup',   function () { $(this).css('user-select','auto'); });
                     
                     
                 },
@@ -413,39 +420,46 @@ define(["jquery","jquery-ui", "LightBoxManager", "JsonManager", "OpNew", "Utils"
 
 
   // abre como dialog do jQuery UI
-  $dlg.dialog({
-    title: data.code_name,
-    modal: false,              // cria a camada de overlay
-    draggable: true,          // permite arrastar
-    resizable: false,         // sem redimensionamento
-    closeOnEscape: false,     // não fecha com ESC
-    width: 400,
-    open: function (event, ui) {
-      // impedir que clique na overlay feche (por precaução)
-      $('.ui-widget-overlay').off('click');
+   // abre como dialog do jQuery UI
+ $dlg.dialog({
+  title: data.code_name,
+  modal: false,
+  draggable: true,
+  resizable: true,
+  closeOnEscape: false,
+  width: 500,
+  height: 'auto',
+  maxHeight: 500,
+  open: function () {
+    $('.ui-widget-overlay').off('click');
+  },
+  close: function () {
+    $(this).dialog('destroy').remove();
+  },
+  create: function () {
+    // deixa só a barra de título arrastável
+    $(this).parent().draggable('option', 'handle', '.ui-dialog-titlebar');
+  }
+});
 
-      // remover botões padrão (se quiser só o X no canto, não precisa desta linha)
-      // $(this).parent().find('.ui-dialog-buttonpane').remove();
+// Aplica rolagem e permite seleção no conteúdo
+$dlg.closest('.ui-dialog').find('.ui-dialog-content').css({
+  'max-height': '400px',   // limite de altura
+  'overflow-y': 'auto',    // rolagem vertical
+  'overflow-x': 'auto',    // se quiser também rolagem horizontal
+  'user-select': 'text',   // garante que texto possa ser selecionado
+  'cursor': 'auto'
+});
 
-      // garantir que apenas o botão de fechar esteja visível (X)
-      // (por padrão já existe o X; aqui só reforçamos estilo se quiser)
-    },
-    close: function (event, ui) {
-      // remover elemento do DOM ao fechar para não acumular
-      $(this).dialog('destroy').remove();
-    },
-    create: function () {
-      // opcional: deixa o título como handle (padrão já usa titlebar)
-      $(this).parent().draggable('option', 'handle', '.ui-dialog-titlebar');
-    }
+// Garante que só a barra de título desabilite seleção (não o conteúdo todo)
+$dlg.closest('.ui-dialog')
+  .find('.ui-dialog-titlebar')
+  .on('mousedown', function () {
+    $(this).css('user-select', 'none');
+  })
+  .on('mouseup', function () {
+    $(this).css('user-select', 'auto');
   });
-
-  // opcional: esconder a opção de fechar via botão "fechar" da dialogpane caso exista:
-  // $dlg.parent().find('.ui-dialog-buttonpane').remove();
-
-  // se quiser, desabilitar seleção de texto durante o drag para UX melhor:
-  $('.ui-dialog').on('mousedown', function () { $(this).css('user-select','none'); })
-                 .on('mouseup',   function () { $(this).css('user-select','auto'); });
                     
                     
                 },
@@ -494,39 +508,44 @@ define(["jquery","jquery-ui", "LightBoxManager", "JsonManager", "OpNew", "Utils"
 
   // abre como dialog do jQuery UI
   $dlg.dialog({
-    title: data.report_name,
-    modal: false,              // cria a camada de overlay
-    draggable: true,          // permite arrastar
-    resizable: false,         // sem redimensionamento
-    closeOnEscape: false,     // não fecha com ESC
-    width: 400,
-    open: function (event, ui) {
-      // impedir que clique na overlay feche (por precaução)
-      $('.ui-widget-overlay').off('click');
+  title: data.report_name,
+  modal: false,
+  draggable: true,
+  resizable: true,
+  closeOnEscape: false,
+  width: 500,
+  height: 'auto',
+  maxHeight: 500,
+  open: function () {
+    $('.ui-widget-overlay').off('click');
+  },
+  close: function () {
+    $(this).dialog('destroy').remove();
+  },
+  create: function () {
+    // deixa só a barra de título arrastável
+    $(this).parent().draggable('option', 'handle', '.ui-dialog-titlebar');
+  }
+});
 
-      // remover botões padrão (se quiser só o X no canto, não precisa desta linha)
-      // $(this).parent().find('.ui-dialog-buttonpane').remove();
+// Aplica rolagem e permite seleção no conteúdo
+$dlg.closest('.ui-dialog').find('.ui-dialog-content').css({
+  'max-height': '400px',   // limite de altura
+  'overflow-y': 'auto',    // rolagem vertical
+  'overflow-x': 'auto',    // se quiser também rolagem horizontal
+  'user-select': 'text',   // garante que texto possa ser selecionado
+  'cursor': 'auto'
+});
 
-      // garantir que apenas o botão de fechar esteja visível (X)
-      // (por padrão já existe o X; aqui só reforçamos estilo se quiser)
-    },
-    close: function (event, ui) {
-      // remover elemento do DOM ao fechar para não acumular
-      $(this).dialog('destroy').remove();
-    },
-    create: function () {
-      // opcional: deixa o título como handle (padrão já usa titlebar)
-      $(this).parent().draggable('option', 'handle', '.ui-dialog-titlebar');
-    }
+// Garante que só a barra de título desabilite seleção (não o conteúdo todo)
+$dlg.closest('.ui-dialog')
+  .find('.ui-dialog-titlebar')
+  .on('mousedown', function () {
+    $(this).css('user-select', 'none');
+  })
+  .on('mouseup', function () {
+    $(this).css('user-select', 'auto');
   });
-
-  // opcional: esconder a opção de fechar via botão "fechar" da dialogpane caso exista:
-  // $dlg.parent().find('.ui-dialog-buttonpane').remove();
-
-  // se quiser, desabilitar seleção de texto durante o drag para UX melhor:
-  $('.ui-dialog').on('mousedown', function () { $(this).css('user-select','none'); })
-                 .on('mouseup',   function () { $(this).css('user-select','auto'); });
-                    
                     
                 },
                 error: function(xhr, thrownError) {
