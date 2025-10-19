@@ -14,8 +14,8 @@ require.config({
 	},
 	shim: {
 		"jquery-ui": {
-                    deps: ["jquery"],
-                    exports: "$"
+                    deps: ["jquery"]
+                    
                 },
 		"jquery-validate": ["jquery"],
 		"jquery-form": ["jquery"],
