@@ -282,3 +282,8 @@ fieldset {
 
 .boxContent.arrivalModal { z-index: 3000 !important; }
 .boxContent.paramModal   { z-index: 2000 !important; }
+
+.ui-dialog-content {
+  max-height: 60vh; /* ou um valor fixo, ex: 400px */
+  overflow-y: auto;
+}
