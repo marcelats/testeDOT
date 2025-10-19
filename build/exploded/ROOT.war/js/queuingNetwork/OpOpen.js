@@ -1,5 +1,5 @@
-define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "IdManager", "DrawArea", "jsPlumb"],
-    function($, lightBoxManager, jsonManager, opNew, utils, cons, idManager, drawArea, jsPlumb) {
+define(["jquery","jquery-ui", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "IdManager", "DrawArea", "jsPlumb"],
+    function($,ui, lightBoxManager, jsonManager, opNew, utils, cons, idManager, drawArea, jsPlumb) {
         "use strict";
 
         var lastAction = null, callback = null, elementManager = null;
@@ -36,6 +36,21 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "I
                     e.preventDefault();
 
                     OpOpen.execute("delete");
+                });
+                $(document).on("click", "#opGraph-btSubmit", function(e) {
+                    e.preventDefault();
+
+                    OpOpen.execute("graph");
+                });
+                $(document).on("click", "#opCode-btSubmit", function(e) {
+                    e.preventDefault();
+
+                    OpOpen.execute("code");
+                });
+                $(document).on("click", "#opReport-btSubmit", function(e) {
+                    e.preventDefault();
+
+                    OpOpen.execute("report");
                 });
                 /*$(document).on("click", "#opRename-btSubmit", function(e) {
                     e.preventDefault();
@@ -288,6 +303,246 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "I
                                 }
                             });
                         }
+                    }
+                    
+                    if (action === "graph") {
+                        var filename = $("#opOpen-filename").val(),
+                        re = new RegExp(cons.REG_EXP_FILENAME),
+                        author = $("#opOpen-author").val();
+                        if (filename.match(re) === null) {
+                            alert("You need to enter a valid filename.");
+                        }else if(author.match(re) === null) {
+                            alert("You need to enter a valid author.");
+                        }
+                        $.ajax({
+                url: "qnetwork?cmd=opengv",
+                type: "POST",
+                data: {
+                    graphName: filename,
+                    author: author
+                },
+                dataType: "text",
+                 
+                                success: function(data) {
+                    lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
+                    const $dlg = $(`<div id="draggableModal" style="white-space: pre-wrap; text-align: left;">${data}</div>`).appendTo('body');
+
+
+
+  // abre como dialog do jQuery UI
+  $dlg.dialog({
+    title: $("#opOpen-filename").val() + ".gv",
+    modal: false,              // cria a camada de overlay
+    draggable: true,          // permite arrastar
+    resizable: false,         // sem redimensionamento
+    closeOnEscape: false,     // não fecha com ESC
+    width: 400,
+    open: function (event, ui) {
+      // impedir que clique na overlay feche (por precaução)
+      $('.ui-widget-overlay').off('click');
+
+      // remover botões padrão (se quiser só o X no canto, não precisa desta linha)
+      // $(this).parent().find('.ui-dialog-buttonpane').remove();
+
+      // garantir que apenas o botão de fechar esteja visível (X)
+      // (por padrão já existe o X; aqui só reforçamos estilo se quiser)
+    },
+    close: function (event, ui) {
+      // remover elemento do DOM ao fechar para não acumular
+      $(this).dialog('destroy').remove();
+    },
+    create: function () {
+      // opcional: deixa o título como handle (padrão já usa titlebar)
+      $(this).parent().draggable('option', 'handle', '.ui-dialog-titlebar');
+    }
+  });
+
+  // opcional: esconder a opção de fechar via botão "fechar" da dialogpane caso exista:
+  // $dlg.parent().find('.ui-dialog-buttonpane').remove();
+
+  // se quiser, desabilitar seleção de texto durante o drag para UX melhor:
+  $('.ui-dialog').on('mousedown', function () { $(this).css('user-select','none'); })
+                 .on('mouseup',   function () { $(this).css('user-select','auto'); });
+                    
+                    
+                },
+                error: function(xhr, thrownError) {
+                                    var errorHeader = xhr.getResponseHeader('fot-error');
+
+                                    jsonManager.setName(tempFilename);
+
+                                    if (errorHeader !== null) {
+                                        alert(errorHeader);
+                                    } else {
+                                        alert(thrownError);
+                                    }
+                                }
+
+               
+            });
+                        
+                        
+
+                    }
+                    
+                    if (action === "code") {
+                        
+                        var filename = $("#opOpen-filename").val(),
+                        re = new RegExp(cons.REG_EXP_FILENAME),
+                        author = $("#opOpen-author").val();
+                        if (filename.match(re) === null) {
+                            alert("You need to enter a valid filename.");
+                        }else if(author.match(re) === null) {
+                            alert("You need to enter a valid author.");
+                        }
+                        $.ajax({
+                url: "qnetwork?cmd=opencode",
+                type: "POST",
+                data: {
+                    graphName: filename,
+                    author: author
+                },
+                dataType: "json",
+                success: function(data) {
+                    
+                    console.log(data.code);
+                    console.log(data.code_name);
+                    lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
+                    const $dlg = $(`<div id="draggableModal" style="white-space: pre-wrap; text-align: left;">${data.code}</div>`).appendTo('body');
+
+
+
+  // abre como dialog do jQuery UI
+  $dlg.dialog({
+    title: data.code_name,
+    modal: false,              // cria a camada de overlay
+    draggable: true,          // permite arrastar
+    resizable: false,         // sem redimensionamento
+    closeOnEscape: false,     // não fecha com ESC
+    width: 400,
+    open: function (event, ui) {
+      // impedir que clique na overlay feche (por precaução)
+      $('.ui-widget-overlay').off('click');
+
+      // remover botões padrão (se quiser só o X no canto, não precisa desta linha)
+      // $(this).parent().find('.ui-dialog-buttonpane').remove();
+
+      // garantir que apenas o botão de fechar esteja visível (X)
+      // (por padrão já existe o X; aqui só reforçamos estilo se quiser)
+    },
+    close: function (event, ui) {
+      // remover elemento do DOM ao fechar para não acumular
+      $(this).dialog('destroy').remove();
+    },
+    create: function () {
+      // opcional: deixa o título como handle (padrão já usa titlebar)
+      $(this).parent().draggable('option', 'handle', '.ui-dialog-titlebar');
+    }
+  });
+
+  // opcional: esconder a opção de fechar via botão "fechar" da dialogpane caso exista:
+  // $dlg.parent().find('.ui-dialog-buttonpane').remove();
+
+  // se quiser, desabilitar seleção de texto durante o drag para UX melhor:
+  $('.ui-dialog').on('mousedown', function () { $(this).css('user-select','none'); })
+                 .on('mouseup',   function () { $(this).css('user-select','auto'); });
+                    
+                    
+                },
+                error: function(xhr, thrownError) {
+                                    var errorHeader = xhr.getResponseHeader('fot-error');
+
+                                    jsonManager.setName(tempFilename);
+
+                                    if (errorHeader !== null) {
+                                        alert(errorHeader);
+                                    } else {
+                                        alert(thrownError);
+                                    }
+                                }
+
+               
+            });
+                        
+                    }
+                    
+                    if (action === "report") {
+                        var filename = $("#opOpen-filename").val(),
+                        re = new RegExp(cons.REG_EXP_FILENAME),
+                        author = $("#opOpen-author").val();
+                        if (filename.match(re) === null) {
+                            alert("You need to enter a valid filename.");
+                        }else if(author.match(re) === null) {
+                            alert("You need to enter a valid author.");
+                        }
+                        $.ajax({
+                url: "qnetwork?cmd=openreport",
+                type: "POST",
+                data: {
+                    graphName: filename,
+                    author: author
+                },
+                dataType: "json",
+                success: function(data) {
+                    
+                    console.log(data.report);
+                    console.log(data.report_name);
+                    lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
+                    const $dlg = $(`<div id="draggableModal" style="white-space: pre-wrap; text-align: left;">${data.report}</div>`).appendTo('body');
+
+
+
+  // abre como dialog do jQuery UI
+  $dlg.dialog({
+    title: data.report_name,
+    modal: false,              // cria a camada de overlay
+    draggable: true,          // permite arrastar
+    resizable: false,         // sem redimensionamento
+    closeOnEscape: false,     // não fecha com ESC
+    width: 400,
+    open: function (event, ui) {
+      // impedir que clique na overlay feche (por precaução)
+      $('.ui-widget-overlay').off('click');
+
+      // remover botões padrão (se quiser só o X no canto, não precisa desta linha)
+      // $(this).parent().find('.ui-dialog-buttonpane').remove();
+
+      // garantir que apenas o botão de fechar esteja visível (X)
+      // (por padrão já existe o X; aqui só reforçamos estilo se quiser)
+    },
+    close: function (event, ui) {
+      // remover elemento do DOM ao fechar para não acumular
+      $(this).dialog('destroy').remove();
+    },
+    create: function () {
+      // opcional: deixa o título como handle (padrão já usa titlebar)
+      $(this).parent().draggable('option', 'handle', '.ui-dialog-titlebar');
+    }
+  });
+
+  // opcional: esconder a opção de fechar via botão "fechar" da dialogpane caso exista:
+  // $dlg.parent().find('.ui-dialog-buttonpane').remove();
+
+  // se quiser, desabilitar seleção de texto durante o drag para UX melhor:
+  $('.ui-dialog').on('mousedown', function () { $(this).css('user-select','none'); })
+                 .on('mouseup',   function () { $(this).css('user-select','auto'); });
+                    
+                    
+                },
+                error: function(xhr, thrownError) {
+                                    var errorHeader = xhr.getResponseHeader('fot-error');
+
+                                    jsonManager.setName(tempFilename);
+
+                                    if (errorHeader !== null) {
+                                        alert(errorHeader);
+                                    } else {
+                                        alert(thrownError);
+                                    }
+                                }
+
+               
+            });
                     }
 
                     if (typeof callback === "function") {

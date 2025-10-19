@@ -7,6 +7,9 @@ import com.asda.CommandToken;
 import com.asda.model.asdaCommands.Init;
 import com.asda.model.asdaCommands.OpenBox;
 import com.asda.model.asdaCommands.OpenGraph;
+import com.asda.model.asdaCommands.OpenGv;
+import com.asda.model.asdaCommands.OpenCode;
+import com.asda.model.asdaCommands.OpenReport;
 import com.asda.model.asdaCommands.OpenProperties;
 import com.asda.model.asdaCommands.PublicGraph;
 import com.asda.model.asdaCommands.SaveGraph;
@@ -78,6 +81,9 @@ public class QueuingNetworkServlet extends HttpServlet {
         commands.put("rename", new RenameGraph());
         commands.put("verify", new VerificarGraphServlet());
         commands.put("copy", new CopyFile());
+        commands.put("opengv", new OpenGv());
+        commands.put("opencode", new OpenCode());
+        commands.put("openreport", new OpenReport());
     }
 
     /**

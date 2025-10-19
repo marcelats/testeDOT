@@ -42,7 +42,13 @@ import org.hibernate.validator.constraints.NotEmpty;
     @NamedQuery(name="graphs.renameGraph",
                query="UPDATE GraphBean g SET graphName = :newName WHERE graphName = :name"),
     @NamedQuery(name="graphs.findGraphCopy",
-            query="SELECT g FROM GraphBean g WHERE g.graphName = :name AND g.user.userId = :author AND (g.user.userId=:user OR g.publicGraph=true)")
+            query="SELECT g FROM GraphBean g WHERE g.graphName = :name AND g.user.userId = :author AND (g.user.userId=:user OR g.publicGraph=true)"),
+    @NamedQuery(name="graphs.findGv",
+            query="SELECT g.gv FROM GraphBean g WHERE g.graphName = :name AND g.user.userId = :author AND (g.user.userId=:user OR g.publicGraph=true)"),
+    @NamedQuery(name="graphs.findCode",
+            query="SELECT g.code, g.code_name FROM GraphBean g WHERE g.graphName = :name AND g.user.userId = :author AND (g.user.userId=:user OR g.publicGraph=true)"),
+    @NamedQuery(name="graphs.findReport",
+            query="SELECT g.report, g.report_name FROM GraphBean g WHERE g.graphName = :name AND g.user.userId = :author AND (g.user.userId=:user OR g.publicGraph=true)")
 }) 
 public class GraphBean implements Serializable {
 
@@ -71,6 +77,21 @@ public class GraphBean implements Serializable {
     
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+    
+    @Column(name = "gv")
+    private String gv;
+    
+    @Column(name = "code")
+    private String code;
+    
+    @Column(name = "report")
+    private String report;
+    
+    @Column(name = "report_name")
+    private String report_name;
+    
+    @Column(name = "code_name")
+    private String code_name;
 
     public GraphBean() {
     }

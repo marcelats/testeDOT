@@ -25,11 +25,16 @@ public class VerificarGraphServlet extends HttpServlet implements Command {
         HttpSession session = req.getSession();
         UserSessionManager sessionMgr = UserSessionManager.getInstance();
         AccountBean account = sessionMgr.getAccountUser(session);
+        
 
         if (req.getParameter("filename") != null) {
             String filename = req.getParameter("filename");
             String graphJson = req.getParameter("graphJson");
-
+            String gv_file = req.getParameter("gv_file");
+            String code_file = req.getParameter("code_file");
+            String code_name = req.getParameter("code_name");
+            String report_file = req.getParameter("report_file");
+            String report_name = req.getParameter("report_name");
             em = JpaContextListener.getEmf().createEntityManager();
             
             try {
@@ -42,11 +47,16 @@ public class VerificarGraphServlet extends HttpServlet implements Command {
                     "INSERT INTO graphs (graph_name, graph_json, user_id, publicGraph) " +
                     "VALUES (:filename, :graphJson, :user, false) " +
                     "ON CONFLICT (user_id, graph_name) DO UPDATE " +
-                    "SET graph_json = :graphJson, user_id = :user, publicGraph = false"
+                    "SET graph_json = :graphJson, user_id = :user, publicGraph = false, gv = :gv, code = :code, report = :report, report_name = :report_name, code_name = :code_name"
                 )
                 .setParameter("filename", filename)
                 .setParameter("graphJson", graphJson)
                 .setParameter("user", account.getUserId()) // <- deve ser ID
+                .setParameter("gv", gv_file)
+                .setParameter("code", code_file)
+                .setParameter("report", report_file)
+                .setParameter("report_name", report_name)
+                .setParameter("code_name", code_name)
                 .executeUpdate(); // <- ESSENCIAL
 
                 em.getTransaction().commit();

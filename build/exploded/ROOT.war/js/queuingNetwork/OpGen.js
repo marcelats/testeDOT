@@ -361,8 +361,9 @@ console.log(typeof arrivals); // true se for array, false se não for
                 function() {
                     const blob = new Blob([content], { type: "text/plain" }); // Criar um arquivo de texto
                     window.graphBlob = blob;
+                     
                     blob.text().then(texto => {
-                        
+                        window.gv = texto;
                         /*const textarea = document.getElementById("textShow");
                         console.log("Tentando pegar textShow:", document.getElementById("textShow"));
 console.log("HTML do body:", document.body.innerHTML.includes("textShow"));

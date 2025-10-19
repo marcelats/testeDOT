@@ -7,6 +7,9 @@ function(activeTool, divManager, idManager, jsonManager, cons, utils) {
     var DrawArea = {
         initialize: function(manager) {
             elementManager = manager;
+            window.gv = "";
+                            window.code = "";
+                            window.report = "";
         },
         ctrl: function(event, element) {
             var tool = activeTool.getTool();

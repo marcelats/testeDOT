@@ -44,11 +44,24 @@ define(["jquery", "LightBoxManager", "JsonManager", "Cons", "OpOpen"],
                         } 
                         else {
                             jsonManager.setName(filename);
+                            console.log(filename + "_" + window.langSelecionado + ".txt");
                             console.log(jsonManager.stringifyGraph());
+                            var codename;
+                            if(window.langselecionado === "Python") codename = filename + ".py";
+else if (window.langSelecionado === "Java") codename = filename + ": Controle.java";
+else if (window.langSelecionado === "R") codename = filename + ".r";
+else if (window.langSelecionado === "C SMPL" || window.langSelecionado === "C SMPLX") codename = filename + ".c";
+else codename = filename;
+console.log(codename);
+
+
                             $.ajax({
                                 url: 'qnetwork?cmd=verify',
                                 type: 'POST',
-                                data: { filename: filename, graphJson: jsonManager.stringifyGraph() },
+                                data: { filename: filename, graphJson: jsonManager.stringifyGraph(), 
+                                    gv_file: window.gv, code_file: window.code, 
+                                    report_file: window.report, report_name: filename + "_" + window.langSelecionado + ".txt",
+                                    code_name: codename},
                                 success: function () {
                                     lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
 
@@ -58,7 +71,7 @@ define(["jquery", "LightBoxManager", "JsonManager", "Cons", "OpOpen"],
                                 },
                                 error: function (err) {
                                     console.error('Erro:', err);
-                                    alert('Erro ao verificar o graph.');
+                                    alert('Error while verifying graph.');
                                 }
                             });
                         }

@@ -99,7 +99,7 @@
                 <div class="field">
                     <input id ="ms_prob-bt" type="button" value="Probabilities" class="button">
                 </div>
-                <input id="btCancel" type="button" value="Cancel" class="button">
+                <input id="ms_btCancel" type="button" value="Cancel" class="button">
                 <input id ="btSubmit" type="button" value="Ok" class="button">
             </form>
         </div>

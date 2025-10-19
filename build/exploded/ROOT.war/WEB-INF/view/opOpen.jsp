@@ -6,6 +6,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
+
     </head>
     <body>
         <div id="current-user" data-user-id="${currentUserId}" style="display:none;"></div>
@@ -63,6 +64,9 @@
                         <input id="opCopy-btSubmit" type="button" value="Copy" class="button">
                         <input id="opRename-btSubmit" type="button" value="Rename" class="button">
                         <input id="opDelete-btSubmit" type="button" value="Delete" class="button">
+                        <input id="opGraph-btSubmit" type="button" value="Graph" class="button">
+                        <input id="opCode-btSubmit" type="button" value="Code" class="button">
+                        <input id="opReport-btSubmit" type="button" value="Report" class="button">
                     </div>
 
                     <div class="form-row">

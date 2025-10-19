@@ -36,7 +36,7 @@ function($, JSZip, jsonManager, lightBoxManager, cons) {
                     a.href = url;
                     a.download = !window.flag
                         ? jsonManager.getGraph().name + ".gv"
-                        : jsonManager.getGraph().name + ".txt";
+                        : jsonManager.getGraph().name + "_" + window.langSelecionado + ".txt";
                     document.body.appendChild(a);
                     a.click();
                     document.body.removeChild(a);
@@ -88,6 +88,7 @@ function($, JSZip, jsonManager, lightBoxManager, cons) {
                         })
                         .then(res => res.blob())
                         .then(blobReport => {
+                            
                             /*const url = URL.createObjectURL(blobReport);
                             const a = document.createElement("a");
                             a.href = url;
@@ -97,6 +98,7 @@ function($, JSZip, jsonManager, lightBoxManager, cons) {
                             document.body.removeChild(a);
                             URL.revokeObjectURL(url);*/
                             blobReport.text().then(texto => {
+                                window.report = texto;
                                     const textarea = document.getElementById("textShow");
                                     if (textarea) {
                                         textarea.value = texto;

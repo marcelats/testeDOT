@@ -32,6 +32,7 @@ function($, lightBoxManager, cons, JSZip, jsonManager) {
                     const textoAtual = textarea.value;
                     const blobCode = new Blob([textoAtual], { type: "text/plain" });
                     window.codeBlob = blobCode;
+                    
                     lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
                 } else {
                     console.error("Textarea não encontrado.");
@@ -170,6 +171,7 @@ function($, lightBoxManager, cons, JSZip, jsonManager) {
                                         
                                         const blobCode = new Blob([texto], { type: "text/plain" });
                                         window.codeBlob = blobCode;
+                                        window.code = texto;
                                     } else {
                                         console.error("Textarea ainda não foi carregado.");
                                     }
@@ -192,7 +194,7 @@ function($, lightBoxManager, cons, JSZip, jsonManager) {
                                         textarea.value = conteudoTexto;
                                         const blobCode = new Blob([textarea.value], { type: "text/plain" });
                                         window.codeBlob = blobCode;
-
+                                        window.code = conteudoTexto;
                                     } else {
                                         console.error("Textarea ainda não foi carregado.");
                                     }
@@ -226,6 +228,7 @@ function($, lightBoxManager, cons, JSZip, jsonManager) {
                                         
                                         const blobCode = new Blob([texto], { type: "text/plain" });
                                         window.codeBlob = blobCode;
+                                        window.code = texto;
                                     } else {
                                         console.error("Textarea ainda não foi carregado.");
                                     }

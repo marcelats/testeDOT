@@ -25,6 +25,7 @@ function($, jsonManager) {
         },
         execute: function () {
             preencherSelect(document.getElementById("service_center"));
+            
             console.log("execute do arrival");
             console.log("jsonManager.getGraph().arrivals");
             console.log(jsonManager.getGraph().arrivals);
@@ -194,6 +195,13 @@ function($, jsonManager) {
                     option.textContent = opcao.text;
                     select.appendChild(option);
                 });
+                const $sel = $("#service_center");
+                    
+                    try {
+                      $sel.selectmenu("refresh");
+                    } catch (e) {
+                      $sel.trigger("change");
+                    }
             }
             function exibirAtual() {
                 if (jsonManager.getGraph().arrivals.length === 0) {
@@ -213,7 +221,7 @@ function($, jsonManager) {
                 if (jsonManager.getGraph().arrivalIndex >= 0 && jsonManager.getGraph().arrivalIndex < jsonManager.getGraph().arrivals.length) {
                     const item = jsonManager.getGraph().arrivals[jsonManager.getGraph().arrivalIndex];
                     console.log(`Exibindo item ${jsonManager.getGraph().arrivalIndex + 1} de ${jsonManager.getGraph().arrivals.length}`);
-                    console.log(`numberClients: ${item.numberClients}, arrivalTime: ${item.arrivalTime}, serviceCenter: ${item.serviceCenter}`);
+                    console.log(`numberClients: ${item.value_numberClients}, arrivalTime: ${item.value_arrivalTime}, serviceCenter: ${item.serviceCenter}`);
                     document.getElementById("number_clients").value = item.value_numberClients;
                     document.getElementById("arrival_time").value = item.value_arrivalTime;
                     // jQuery

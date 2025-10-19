@@ -18,6 +18,9 @@ define(["JsonManager", "Cons", "LightBoxManager", "Probabilities"],
                 $(document).on("click", "#btCancel", function() {
                     propertiesArea.ctrl("cancel");
                 });
+                $(document).on("click", "#ms_btCancel", function() {
+                    propertiesArea.ctrl("cancel");
+                });
                 /*$(document).on("click", "#prob-btSubmit", function() {
                       
                 
@@ -146,7 +149,7 @@ define(["JsonManager", "Cons", "LightBoxManager", "Probabilities"],
                 }
                 /* Invoked from within propertiesArea div. */
                 else {
-                    
+                    if (element === "cancel") {closeDiv(element);}
 
                     if (element === "submit") {
                         var callerId = $("#" + cons.HIDDEN_FIELD_ID).val();
