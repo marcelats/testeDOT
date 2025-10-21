@@ -701,7 +701,7 @@ else codename = filename + "_" + i;
                             $.ajax({
                                 url: 'qnetwork?cmd=save',
                                 type: 'POST',
-                                data: { filename: filename, graphJson: jsonManager.stringifyGraph(), 
+                                data: { filename: filename + "_" + i, graphJson: jsonManager.stringifyGraph(), 
                                     gv_file: window.gv, code_file: window.code, 
                                     report_file: window.report, report_name: reportname,
                                     code_name: codename},
