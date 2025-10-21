@@ -45,7 +45,7 @@ public class SaveGraph extends HttpServlet implements Command {
 
                 em.createNativeQuery(
                     "INSERT INTO graphs (graph_name, graph_json, user_id, publicGraph, gv, code, report, report_name, code_name) " +
-                    "VALUES (:filename, :graphJson, :user, false, :gv, :code, :report, :report_name, :code_name"
+                    "VALUES (:filename, :graphJson, :user, false, :gv, :code, :report, :report_name, :code_name)"
                 )
                 .setParameter("filename", filename)
                 .setParameter("graphJson", graphJson)
