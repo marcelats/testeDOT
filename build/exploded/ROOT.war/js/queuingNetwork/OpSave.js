@@ -44,6 +44,7 @@ define(["jquery", "LightBoxManager", "JsonManager", "Cons", "OpOpen"],
                         } 
                         else {
                             jsonManager.setName(filename);
+                            window.langSelecionada = document.getElementById("opParam_library").value;
                             console.log(filename + "_" + window.langSelecionada + ".txt");
                             console.log(jsonManager.stringifyGraph());
                             var codename;

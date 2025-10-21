@@ -16,7 +16,7 @@ function($, lightBoxManager, cons, JSZip, jsonManager) {
             btn.style.opacity = '0.3';
             btn.style.pointerEvents = 'none';
             document.querySelector("#opParam_library")?.addEventListener("change", function () {
-                window.langSelecionado = this.value;
+                window.langSelecionada = this.value;
             });
             window.addEventListener("genClicou", () => {
                 btn.style.opacity = '1';
