@@ -67,7 +67,7 @@ else codename = filename;
                                 type: 'POST',
                                 data: { filename: filename, graphJson: jsonManager.stringifyGraph(), 
                                     gv_file: window.gv, code_file: window.code, 
-                                    report_file: window.report, report_name: filename + "_" + window.langSelecionada + ".txt",
+                                    report_file: window.report, report_name: reportname,
                                     code_name: codename},
                                 success: function () {
                                     lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
