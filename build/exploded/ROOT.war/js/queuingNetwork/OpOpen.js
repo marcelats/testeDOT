@@ -155,7 +155,7 @@ define(["jquery","jquery-ui", "LightBoxManager", "JsonManager", "OpNew", "Utils"
                             re = new RegExp(cons.REG_EXP_FILENAME),
                             author = $("#opOpen-author").val();
                         if (filename.match(re) === null) {
-                            alert("You need enter a valid filename.");
+                            alert("You need to enter a valid filename.");
                         }
                         else if (author.match(re) === null) {
                             alert("You need to enter a valid author.");
@@ -679,25 +679,49 @@ $dlg.closest('.ui-dialog')
         }
         
         function saveAs(filename, i){
-            if(i!==0)jsonManager.setName(filename + "_" + i);
-            $.ajax({
-                url: "qnetwork?cmd=save",
-                type: "POST",
-                data: "graphJson=" + jsonManager.stringifyGraph(),
-                async: false,
-                success: function() {
-                    lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
-                    jsonManager.setSaved(true);
+ 
+                            if(i!==0)jsonManager.setName(filename + "_" + i);
 
-                    if(i === 0) document.title = "ASDA - " + filename;
+                            var codename;
+                            if(window.langSelecionada === "Python") codename = filename + "_" + i + ".py";
+else if (window.langSelecionada === "Java") codename = filename + "_" + i + ": Controle.java";
+else if (window.langSelecionada === "R") codename = filename + "_" + i + ".r";
+else if (window.langSelecionada === "C SMPL" || window.langSelecionada === "C SMPLX") codename = filename + "_" + i + ".c";
+else codename = filename + "_" + i;
+console.log(codename);
+var reportname;
+                            if(window.langSelecionada === "Python") reportname = filename + "_" + i + "_Python.txt";
+else if (window.langSelecionada === "Java") reportname = filename + "_" + i + "_Java.txt";
+else if (window.langSelecionada === "R") reportname = filename + "_" + i + "_R.txt";
+else if (window.langSelecionada === "C SMPL") reportname = filename + "_" + i + "_C_SMPL.txt";
+else if (window.langSelecionada === "C SMPLX") reportname = filename + "_" + i + "_C_SMPLX.txt";
+else codename = filename + "_" + i;
+
+
+                            $.ajax({
+                                url: 'qnetwork?cmd=verify',
+                                type: 'POST',
+                                data: { filename: filename, graphJson: jsonManager.stringifyGraph(), 
+                                    gv_file: window.gv, code_file: window.code, 
+                                    report_file: window.report, report_name: reportname,
+                                    code_name: codename},
+                                success: function () {
+                                    lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
+
+                                    jsonManager.setSaved(true);
+
+                                    if(i === 0) document.title = "ASDA - " + filename;
                     else document.title = "ASDA - " + filename + "_" + i;
                     return;
-                },
-                error: function() {
-                    saveAs(filename, i+1);
-                    return;
-                }
-            });
+                                },
+                                error: function (err) {
+                                    saveAs(filename, i+1);
+                                }
+                            });
+                        
+            
+            
+            
         }
         return OpOpen;
     }
