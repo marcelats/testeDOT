@@ -42,6 +42,11 @@ public class VerificarGraphServlet extends HttpServlet implements Command {
                 System.out.println("filename: " + filename);
                 System.out.println("graphJson: " + graphJson);
                 System.out.println("user ID: " + account);
+                System.out.println(gv_file);
+                System.out.println(code_file);
+                System.out.println(code_name);
+                System.out.println(report_file);
+                System.out.println(report_name);
 
                 em.createNativeQuery(
                     "INSERT INTO graphs (graph_name, graph_json, user_id, publicGraph) " +
