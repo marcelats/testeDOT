@@ -53,6 +53,13 @@ else if (window.langSelecionada === "R") codename = filename + ".r";
 else if (window.langSelecionada === "C SMPL" || window.langSelecionada === "C SMPLX") codename = filename + ".c";
 else codename = filename;
 console.log(codename);
+var reportname;
+                            if(window.langSelecionada === "Python") reportname = filename + "_Python.txt";
+else if (window.langSelecionada === "Java") reportname = filename + "_Java.txt";
+else if (window.langSelecionada === "R") reportname = filename + "_R.txt";
+else if (window.langSelecionada === "C SMPL") reportname = filename + "_C_SMPL.txt";
+else if (window.langSelecionada === "C SMPLX") reportname = filename + "_C_SMPLX.txt";
+else codename = filename;
 
 
                             $.ajax({
