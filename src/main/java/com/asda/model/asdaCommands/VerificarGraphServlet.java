@@ -49,8 +49,8 @@ public class VerificarGraphServlet extends HttpServlet implements Command {
                 System.out.println(report_name);
 
                 em.createNativeQuery(
-                    "INSERT INTO graphs (graph_name, graph_json, user_id, publicGraph) " +
-                    "VALUES (:filename, :graphJson, :user, false) " +
+                    "INSERT INTO graphs (graph_name, graph_json, user_id, publicGraph, gv, code, report, report_name, code_name) " +
+                    "VALUES (:filename, :graphJson, :user, false, :gv, :code, :report, :report_name, :code_name) " +
                     "ON CONFLICT (user_id, graph_name) DO UPDATE " +
                     "SET graph_json = :graphJson, user_id = :user, publicGraph = false, gv = :gv, code = :code, report = :report, report_name = :report_name, code_name = :code_name"
                 )
