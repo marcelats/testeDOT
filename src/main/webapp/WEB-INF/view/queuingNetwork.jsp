@@ -23,8 +23,6 @@
 
         <script data-main="js/queuingNetwork/main.js" src="js/libs/require.js"></script>
         <script src="js/queuingNetwork/require.cfg.js"></script>
-        <script src="js/libs/jquery-1.10.2.js"></script>
-        <script src="js/libs/jquery-ui-1.10.4.custom.js"></script>
     </head>
 
     <body>
