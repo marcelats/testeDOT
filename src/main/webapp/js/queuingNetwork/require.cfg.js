@@ -20,8 +20,8 @@ require.config({
 		"jquery-validate": ["jquery"],
 		"jquery-form": ["jquery"],
 		"jsPlumb": {
-			deps: ["jquery", "jquery-ui"]//,
-			//exports: "jsPlumb"
+			deps: ["jquery", "jquery-ui"],
+			exports: "jsPlumb"
 		}
                 
 	}

@@ -35,7 +35,7 @@
 
                 <div class="fieldRow">
                     <!--<input id="opParam_execTimeOp" type="radio" name="modeltype" value="execTime">-->
-                    <label for="opParam_execTimeOp">Execution time</label>
+                    <label for="opParam_execTime">Execution time</label>
                     <input id="opParam_execTime" type="text" class="inputText small" >
                 </div><br>
 
