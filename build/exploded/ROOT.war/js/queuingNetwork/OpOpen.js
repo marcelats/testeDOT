@@ -697,11 +697,12 @@ else if (window.langSelecionada === "C SMPL") reportname = filename + "_" + i + 
 else if (window.langSelecionada === "C SMPLX") reportname = filename + "_" + i + "_C_SMPLX.txt";
 else codename = filename + "_" + i;
 
-
+var newfilename = filename;
+if (i!==0)  newfilename = filename + "_" + i;
                             $.ajax({
                                 url: 'qnetwork?cmd=save',
                                 type: 'POST',
-                                data: { filename: filename + "_" + i, graphJson: jsonManager.stringifyGraph(), 
+                                data: { filename: newfilename, graphJson: jsonManager.stringifyGraph(), 
                                     gv_file: window.gv, code_file: window.code, 
                                     report_file: window.report, report_name: reportname,
                                     code_name: codename},
@@ -711,7 +712,7 @@ else codename = filename + "_" + i;
                                     jsonManager.setSaved(true);
 
                                     if(i === 0) document.title = "ASDA - " + filename;
-                    else document.title = "ASDA - " + filename + "_" + i;
+                    else document.title = "ASDA - " + newfilename;
                     return;
                                 },
                                 error: function (err) {
