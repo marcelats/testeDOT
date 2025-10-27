@@ -18,6 +18,11 @@ define(["jquery", "jsPlumb", "IdManager"],
             this.n_sources = 0;
             this.n_servers = 0;
             this.n_outs = 0;
+            this.gv = "";
+            this.code_name = "";
+            this.code = "";
+            this.report_name = "";
+            this.report = "";
         }
 
         function Node(id, type, x, y) {

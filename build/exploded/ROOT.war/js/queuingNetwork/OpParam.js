@@ -52,11 +52,20 @@ define(["jquery", "jquery-ui","domReady!", "LightBoxManager", "JsonManager", "Ar
                     
                     if (action === "submit") {
                         
+const opParam_library = document.getElementById("opParam_library");      
+                        if(opParam_library)  {
+                            //window.langSelecionada = opParam_library.value;
+                          }
+
                         const input_batchSize = document.getElementById("opParam_batchSize");      
-                        if(input_batchSize && !input_batchSize.disabled)  if (isNaN(input_batchSize.value) || input_batchSize.value < 0) {
-                            alert("Batch size cannot be negative and must be a number.");
-                            return;
-                          } 
+                        if(input_batchSize && !input_batchSize.disabled) { 
+                            if (isNaN(input_batchSize.value) || input_batchSize.value < 0) {
+                                alert("Batch size cannot be negative and must be a number.");
+                                return;
+                            } else {
+                                //window.batchSize = input_batchSize.value;
+                            }
+                        }
                         
                         const input_seed = document.getElementById("opParam_seed");
 
@@ -68,20 +77,29 @@ define(["jquery", "jquery-ui","domReady!", "LightBoxManager", "JsonManager", "Ar
                             alert("Seed must be between 0 and 15.");
                             return;
                           } 
+
+                          //window.seed = valor;
                         
                         const input_execTime = document.getElementById("opParam_execTime");      
-                        if(input_execTime && !input_execTime.disabled)  if (isNaN(input_execTime.value) || input_execTime.value < 0) {
+                        if(input_execTime && !input_execTime.disabled) { if (isNaN(input_execTime.value) || input_execTime.value < 0) {
                             alert("Execution time cannot be negative and must be a number.");
                             return;
-                          } 
+                          }else{//window.execTime = input_execTime.value;
+                            } }
                           
-                        const input_maxEntities = document.getElementById("opParam_maxEntities");      
+                        /*const input_maxEntities = document.getElementById("opParam_maxEntities");      
                         if(input_maxEntities && !input_maxEntities.disabled)  if (isNaN(input_maxEntities.value) || input_maxEntities.value < 0) {
                             alert("Max number of entities cannot be negative and must be a number.");
                             return;
-                          } 
+                          } */
                         
-                        
+                        const boolean_warmuptime = document.getElementById("opParam_execTime");      
+                        if(input_execTime && !input_execTime.disabled) { if (isNaN(input_execTime.value) || input_execTime.value < 0) {
+                            alert("Execution time cannot be negative and must be a number.");
+                            return;
+                          }else{
+                            //window.execTime = input_execTime.value;
+                        } 
 
                         
                         var parameters = $("#opParamBox").values();
@@ -94,7 +112,7 @@ define(["jquery", "jquery-ui","domReady!", "LightBoxManager", "JsonManager", "Ar
                         btnExecute.style.opacity = '0.3';
                         btnExecute.style.pointerEvents = 'none';
                         window.flag = false;
-                    }
+                    }}
                     
                     if (action === "submitArrival") {
                         lightBoxManager.closeBox("shadow2","boxArrival");

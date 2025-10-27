@@ -20,10 +20,11 @@ define(["jquery", "JsonManager", "LightBoxManager", "Cons"],
                 
                     // Callback: textarea carregado
                     console.log("passando pelo execute do opgen");
-                const opParam = document.getElementById("opParam_library");
-                const selectedValue = opParam?.value;
-                console.log(selectedValue);
-                if (selectedValue === 'R' || selectedValue === 'Java' || selectedValue === 'Python')
+                //const opParam = document.getElementById("opParam_library");
+                //const selectedValue = opParam?.value;
+                //console.log(selectedValue);
+                //window.langSelecionada = selectedValue;
+                if (jsonManager.getGraph().parameters.opParam_library === 'R' || jsonManager.getGraph().parameters.opParam_library === 'Java' || jsonManager.getGraph().parameters.opParam_library === 'Python')
                 {
                     const mapNodes = jsonManager.getGraph().mapNodes;
                     for (let key in mapNodes) 
@@ -36,16 +37,32 @@ define(["jquery", "JsonManager", "LightBoxManager", "Cons"],
                     }  
                 }
                 //var count = 0;
-                var parameters = jsonManager.getGraphParameters();
-                var numCycles = parameters["opParam_numCycles"] || 0;
-                var batchSize = parameters["opParam_batchSize"] || 0;
+                //var parameters = jsonManager.getGraphParameters();
+                //var numCycles = parameters["opParam_numCycles"] || 0;
+                var batchSize = jsonManager.getGraph().parameters.opParam_batchSize || 0;
                 let content;
-                var definedValue = parameters["opParam_definedValue"] || 0;
-                var seed = parameters["opParam_seed"] || 0;
-                const execTimeOp = document.getElementById("opParam_execTimeOp");
+                var definedValue = jsonManager.getGraph().parameters.opParam_definedValue || 0;
+                var seed = jsonManager.getGraph().parameters.opParam_seed || 1;
+
+                /*const defined = document.getElementById("opParam_timeDefined");
+    const automatic = document.getElementById("opParam_timeAutomatic");
+    if (defined.checked) {
+      warmupTime = "True";
+    } else if (automatic.checked) {
+      warmupTime = "False";
+    }*/
+   //tem que ver como isso fica escrito no graph.parameters, essa e a utima coisa que falta, depois so testar, depois questionarios
+   //opParam_timeAutomatic":"on"
+   if (opParam_timeDefined == "on") {
+      warmupTime = "True";
+    } else if (opParam_timeAutomatic == "on") {
+      warmupTime = "False";
+    }
+                //const execTimeOp = document.getElementById("opParam_execTimeOp");
                 //const maxEntitiesOp = document.getElementById("opParam_maxEntitiesOp");
-                var execTime = 0;
-                if(document.getElementById("opParam_execTime")) execTime = document.getElementById("opParam_execTime").value.trim();
+                //var execTime = 0;
+                //if(document.getElementById("opParam_execTime")) execTime = document.getElementById("opParam_execTime").value.trim();
+                //else console.log("opParam_execTime nao encontrado");
                 var maxEntities = 0;
                 //if(document.getElementById("opParam_maxEntities")) maxEntities = document.getElementById("opParam_maxEntities").value.trim();
 
@@ -123,11 +140,11 @@ define(["jquery", "JsonManager", "LightBoxManager", "Cons"],
 
 
                 //if (execTimeOp.checked) {
-                    if (execTime === "" || Number(execTime) === 0) {
+                    if (jsonManager.getGraph().parameters.opParam_execTime === "" || Number(jsonManager.getGraph().parameters.opParam_execTime) === 0) {
                         alert("Execution time must be different from zero");
                         return;
                     }
-                    content = `digraph ${jsonManager.getGraph().name} {\n    comment=" ${execTime} ${numCycles} ${batchSize} 0 aberto ${warmupTime} ${definedValue} ${seed} " rankdir=LR\n`;
+                    content = `digraph ${jsonManager.getGraph().name} {\n    comment=" ${jsonManager.getGraph().parameters.opParam_execTime} 0 ${batchSize} 0 aberto ${warmupTime} ${definedValue} ${seed} " rankdir=LR\n`;
                 //}
 
                 /*if (maxEntitiesOp.checked) {
@@ -331,7 +348,7 @@ define(["jquery", "JsonManager", "LightBoxManager", "Cons"],
                         else content += `    ${node.id} -> ${targetId} [comment=1]\n`;
                     });
                 });
-                if(selectedValue === 'C SMPL' || selectedValue === 'C SMPLX' || selectedValue === 'C ParSMPL'|| selectedValue === 'C SIMPACK' || selectedValue === 'C SIMPACK2')
+                if(jsonManager.getGraph().parameters.opParam_library === 'C SMPL' || jsonManager.getGraph().parameters.opParam_library === 'C SMPLX' || jsonManager.getGraph().parameters.opParam_library === 'C ParSMPL'|| jsonManager.getGraph().parameters.opParam_library === 'C SIMPACK' || jsonManager.getGraph().parameters.opParam_library === 'C SIMPACK2')
                 {
                     const arrivals = jsonManager.getGraph().arrivals;
                     if (arrivals.length === 0) 
@@ -363,7 +380,7 @@ console.log(typeof arrivals); // true se for array, false se não for
                     window.graphBlob = blob;
                      
                     blob.text().then(texto => {
-                        window.gv = texto;
+                        jsonManager.getGraph().gv = texto;
                         /*const textarea = document.getElementById("textShow");
                         console.log("Tentando pegar textShow:", document.getElementById("textShow"));
 console.log("HTML do body:", document.body.innerHTML.includes("textShow"));

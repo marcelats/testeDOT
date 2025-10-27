@@ -15,9 +15,9 @@ function($, lightBoxManager, cons, JSZip, jsonManager) {
             const btn = document.getElementById("opCode");
             btn.style.opacity = '0.3';
             btn.style.pointerEvents = 'none';
-            document.querySelector("#opParam_library")?.addEventListener("change", function () {
+            /*document.querySelector("#opParam_library")?.addEventListener("change", function () {
                 window.langSelecionada = this.value;
-            });
+            });*/
             window.addEventListener("genClicou", () => {
                 btn.style.opacity = '1';
                 btn.style.pointerEvents = 'auto';
@@ -48,28 +48,29 @@ function($, lightBoxManager, cons, JSZip, jsonManager) {
                     const url = URL.createObjectURL(blobCode);
                     const a = document.createElement("a");
                     a.href = url;
+                    
                     /*if(window.langSelecionada === 'Python' || window.langSelecionada === 'R' || !window.langSelecionada)
                     { 
                         const a = document.createElement("a");
                         a.href = url;
-                    }*/
-                    if(window.langSelecionada === 'Python'|| !window.langSelecionada)
+                    }
+                    if(jsonManager.getGraph().parameters.opParam_library === 'Python'|| !jsonManager.getGraph().parameters.opParam_library)
                     {
                         a.download = jsonManager.getGraph().name + ".py";
                     }
-                    else if(window.langSelecionada === 'R')
+                    else if(jsonManager.getGraph().parameters.opParam_library === 'R')
                     {
                         a.download = jsonManager.getGraph().name + ".r";
                     }
-                     else if(window.langSelecionada === 'C SMPL' || window.langSelecionada === 'C SMPLX' || window.langSelecionada === 'C ParSMPL' || window.langSelecionada === 'C SIMPACK')
+                     else if(jsonManager.getGraph().parameters.opParam_library === 'C SMPL' || jsonManager.getGraph().parameters.opParam_library === 'C SMPLX' || jsonManager.getGraph().parameters.opParam_library === 'C ParSMPL' || jsonManager.getGraph().parameters.opParam_library === 'C SIMPACK')
                     {
                         a.download = jsonManager.getGraph().name + ".c";
                     }
-                    /*else if (window.langSelecionada === 'C SIMPACK2')
+                    else if (window.langSelecionada === 'C SIMPACK2')
                     {
                         a.download = "code.cpp";
                     }*/
-                    else 
+                    if(jsonManager.getGraph().parameters.opParam_library === 'Java')
                     {
                         const novoZip = new JSZip();
                         window.listaArquivos.forEach(arquivo => {
@@ -95,6 +96,7 @@ function($, lightBoxManager, cons, JSZip, jsonManager) {
                             console.error("Erro ao gerar o zip:", err);
                         }); 
                     } 
+                    else {a.download = jsonManager.getGraph().code_name;}
                     
                     document.body.appendChild(a);
                     a.click();
@@ -117,9 +119,9 @@ function($, lightBoxManager, cons, JSZip, jsonManager) {
                         const formData = new FormData();
                         formData.append("arquivo", blobGraph, jsonManager.getGraph().name + ".gv");
                         const opParam = document.querySelector("#opParam_library");
-                        if(window.langSelecionada)formData.append('lang', window.langSelecionada);
+                        if(jsonManager.getGraph().parameters.opParam_library)formData.append('lang', jsonManager.getGraph().parameters.opParam_library);
                         else formData.append('lang', 'Python');
-                        console.log(window.langSelecionada);
+                        console.log(jsonManager.getGraph().parameters.opParam_library);
                         fetch("/ROOT/api/enviar", {
                             method: "POST",
                             body: formData
@@ -161,9 +163,9 @@ function($, lightBoxManager, cons, JSZip, jsonManager) {
                             URL.revokeObjectURL(url);*/
                             
                             
-                            if(window.langSelecionada === 'Python' || window.langSelecionada === 'R' || !window.langSelecionada)
+                            if(jsonManager.getGraph().parameters.opParam_library === 'Python' || jsonManager.getGraph().parameters.opParam_library === 'R' || !jsonManager.getGraph().parameters.opParam_library)
                             {
-                                console.log("!window.langSelecionada");
+                                //console.log("!document.getElementById("opParam_library").value");
                                 blobCode.text().then(texto => {
                                     const textarea = document.getElementById("textEditor");
                                     if (textarea) {
@@ -171,13 +173,13 @@ function($, lightBoxManager, cons, JSZip, jsonManager) {
                                         
                                         const blobCode = new Blob([texto], { type: "text/plain" });
                                         window.codeBlob = blobCode;
-                                        window.code = texto;
+                                        jsonManager.getGraph().code = texto;
                                     } else {
                                         console.error("Textarea ainda não foi carregado.");
                                     }
                                 });
                             }
-                            else if(window.langSelecionada === 'Java')
+                            else if(jsonManager.getGraph().parameters.opParam_library === 'Java')
                             {
                                 JSZip.loadAsync(blobCode).then(zip => {
                                 // Encontra o arquivo Controle.java (case-sensitive!)
@@ -194,7 +196,7 @@ function($, lightBoxManager, cons, JSZip, jsonManager) {
                                         textarea.value = conteudoTexto;
                                         const blobCode = new Blob([textarea.value], { type: "text/plain" });
                                         window.codeBlob = blobCode;
-                                        window.code = conteudoTexto;
+                                        jsonManager.getGraph().code = conteudoTexto;
                                     } else {
                                         console.error("Textarea ainda não foi carregado.");
                                     }
@@ -228,7 +230,7 @@ function($, lightBoxManager, cons, JSZip, jsonManager) {
                                         
                                         const blobCode = new Blob([texto], { type: "text/plain" });
                                         window.codeBlob = blobCode;
-                                        window.code = texto;
+                                        jsonManager.getGraph().code = texto;
                                     } else {
                                         console.error("Textarea ainda não foi carregado.");
                                     }

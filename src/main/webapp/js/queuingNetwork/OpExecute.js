@@ -25,6 +25,13 @@ function($, JSZip, jsonManager, lightBoxManager, cons) {
             $(document).on("click", "#showText-btClose", function() {
                 lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
             });
+/*var reportname;
+                            if(jsonManager.getGraph().parameters.opParam_library === "Python") reportname = jsonManager.getGraph().name + "_Python.txt";
+else if (jsonManager.getGraph().parameters.opParam_library === "Java") reportname = jsonManager.getGraph().name + "_Java.txt";
+else if (jsonManager.getGraph().parameters.opParam_library === "R") reportname = jsonManager.getGraph().name + "_R.txt";
+else if (jsonManager.getGraph().parameters.opParam_library === "C SMPL") reportname = jsonManager.getGraph().name + "_C_SMPL.txt";
+else if (jsonManager.getGraph().parameters.opParam_library === "C SMPLX") reportname = jsonManager.getGraph().name + "_C_SMPLX.txt";
+else reportname = jsonManager.getGraph().name;*/
 
             $(document).on("click", "#showText-download", function() {
                 const textarea = document.getElementById("textShow");
@@ -36,7 +43,7 @@ function($, JSZip, jsonManager, lightBoxManager, cons) {
                     a.href = url;
                     a.download = !window.flag
                         ? jsonManager.getGraph().name + ".gv"
-                        : jsonManager.getGraph().name + "_" + window.langSelecionado + ".txt";
+                        : jsonManager.getGraph().report_name;
                     document.body.appendChild(a);
                     a.click();
                     document.body.removeChild(a);
@@ -54,11 +61,11 @@ function($, JSZip, jsonManager, lightBoxManager, cons) {
                     const blobCode = window.codeBlob;
                     if (blobCode) {
                         const formData = new FormData();
-                        formData.append('lang', window.langSelecionada);
+                        formData.append('lang', jsonManager.getGraph().parameters.opParam_library);
 
-                        if (window.langSelecionada === 'R') {
+                        if (jsonManager.getGraph().parameters.opParam_library === 'R') {
                             formData.append("arquivo", blobCode, jsonManager.getGraph().name + ".r");
-                        } else if (window.langSelecionada === 'Java') {
+                        } else if (jsonManager.getGraph().parameters.opParam_library === 'Java') {
                             const novoZip = new JSZip();
 
                             window.listaArquivos.forEach(arquivo => {
@@ -76,7 +83,7 @@ function($, JSZip, jsonManager, lightBoxManager, cons) {
                             } catch (err) {
                                 console.error("Erro ao gerar ou enviar o zip:", err);
                             }
-                        } else if (window.langSelecionada === 'C SMPL' || window.langSelecionada === 'C SMPLX') {
+                        } else if (jsonManager.getGraph().parameters.opParam_library === 'C SMPL' || jsonManager.getGraph().parameters.opParam_library === 'C SMPLX') {
                             formData.append("arquivo", blobCode, jsonManager.getGraph().name + ".c");
                         } else {
                             formData.append("arquivo", blobCode, jsonManager.getGraph().name + ".py");
@@ -98,7 +105,7 @@ function($, JSZip, jsonManager, lightBoxManager, cons) {
                             document.body.removeChild(a);
                             URL.revokeObjectURL(url);*/
                             blobReport.text().then(texto => {
-                                window.report = texto;
+                                jsonManager.getGraph().report = texto;
                                     const textarea = document.getElementById("textShow");
                                     if (textarea) {
                                         textarea.value = texto;

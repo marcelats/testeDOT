@@ -616,12 +616,12 @@ $dlg.closest('.ui-dialog')
                 success: function(data) {
                     lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
                     
-                    window.opcoes = [];
-                    window.arrivals = [];
-                    window.arrivalIndex = 0;
+                    //window.opcoes = [];
+                    //window.arrivals = [];
+                    //window.arrivalIndex = 0;
                     jsonManager.setGraph(data);
                     jsonManager.setSaved(true);
-                    window.langSelecionada = jsonManager.getGraph().parameters.opParam_library;
+                    //window.langSelecionada = jsonManager.getGraph().parameters.opParam_library;
                     if (data.name !== "") {
                         document.title = "ASDA - " + data.name;
                     }
@@ -682,20 +682,32 @@ $dlg.closest('.ui-dialog')
  
                             if(i!==0)jsonManager.setName(filename + "_" + i);
 
-                            var codename;
-                            if(window.langSelecionada === "Python") codename = filename + "_" + i + ".py";
-else if (window.langSelecionada === "Java") codename = filename + "_" + i + ": Controle.java";
-else if (window.langSelecionada === "R") codename = filename + "_" + i + ".r";
-else if (window.langSelecionada === "C SMPL" || window.langSelecionada === "C SMPLX") codename = filename + "_" + i + ".c";
-else codename = filename + "_" + i;
-console.log(codename);
-var reportname;
-                            if(window.langSelecionada === "Python") reportname = filename + "_" + i + "_Python.txt";
-else if (window.langSelecionada === "Java") reportname = filename + "_" + i + "_Java.txt";
-else if (window.langSelecionada === "R") reportname = filename + "_" + i + "_R.txt";
-else if (window.langSelecionada === "C SMPL") reportname = filename + "_" + i + "_C_SMPL.txt";
-else if (window.langSelecionada === "C SMPLX") reportname = filename + "_" + i + "_C_SMPLX.txt";
-else codename = filename + "_" + i;
+                            //var codename;
+                            if(jsonManager.getGraph().parameters.opParam_library === "Python") {
+                                jsonManager.getGraph().code_name = filename + "_" + i + ".py";
+                                jsonManager.getGraph().report_name = filename + "_" + i + "_Python.txt";
+                            }
+else if (jsonManager.getGraph().parameters.opParam_library === "Java") {
+    jsonManager.getGraph().code_name = filename + "_" + i + ": Controle.java";
+    jsonManager.getGraph().report_name = filename + "_" + i + "_Java.txt";
+}
+else if (jsonManager.getGraph().parameters.opParam_library === "R") {
+    jsonManager.getGraph().code_name = filename + "_" + i + ".r";
+    jsonManager.getGraph().report_name = filename + "_" + i + "_R.txt";
+}
+else if (jsonManager.getGraph().parameters.opParam_library === "C SMPL"){
+    jsonManager.getGraph().code_name = filename + "_" + i + ".c";
+    jsonManager.getGraph().report_name = filename + "_" + i + "_C_SMPL.txt";
+} 
+else if ( jsonManager.getGraph().parameters.opParam_library === "C SMPLX") {
+    jsonManager.getGraph().code_name = filename + "_" + i + ".c";
+    jsonManager.getGraph().report_name = filename + "_" + i + "_C_SMPLX.txt";
+}
+else {jsonManager.getGraph().code_name = filename + "_" + i;jsonManager.getGraph().report_name = filename + "_" + i;}
+//console.log(codename);
+//var reportname;
+                   
+
 
 var newfilename = filename;
 if (i!==0)  newfilename = filename + "_" + i;
@@ -703,9 +715,9 @@ if (i!==0)  newfilename = filename + "_" + i;
                                 url: 'qnetwork?cmd=save',
                                 type: 'POST',
                                 data: { filename: newfilename, graphJson: jsonManager.stringifyGraph(), 
-                                    gv_file: window.gv, code_file: window.code, 
-                                    report_file: window.report, report_name: reportname,
-                                    code_name: codename},
+                                    gv_file: jsonManager.getGraph().gv, code_file: jsonManager.getGraph().code, 
+                                    report_file: jsonManager.getGraph().report, report_name: jsonManager.getGraph().report_name,
+                                    code_name: jsonManager.getGraph().code_name},
                                 success: function () {
                                     lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
 

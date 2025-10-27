@@ -60,7 +60,7 @@
 
             <input id ="chegada-bt" type="button" value="Arrival" class="button">
 
-            <input id ="opParam-btSubmit" type="button" value="Ok" class="button" onclick="checkModelType()">
+            <input id ="opParam-btSubmit" type="button" value="Ok" class="button"><!-- onclick="checkModelType()">-->
 
 
         </form>

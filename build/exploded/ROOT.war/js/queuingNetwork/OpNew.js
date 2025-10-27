@@ -48,9 +48,9 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpSave", "Cons", "IdManager
 
                         } else if (action === "no") {
                             jsonManager.clearGraph();
-                            window.gv = "";
-                            window.code = "";
-                            window.report = "";
+                            //window.gv = "";
+                            //window.code = "";
+                            //window.report = "";
                             jsonManager.setSaved(true);
                             $("#" + cons.DRAW_AREA).empty();
                             idManager.setStartCid(-1);
@@ -71,9 +71,9 @@ define(["jquery", "LightBoxManager", "JsonManager", "OpSave", "Cons", "IdManager
                     }
                 } else {
                     jsonManager.clearGraph();
-                    window.gv = "";
-                    window.code = "";
-                    window.report = "";
+                    //window.gv = "";
+                    //window.code = "";
+                    //window.report = "";
                     jsonManager.setSaved(true);
                     idManager.setStartCid(-1);
                     $("#" + cons.DRAW_AREA).empty();

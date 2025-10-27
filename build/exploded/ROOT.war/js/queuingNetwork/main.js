@@ -434,7 +434,7 @@ require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "El
         }
 
         function attachOpParamListener(opParam) {
-            if (opParam.dataset.listenerAttached === "true") return;
+            /*if (opParam.dataset.listenerAttached === "true") return;
 
             opParam.addEventListener("change", () => {
                 applyVisibilityLogic();
@@ -442,7 +442,7 @@ require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "El
                 window.langSelecionada = opParam.value;
             });
 
-            opParam.dataset.listenerAttached = "true";
+            opParam.dataset.listenerAttached = "true";*/
         }
   
         function attachSAListener(distribution) {
