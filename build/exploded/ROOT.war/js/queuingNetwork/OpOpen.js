@@ -173,7 +173,8 @@ define(["jquery","jquery-ui", "LightBoxManager", "JsonManager", "OpNew", "Utils"
                                     jsonManager.setGraph(data);
                                     jsonManager.setSaved(true);
                                     constructGraph(data);
-                                    saveAs(filename,0);       
+                                    saveAs(filename,0);      
+                                    $("#opParamBox").values(jsonManager.getGraphParameters());
                                 },
                                 error: function(xhr, thrownError) {
                                     var errorHeader = xhr.getResponseHeader('fot-error');
@@ -627,6 +628,7 @@ $dlg.closest('.ui-dialog')
                     }
                     constructGraph(data);
                     $("#opParamBox").values(jsonManager.getGraphParameters());
+                    
                 },
                 error: function(xhr, thrownError) {
                     var errorHeader = xhr.getResponseHeader('fot-error');
