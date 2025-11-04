@@ -287,3 +287,5 @@ fieldset {
   max-height: 60vh; /* ou um valor fixo, ex: 400px */
   overflow-y: auto;
 }
+
+.hidden-by-default { display: none !important; }

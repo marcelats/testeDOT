@@ -116,10 +116,24 @@ define(["jquery", "JsonManager", "LightBoxManager", "Cons"],
         return;
         }
     }
-
-
-
-
+    
+    
+    if (["Java", "Python"].includes(jsonManager.getGraph().parameters.opParam_library)) {
+    for (const node of Object.values(jsonManager.getGraph().mapNodes)) {
+        for (const key of [
+            "arrival_distribution",
+            "ms_arrival_distribution",
+            "server_distribution",
+            "multiServer_distribution"
+        ]) {
+            if (["HyperExponential", "Erlang"].includes(node.properties[key])) {
+                console.log("Distributions must be Exponential, Normal or Uniform");
+                return; // Sai da função inteira (para de verificar)
+            }
+        }
+    }
+}
+         
                 const invalidNodeExists = Object.entries(jsonManager.getGraph().mapNodes).some(([nodeId, node]) => {
                     if (node.type === "server" || node.type === "multiServer") {
                         const soma = Object.values(node.mapTargets)

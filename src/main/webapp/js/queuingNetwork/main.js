@@ -1,5 +1,5 @@
-require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "ElementManager", "JqueryPlugins", "Cons", "domReady!"],
-    function($, drawArea, propertiesArea, topOptions, activeTool, ElementManager, jqueryPlugins, cons) {
+require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "ElementManager", "JqueryPlugins", "Cons", "JsonManager", "domReady!"],
+    function($, drawArea, propertiesArea, topOptions, activeTool, ElementManager, jqueryPlugins, cons, jsonManager) {
         "use strict";
 
         $("#" + cons.CENTER).height(($(window).height() -
@@ -273,6 +273,23 @@ require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "El
                     }
                 }
             }
+            if(allowed.includes(selected)){Object.values(jsonManager.getGraph().mapNodes).forEach(node => {
+    const props = node.properties;
+    const campos = [
+        "arrival_distribution",
+        "ms_arrival_distribution",
+        "server_distribution",
+        "multiServer_distribution"
+    ];
+
+    campos.forEach(key => {
+        if (props[key] && ["HyperExponential", "Erlang"].includes(props[key])) {
+            props[key] = "Exponential";
+        }
+    });
+});
+
+}
             const arrival_sequence = document.getElementById("arrival_sequence");
             if (arrival_sequence) {
                 if(allowed.includes(selected)){          

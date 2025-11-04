@@ -44,6 +44,15 @@ else reportname = jsonManager.getGraph().name;*/
                     a.download = !window.flag
                         ? jsonManager.getGraph().name + ".gv"
                         : jsonManager.getGraph().report_name;
+                    document.addEventListener("DOMContentLoaded", function () {
+            const titleSpan = document.querySelector(".boxTitle");
+
+            if (window.flag === true) {
+                titleSpan.textContent = "Report File";
+            } else {
+                titleSpan.textContent = "Graph File";
+            }
+        });
                     document.body.appendChild(a);
                     a.click();
                     document.body.removeChild(a);
