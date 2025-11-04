@@ -21,15 +21,6 @@ function($, JSZip, jsonManager, lightBoxManager, cons) {
                 btn.style.pointerEvents = 'auto';
                 window.flag = true;
             });
-            document.addEventListener("DOMContentLoaded", function () {
-            const titleSpan = document.querySelector(".boxTitle");
-
-            if (window.flag === true) {
-                titleSpan.textContent = "Report File";
-            } else {
-                titleSpan.textContent = "Graph File";
-            }
-        });
             
             $(document).on("click", "#showText-btClose", function() {
                 lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
@@ -68,6 +59,13 @@ else reportname = jsonManager.getGraph().name;*/
             lightBoxManager.openBox(cons.SHADOWING, cons.BOX_CONTAINER,
                 "qnetwork?cmd=open-box&type=showText",
                 async function() {
+                    const titleSpan = document.querySelector(".boxTitle");
+
+            if (window.flag === true) {
+                titleSpan.textContent = "Report File";
+            } else {
+                titleSpan.textContent = "Graph File";
+            }
                     const blobCode = window.codeBlob;
                     if (blobCode) {
                         const formData = new FormData();
