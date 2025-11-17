@@ -1,0 +1,291 @@
+/* 
+    Document   : lightBox
+    Created on : 22/05/2014, 02:03:58
+    Author     : Felipe Osorio Thomé
+    Description:
+        Class styles for my light box.
+*/
+
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+
+.shadowing {
+    display: none;
+    position: fixed;
+    overflow: auto;
+    z-index: 9000;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255,255,255,.8);
+}
+
+.shadow2{
+    display: none;
+    position: fixed;
+    overflow: auto;
+    z-index: 9000;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255,255,255,.8);
+}
+
+.shadow3{
+    display: none;
+    position: fixed;
+    overflow: auto;
+    z-index: 9000;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255,255,255,0);
+}
+
+.box {
+    display: none;
+    position: relative;
+    overflow: auto;
+    padding: 5px;
+    background: #222;
+    
+    -webkit-box-shadow: 0 0 3px rgba(180,180,180,.5);
+    -moz-box-shadow: 0 0 3px rgba(180,180,180,.5);
+    box-shadow: 0 0 6px rgba(0,0,0,.9);
+}
+
+
+.boxContent {
+    width: 900px;
+    height: 600px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2000;
+}
+
+.boxContentTextEditor {
+    width: 900px;
+    height: 600px;
+    margin: 0 auto;
+}
+
+.ui-widget-overlay {
+    z-index: 100 !important;
+}
+
+
+.filesWindow{height: 400px;}
+
+
+.btCloseDiv {
+    text-align: center;
+    border: 1px solid #eee;
+    padding: 5px;
+    margin-bottom: 5px
+}
+
+.btCloseDiv img {
+    float: right;
+    width: 24px;
+    height: 24px;
+}
+
+.boxTitle {
+    font-size: 13px;
+    font-weight: 600;
+    margin-left: 30px;
+    margin-right: 30px;
+}
+
+#textEditor {
+    resize: both;              /* permite o redimensionamento manual */
+    overflow: auto;            /* adiciona scroll automático */
+    white-space: pre;          /* mantém os espaços e quebras de linha */
+    font-family: monospace;    /* fonte tipo código */
+    font-size: 14px;           /* tamanho confortável */
+    line-height: 1.4;          /* espaçamento entre linhas */
+}
+
+fieldset {
+  display: flex;
+  flex-direction: column; /* um item por linha */
+  gap: 10px;
+}
+
+.fieldRow {
+  display: flex;
+  justify-content: space-between; /* joga input pra direita */
+  align-items: center;
+}
+
+.file-item-open, .file-item-save {
+  display: inline-block;      /* Para respeitar padding/borda */
+  padding: 5px 10px;          /* Espaçamento interno */
+  margin: 4px 0;              /* Espaçamento entre os itens */
+  border: 1px solid #ccc;     /* Borda cinza clara */
+  border-radius: 8px;         /* Cantos arredondados */
+  background-color: #f9f9f9;  /* Fundo clarinho */
+  cursor: pointer;            /* Mãozinha para indicar clique */
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.file-item-open:hover, .file-item-save:hover {
+  background-color: #e6f0ff;  /* Fundo azul clarinho no hover */
+  border-color: #66a3ff;      /* Borda azul no hover */
+}
+
+.file-row-open {
+  display: grid;
+  grid-template-columns: 40% 20% 15% 25%; /* igual ao header */
+  padding: 5px;
+  align-items: center;
+
+  cursor: pointer; /* mãozinha */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  margin: 4px 0;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.file-row-open:hover {
+  background-color: #e6f0ff;
+  border-color: #66a3ff;
+}
+
+
+.no-titlebar .ui-dialog-titlebar {
+  display: none;
+}
+
+/* conteúdo do modal */
+.ui-dialog .ui-dialog-content {
+    background-color: #222;  /* fundo escuro */
+    color: #fff;             /* texto branco (opcional) */
+}
+
+/* barra de título */
+.ui-dialog .ui-dialog-titlebar {
+    background-color: #333 !important;
+    color: #fff !important;
+}
+/* Garante que a caixa de diálogo do jQuery UI tenha só o tamanho do conteúdo */
+.ui-dialog {
+    width: auto !important;
+    height: auto !important;
+    max-height: 90vh; /* não passa da altura da tela */
+    overflow: hidden; /* não deixa esticar */
+}
+
+/* O conteúdo interno não deve herdar 100% do body */
+.ui-dialog .ui-dialog-content {
+    width: auto !important;
+    height: auto !important;
+    overflow: auto;
+}
+
+.filesHeader, .file-row {
+    display: grid;
+    grid-template-columns: 40% 20% 15% 25%; /* ajuste conforme precisar */
+    padding: 5px;
+    align-items: center;
+}
+
+.file-col, .author-col, .privacy-col, .date-col, .file-item-open, .file-item-save, .file-author, .file-privacy, .file-date {
+    flex: 1;
+}
+
+
+.form-row {
+    margin-bottom: 8px;
+}
+
+.form-row label {
+    display: inline-block;
+    width: 100px; /* ajusta a largura fixa da coluna esquerda */
+}
+
+.form-row input {
+    width: 200px; /* ou o tamanho que você preferir */
+}
+
+.form-buttons {
+    margin: 12px 0;
+}
+
+#textEditor, #textShow {
+    width: 100%;
+    height: calc(100% - 57px);
+    box-sizing: border-box; /* evita interferência do jQuery UI */
+}
+
+.filesHeader {
+    font-weight: bold;
+    background: #f0f0f0;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.checkbox {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 1px solid #333;
+    border-radius: 3px;
+    text-align: center;
+    line-height: 16px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer; /* indica que pode clicar */
+    user-select: none; /* impede seleção de texto ao clicar */
+}
+.modal {
+    display: none; 
+    position: fixed;
+    z-index: 9999; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    background: rgba(0,0,0,0.4); 
+}
+
+.modal-content {
+    background: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 8px;
+    width: 350px;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.close {
+    float: right;
+    font-size: 20px;
+    cursor: pointer;
+}
+.modal-buttons {
+    margin-top: 15px;
+}
+.modal-buttons .button {
+    margin: 0 10px;
+}
+
+.boxContent.arrivalModal { z-index: 3000 !important; }
+.boxContent.paramModal   { z-index: 2000 !important; }
+
+.ui-dialog-content {
+  max-height: 60vh; /* ou um valor fixo, ex: 400px */
+  overflow-y: auto;
+}
+
+.hidden-by-default { display: none !important; }

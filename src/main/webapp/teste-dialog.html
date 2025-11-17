@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Teste Modal jQuery UI</title>
+    <link rel="stylesheet" href="js/libs/jquery-ui-1.10.4.custom.css">
+    <script src="js/libs/jquery-1.10.2.js"></script>
+    <script src="js/libs/jquery-ui-1.10.4.custom.js"></script>
+</head>
+<body>
+    <!-- Botão para abrir o modal -->
+    <button id="openModalBtn">Abrir Modal</button>
+
+    <!-- Modal -->
+    <div id="myModal" title="Meu Modal" style="display:none;">
+        <p>Conteúdo do modal aqui!</p>
+        <input type="text" id="modalInput" placeholder="Digite algo...">
+    </div>
+
+    <script>
+        $(function() {
+            // Inicializa o dialog, mas não abre ainda
+            $("#myModal").dialog({
+                autoOpen: false,
+                modal: true,
+                width: 400,
+                height: 'auto',
+                resizable: false,
+                buttons: {
+                    "Fechar": function() {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+
+            // Ao clicar no botão, abre o modal
+            $("#openModalBtn").click(function() {
+                $("#myModal").dialog("open");
+                $("#modalInput").focus(); // foca no input do modal
+            });
+        });
+    </script>
+</body>
+</html>
