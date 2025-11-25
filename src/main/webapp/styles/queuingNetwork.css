@@ -179,3 +179,29 @@ body {
     height: 150px;
     overflow: auto;
 }
+
+/* CSS */
+.menu { list-style: none; padding: 0; margin: 0; }
+.menu li { margin: 6px 0; }
+
+/* aparência da imagem */
+.node img { display: block; width: 32px; height: 32px; }
+
+/* estado de "foco" (contorno) */
+.node.focused {
+  /* outline simples: não desloca layout */
+  outline: 3px solid #2b7de9;
+  outline-offset: 2px;
+  border-radius: 6px; /* se quiser borda arredondada */
+
+  /* ou sombra mais suave (aparência moderna) */
+  box-shadow: 0 0 10px rgba(43,125,233,0.6), 0 0 2px rgba(43,125,233,0.4);
+}
+
+/* alternativa com drop-shadow (funciona bem com imagens com transparência) */
+.node.focused img {
+  filter: drop-shadow(0 0 6px rgba(43,125,233,0.8));
+}
+
+/* foco por teclado (acessibilidade) */
+.node:focus { outline: 2px dashed rgba(43,125,233,0.6); outline-offset: 2px; }

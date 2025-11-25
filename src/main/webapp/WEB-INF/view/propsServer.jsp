@@ -51,7 +51,7 @@
 
                     <div class="field">
                         <label for="arrival_stdDeviation" class="labelLeft">Standard deviation</label>
-                        <input type="text" id="arrival_stdDeviation" class="inputText small">
+                        <input type="text" id="arrival_stdDeviation" class="inputText small" disabled>
                     </div>
 
                     <!--<div class="field">

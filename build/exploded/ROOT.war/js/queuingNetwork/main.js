@@ -26,6 +26,7 @@ require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "El
         /* Creating an instance of ElementManager. */
         var elementManager = new ElementManager(cons.FOLDER, cons.FORMAT, cons.DRAW_AREA);
         
+        
         /* Initializing the three app main sectors. */
         topOptions.initialize(elementManager);
         drawArea.initialize(elementManager);
@@ -68,7 +69,7 @@ require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "El
                 topOptions.ctrl("manual");
             });
 
-            /* leftMenu event map */
+           /* leftMenu event map */
             $("#server").click(function() {
                 activeTool.setTool("server");
             });
@@ -87,6 +88,8 @@ require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "El
             $("#erase").click(function() {
                 activeTool.setTool("erase");
             });
+            
+            
 
             /* The drawArea click event mapping */
             $("#drawArea").click(function(event) {
@@ -372,7 +375,7 @@ require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "El
                 return;
             }
 
-            if (selected !== "Exponential") {
+            if (selected === 'HyperExponential' || selected === 'Normal' || selected === 'Uniform' || selected === 'Erlang') {
                 console.log("não exponential");
                 server_sd.style.opacity = "1";
                 server_sd.style.pointerEvents = "auto";
@@ -397,7 +400,7 @@ require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "El
                 console.warn("arrival_sd não encontrado.");
                 return;
             }
-            if (selected !== 'Exponential') {
+            if (selected === 'HyperExponential' || selected === 'Normal' || selected === 'Uniform' || selected === 'Erlang') {
                 arrival_sd.style.opacity = '1';
                 arrival_sd.style.pointerEvents = 'auto';
                 arrival_sd.tabIndex = 0;
@@ -419,7 +422,7 @@ require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "El
                 console.warn("server_sd não encontrado.");
                 return;
             }
-            if (selected !== 'Exponential') {
+            if (selected === 'HyperExponential' || selected === 'Normal' || selected === 'Uniform' || selected === 'Erlang') {
                 multiserver_sd.style.opacity = '1';
                 multiserver_sd.style.pointerEvents = 'auto';    
                 multiserver_sd.tabIndex = 0;
@@ -440,7 +443,7 @@ require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "El
                 console.warn("server_sd não encontrado.");
                 return;
             }
-            if (selected !== 'Exponential') {
+            if (selected === 'HyperExponential' || selected === 'Normal' || selected === 'Uniform' || selected === 'Erlang') {
                 msarrival_sd.style.opacity = '1';
                 msarrival_sd.style.pointerEvents = 'auto';  
                 msarrival_sd.tabIndex = 0;

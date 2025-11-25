@@ -47,46 +47,22 @@
                 </div>
             </div>
 
-            <div id="center">
-                <div id="leftMenu">
-                    <ul class="menu menuBlock">
-                        <li>
-                            <div id="server">
-                                <img src="img/icon/server.gif" title="One Server"/>
-                            </div>
-                        </li>
-                        <li>
-                            <div id="multiServer">
-                                <img src="img/icon/multiServer.gif" title="Multiple Servers"/>
-                            </div>
-                        </li>
-                        <li>
-                            <div id="source">
-                                <img src="img/icon/source.gif" title="Source"/>
-                            </div>
-                        </li>
-                        <li>
-                            <div id="out">
-                                <img src="img/icon/out.gif" title="Out"/>
-                            </div>
-                        </li>
-                        <li>
-                            <div id="link">
-                                <img src="img/icon/link.gif" title="Link"/>
-                            </div>
-                        </li>
-                        <li>
-                            <div id="erase">
-                                <img src="img/icon/erase.gif" title="Erase"/>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
+            <!-- HTML (parte do seu código) -->
+<div id="center">
+  <div id="leftMenu">
+    <ul class="menu menuBlock">
+      <li><div id="server" class="node" tabindex="0"><img src="img/icon/server.gif" title="One Server"/></div></li>
+      <li><div id="multiServer" class="node" tabindex="0"><img src="img/icon/multiServer.gif" title="Multiple Servers"/></div></li>
+      <li><div id="source" class="node" tabindex="0"><img src="img/icon/source.gif" title="Source"/></div></li>
+      <li><div id="out" class="node" tabindex="0"><img src="img/icon/out.gif" title="Out"/></div></li>
+      <li><div id="link" class="node" tabindex="0"><img src="img/icon/link.gif" title="Link"/></div></li>
+      <li><div id="erase" class="node" tabindex="0"><img src="img/icon/erase.gif" title="Erase"/></div></li>
+    </ul>
+  </div>
 
-                <div id="drawArea"></div>
-
-                <div id="propertiesArea"></div>
-            </div>
+  <div id="drawArea"></div>
+  <div id="propertiesArea"></div>
+</div>
 
             <div id="bottom">
                 <div id="bottomStatus">
