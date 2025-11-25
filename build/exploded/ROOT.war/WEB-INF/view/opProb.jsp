@@ -5,7 +5,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     </head>
     <body>
-        <div class="boxContent">
+        <div class="smallBoxContent">
            <span class="boxTitle">Probabilities</span>
            
            <div class="field">

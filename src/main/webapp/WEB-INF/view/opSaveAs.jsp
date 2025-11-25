@@ -7,13 +7,13 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     </head>
     <body>
-        <div id="opSaveBox" class="boxContent">
+        <div id="opSaveAsBox" class="boxContent">
             <div class="btCloseDiv cf">
-                <span class="boxTitle">Save</span>
-                <span id="opSave-btClose"><img src="img/btClose.png"/></span>
+                <span class="boxTitle">Save As</span>
+                <span id="opSaveAs-btClose"><img src="img/btClose.png"/></span>
             </div>
             
-            <div id="opSave-top" class="filesWindow">
+            <div id="opSaveAs-top" class="filesWindow">
                 <div class="filesHeader">
                 <span class="file-col">Filename</span>
                 <span class="author-col">Author</span>
@@ -30,12 +30,12 @@
             </c:forEach>
             </div>
 
-            <div id="opSave-bottom" class="standardForm">
+            <div id="opSaveAs-bottom" class="standardForm">
                 <form onsubmit="return false;">
                     <label>
                         <span>File name:</span>
-                        <input id="opSave-filename" type="text" class="inputText large">
-                        <input id ="opSave-btSubmit" type="button" value="Save" class="button">
+                        <input id="opSaveAs-filename" type="text" class="inputText large">
+                        <input id ="opSaveAs-btSubmit" type="button" value="Save as" class="button">
                     </label>
                 </form>
             </div>

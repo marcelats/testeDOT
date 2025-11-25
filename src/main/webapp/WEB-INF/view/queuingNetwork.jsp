@@ -36,6 +36,7 @@
                     <ul class="menu">
                         <li><div id="opNew"><img src="img/icon/new.gif"/></div>New Document</li>
                         <li><div id="opSave"><img src="img/icon/save.gif"/></div>Save</li>
+                        <li><div id="opSaveAs"><img src="img/icon/save.gif"/></div>Save as</li>
                         <li><div id="opOpen"><img src="img/icon/open.gif"/></div>Open</li>
                         <li><div id="opParam"><img src="img/icon/param.gif"/></div>Parameters</li>
                         <li><div id="opGen"><img src="img/icon/exec.gif"/></div>Generate</li>

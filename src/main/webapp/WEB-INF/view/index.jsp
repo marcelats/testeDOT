@@ -44,7 +44,8 @@
                     </div>
 
                     <h2>
-                        <span id="forgotPassLink" class="link">Forgot your password?</span> | <span id="newUserLink" class="link">New user</span>
+                        <!--<span id="forgotPassLink" class="link">Forgot your password?</span> | -->
+                        <span id="newUserLink" class="link">New user</span>
                     </h2>
 
                     <div class="right">

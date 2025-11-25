@@ -47,10 +47,10 @@ public class OpenBox implements Command {
                     aResponse.setForward(true);
                     aResponse.setPage(DIRECTORY + "opNew.jsp");
                     break;
-                case "save":
+                case "saveAs":
                     aResponse = new CommandResponse();
                     aResponse.setForward(true);
-                    aResponse.setPage(DIRECTORY + "opSave.jsp");
+                    aResponse.setPage(DIRECTORY + "opSaveAs.jsp");
                     break;
                 case "open":
                     aResponse = new CommandResponse();

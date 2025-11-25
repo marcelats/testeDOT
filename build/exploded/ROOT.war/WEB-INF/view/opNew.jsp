@@ -11,7 +11,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     </head>
     <body>
-        <div id="opNewBox" class="boxContent">
+        <div id="opNewBox" class="smallBoxContent">
             <div class="btCloseDiv cf">
                 <span class="boxTitle">New</span>
                 <span id="opNew-btClose"><img src="img/btClose.png"/></span>

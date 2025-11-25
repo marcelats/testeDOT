@@ -12,7 +12,7 @@ import com.asda.model.accountsCommands.UserSessionManager;
 import java.io.IOException;
 
 
-@WebServlet("/save")
+@WebServlet("/saveAs")
 public class SaveGraph extends HttpServlet implements Command {
 
     private CommandResponse aResponse;

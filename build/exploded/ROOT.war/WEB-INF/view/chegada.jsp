@@ -11,7 +11,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     </head>
     <body>
-        <div class="boxContent arrivalModal">
+        <div class="smallBoxContent arrivalModal">
            <span class="boxTitle">Arrivals</span>
            <div>
                 <input id ="prev-bt" type="button" value="Prev" class="button">

@@ -1,5 +1,5 @@
 define(["jquery","jquery-ui", "LightBoxManager", "JsonManager", "OpNew", "Utils", "Cons", "IdManager", "DrawArea", "jsPlumb"],
-    function($,ui, lightBoxManager, jsonManager, opNew, utils, cons, idManager, drawArea, jsPlumb) {
+    function($, ui, lightBoxManager, jsonManager, opNew, utils, cons, idManager, drawArea, jsPlumb) {
         "use strict";
 
         var lastAction = null, callback = null, elementManager = null;
@@ -16,48 +16,40 @@ define(["jquery","jquery-ui", "LightBoxManager", "JsonManager", "OpNew", "Utils"
                 $(document).on("click", "#opOpen-btSubmit", function() {
                     OpOpen.execute("submit");
                 });
-              
+
                 $(document).on("click", "#opCopy-btSubmit", function(e) {
                     e.preventDefault();
-
                     OpOpen.execute("copy");
                 });
                 $(document).on("click", "#opPublic-btSubmit", function(e) {
                     e.preventDefault();
-
                     OpOpen.execute("public");
                 });
                 $(document).on("click", "#opPrivate-btSubmit", function(e) {
                     e.preventDefault();
-
                     OpOpen.execute("private");
                 });
                 $(document).on("click", "#opDelete-btSubmit", function(e) {
                     e.preventDefault();
-
                     OpOpen.execute("delete");
                 });
                 $(document).on("click", "#opGraph-btSubmit", function(e) {
                     e.preventDefault();
-
                     OpOpen.execute("graph");
                 });
                 $(document).on("click", "#opCode-btSubmit", function(e) {
                     e.preventDefault();
-
                     OpOpen.execute("code");
                 });
                 $(document).on("click", "#opReport-btSubmit", function(e) {
                     e.preventDefault();
-
                     OpOpen.execute("report");
                 });
                 /*$(document).on("click", "#opRename-btSubmit", function(e) {
                     e.preventDefault();
-
                     OpOpen.execute("rename");
                 });*/
-                
+
                 console.log('file-item count =', document.querySelectorAll('.file-item').length);
                 document.addEventListener("click", (e) => {
                     const checkbox = e.target.closest(".checkbox");
@@ -65,9 +57,9 @@ define(["jquery","jquery-ui", "LightBoxManager", "JsonManager", "OpNew", "Utils"
 
                     if (checkbox) {
                         e.stopPropagation();
-                        const checkbox = e.target;
-                        const filename = checkbox.dataset.filenameCheckbox;
-                        const authorId = checkbox.dataset.authorCheckbox;
+                        const checkboxEl = e.target;
+                        const filename = checkboxEl.dataset.filenameCheckbox;
+                        const authorId = checkboxEl.dataset.authorCheckbox;
                         const userId = document.getElementById("current-user").dataset.userId;
                         console.log(authorId);
                         console.log(userId);
@@ -76,11 +68,11 @@ define(["jquery","jquery-ui", "LightBoxManager", "JsonManager", "OpNew", "Utils"
                             return;
                         }
 
-                        if (checkbox.dataset.busy === "true") return;
-                        checkbox.dataset.busy = "true";
+                        if (checkboxEl.dataset.busy === "true") return;
+                        checkboxEl.dataset.busy = "true";
 
-                        const currentlyPublic = checkbox.textContent === "✔";
-                        checkbox.textContent = currentlyPublic ? "" : "✔";
+                        const currentlyPublic = checkboxEl.textContent === "✔";
+                        checkboxEl.textContent = currentlyPublic ? "" : "✔";
 
                         $.ajax({
                             url: "qnetwork?cmd=public",
@@ -90,12 +82,12 @@ define(["jquery","jquery-ui", "LightBoxManager", "JsonManager", "OpNew", "Utils"
                                 jsonManager.setSaved(true);
                             },
                             error: function(xhr, ajaxOptions, thrownError) {
-                                checkbox.textContent = currentlyPublic ? "✔" : "";
+                                checkboxEl.textContent = currentlyPublic ? "✔" : "";
                                 var errorHeader = xhr.getResponseHeader('fot-error');
                                 alert(errorHeader !== null ? errorHeader : thrownError);
                             },
                             complete: function() {
-                                checkbox.dataset.busy = "false"; 
+                                checkboxEl.dataset.busy = "false";
                             }
                         });
                     } else if (row) {
@@ -108,59 +100,69 @@ define(["jquery","jquery-ui", "LightBoxManager", "JsonManager", "OpNew", "Utils"
                     }
                 });
             },
-            execute: function(action) {
-                require(["OpNew"], function(opNew) {
-                    if(!jsonManager.isSaved()) {
-                        console.log("opNew", opNew);
-                        opNew.execute(function() {
-                            var userChose = opNew.getLastAction();
 
-                            if(userChose !== "cancel") {
-                                OpOpen.execute();
-                            }
-                        });
+            execute: function(action) {
+                // Carrega OpNew dinamicamente (ajuda contra ciclos)
+                require(["OpNew"], function(opNewLoaded) {
+                    // Se action NÃO for string -> queremos abrir a caixa de "open"
+                    if (typeof action !== "string") {
+                        // Se não estiver salvo, devemos mostrar a caixa de "new" primeiro
+                        if (!jsonManager.isSaved()) {
+                            // Passamos um callback para opNew: quando o usuário decidir,
+                            // o callback abrirá a caixa de "open".
+                            opNewLoaded.execute(function() {
+                                lightBoxManager.openBox(cons.SHADOWING, cons.BOX_CONTAINER,
+                                    "qnetwork?cmd=open-box&type=open", function() {
+                                        $("#opOpen-filename").focus();
+                                    });
+                            });
+
+                            // guardamos o callback externo (se necessário)
+                            callback = action;
+                            return;
+                        }
+
+                        // se já estava salvo, abre direto a caixa "open"
+                        lightBoxManager.openBox(cons.SHADOWING, cons.BOX_CONTAINER,
+                            "qnetwork?cmd=open-box&type=open", function() {
+                                $("#opOpen-filename").focus();
+                            });
+                        callback = action;
+                        return;
                     }
-                });
-                if (typeof action !== "string") {
-                    lightBoxManager.openBox(cons.SHADOWING, cons.BOX_CONTAINER,
-                        "qnetwork?cmd=open-box&type=open", function() {
-                        $("#opOpen-filename").focus();
-                    });      
-                    callback = action;
-                } else {
+
+                    // ---- se aqui, action é string ----
                     lastAction = action;
+
                     if (action === "submit") {
                         var filename = $("#opOpen-filename").val(),
-                        re = new RegExp(cons.REG_EXP_FILENAME),
-                        author = $("#opOpen-author").val();
+                            re = new RegExp(cons.REG_EXP_FILENAME),
+                            author = $("#opOpen-author").val();
                         if (filename.match(re) === null) {
                             alert("You need to enter a valid filename.");
-                        }else if(author.match(re) === null) {
+                        } else if (author.match(re) === null) {
                             alert("You need to enter a valid author.");
-                        }
-                        else {
-                            
+                        } else {
                             open(filename, author);
                             const btnCode = document.getElementById("opCode");
                             btnCode.style.opacity = '0.3';
                             btnCode.style.pointerEvents = 'none';
                             const btnExecute = document.getElementById("opExecute");
                             btnExecute.style.opacity = '0.3';
-                            btnExecute.style.pointerEvents = 'none';      
+                            btnExecute.style.pointerEvents = 'none';
                             window.flag = false;
                         }
                     }
+
                     if (action === "copy") {
                         var filename = $("#opOpen-filename").val(),
                             re = new RegExp(cons.REG_EXP_FILENAME),
                             author = $("#opOpen-author").val();
                         if (filename.match(re) === null) {
                             alert("You need to enter a valid filename.");
-                        }
-                        else if (author.match(re) === null) {
+                        } else if (author.match(re) === null) {
                             alert("You need to enter a valid author.");
-                        }
-                        else {
+                        } else {
                             $.ajax({
                                 url: "qnetwork?cmd=copy",
                                 type: "POST",
@@ -173,7 +175,7 @@ define(["jquery","jquery-ui", "LightBoxManager", "JsonManager", "OpNew", "Utils"
                                     jsonManager.setGraph(data);
                                     jsonManager.setSaved(true);
                                     constructGraph(data);
-                                    saveAs(filename,0);      
+                                    saveAs(filename, 0);
                                     $("#opParamBox").values(jsonManager.getGraphParameters());
                                 },
                                 error: function(xhr, thrownError) {
@@ -187,13 +189,13 @@ define(["jquery","jquery-ui", "LightBoxManager", "JsonManager", "OpNew", "Utils"
                             });
                         }
                     }
+
                     if (action === "public") {
                         var filename = $("#opOpen-filename").val(),
                             re = new RegExp(cons.REG_EXP_FILENAME);
                         if (filename.match(re) === null) {
                             alert("You need enter a valid filename.");
-                        }                       
-                        else {
+                        } else {
                             var tempFilename = jsonManager.getName();
                             jsonManager.setName(filename);
 
@@ -223,57 +225,23 @@ define(["jquery","jquery-ui", "LightBoxManager", "JsonManager", "OpNew", "Utils"
                             });
                         }
                     }
-                    /*if (action === "private") {
-                        var filename = $("#opOpen-filename").val(),
-                            re = new RegExp(cons.REG_EXP_FILENAME);
-                        if (filename.match(re) === null) {
-                            alert("You need enter a valid filename.");
-                        }
-                        else {
-                            var tempFilename = jsonManager.getName();
-                            jsonManager.setName(filename);
-                            $.ajax({
-                                url: "qnetwork?cmd=private",
-                                type: "POST",
-                                async: false,
-                                data: {
-                                    graphName: filename
-                                },
-                                success: function() {
-                                    lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
-                                    jsonManager.setSaved(true);
-                                    document.title = "ASDA - " + filename;
-                                },
-                                error: function(xhr, ajaxOptions, thrownError) {
-                                    var errorHeader = xhr.getResponseHeader('fot-error');
-                                    jsonManager.setName(tempFilename);
-                                    if (errorHeader != null) {
-                                        alert(errorHeader);
-                                    } else {
-                                        alert(thrownError);
-                                    }
-                                }
-                            });
-                        }
-                    }*/
-                    
+
                     if (action === "delete") {
-                        const confirmDelete = confirm("Are you sure you want to delete " + $("#opOpen-filename").val() +"?");
+                        const confirmDelete = confirm("Are you sure you want to delete " + $("#opOpen-filename").val() + "?");
                         if (!confirmDelete) {
-                            return; 
+                            return;
                         }
-                        OpOpen.delete($("#opOpen-filename").val(),$("#opOpen-author").val());
+                        OpOpen.delete($("#opOpen-filename").val(), $("#opOpen-author").val());
                         document.getElementById("opOpen-filename").value = "";
                         document.getElementById("opOpen-author").value = "";
                     }
-                    
+
                     if (action === "rename") {
                         var filename = $("#opOpen-filename").val(),
                             re = new RegExp(cons.REG_EXP_FILENAME);
                         if (filename.match(re) === null) {
                             alert("You need to enter a valid filename.");
-                        }
-                         else {
+                        } else {
                             var tempFilename = jsonManager.getName();
                             jsonManager.setName(filename);
                             $.ajax({
@@ -284,12 +252,11 @@ define(["jquery","jquery-ui", "LightBoxManager", "JsonManager", "OpNew", "Utils"
                                     graphName: filename,
                                     newName: $("#opOpen-newname").val()
                                 },
-                                
                                 success: function() {
                                     lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
                                     jsonManager.setSaved(true);
 
-                                    document.title = "ASDA - "+filename;
+                                    document.title = "ASDA - " + filename;
                                 },
                                 error: function(xhr, thrownError) {
                                     var errorHeader = xhr.getResponseHeader('fot-error');
@@ -305,281 +272,234 @@ define(["jquery","jquery-ui", "LightBoxManager", "JsonManager", "OpNew", "Utils"
                             });
                         }
                     }
-                    
+
                     if (action === "graph") {
                         var filename = $("#opOpen-filename").val(),
-                        re = new RegExp(cons.REG_EXP_FILENAME),
-                        author = $("#opOpen-author").val();
+                            re = new RegExp(cons.REG_EXP_FILENAME),
+                            author = $("#opOpen-author").val();
                         if (filename.match(re) === null) {
                             alert("You need to enter a valid filename.");
-                        }else if(author.match(re) === null) {
+                        } else if (author.match(re) === null) {
                             alert("You need to enter a valid author.");
                         }
                         $.ajax({
-                url: "qnetwork?cmd=opengv",
-                type: "POST",
-                data: {
-                    graphName: filename,
-                    author: author
-                },
-                dataType: "text",
-                 
-                                success: function(data) {
-                    lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
-                    const $dlg = $(`<div id="draggableModal" style="white-space: pre-wrap; text-align: left;">${data}</div>`).appendTo('body');
+                            url: "qnetwork?cmd=opengv",
+                            type: "POST",
+                            data: {
+                                graphName: filename,
+                                author: author
+                            },
+                            dataType: "text",
+                            success: function(data) {
+                                lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
+                                const $dlg = $(`<div id="draggableModal" style="white-space: pre-wrap; text-align: left;">${data}</div>`).appendTo('body');
 
-
-
-  // abre como dialog do jQuery UI
- $dlg.dialog({
-  title: $("#opOpen-filename").val() + ".gv",
-  modal: false,
-  draggable: true,
-  resizable: true,
-  closeOnEscape: false,
-  width: 500,
-  height: 'auto',
-  maxHeight: 500,
-  open: function () {
-    $('.ui-widget-overlay').off('click');
-  },
-  close: function () {
-    $(this).dialog('destroy').remove();
-  },
-  create: function () {
-    // deixa só a barra de título arrastável
-    $(this).parent().draggable('option', 'handle', '.ui-dialog-titlebar');
-  }
-});
-
-// Aplica rolagem e permite seleção no conteúdo
-$dlg.closest('.ui-dialog').find('.ui-dialog-content').css({
-  'max-height': '400px',   // limite de altura
-  'overflow-y': 'auto',    // rolagem vertical
-  'overflow-x': 'auto',    // se quiser também rolagem horizontal
-  'user-select': 'text',   // garante que texto possa ser selecionado
-  'cursor': 'auto'
-});
-
-// Garante que só a barra de título desabilite seleção (não o conteúdo todo)
-$dlg.closest('.ui-dialog')
-  .find('.ui-dialog-titlebar')
-  .on('mousedown', function () {
-    $(this).css('user-select', 'none');
-  })
-  .on('mouseup', function () {
-    $(this).css('user-select', 'auto');
-  });
-
-                    
-                    
-                },
-                error: function(xhr, thrownError) {
-                                    var errorHeader = xhr.getResponseHeader('fot-error');
-
-                                    jsonManager.setName(tempFilename);
-
-                                    if (errorHeader !== null) {
-                                        alert(errorHeader);
-                                    } else {
-                                        alert(thrownError);
+                                $dlg.dialog({
+                                    title: $("#opOpen-filename").val() + ".gv",
+                                    modal: false,
+                                    draggable: true,
+                                    resizable: true,
+                                    closeOnEscape: false,
+                                    width: 500,
+                                    height: 'auto',
+                                    maxHeight: 500,
+                                    open: function () {
+                                        $('.ui-widget-overlay').off('click');
+                                    },
+                                    close: function () {
+                                        $(this).dialog('destroy').remove();
+                                    },
+                                    create: function () {
+                                        $(this).parent().draggable('option', 'handle', '.ui-dialog-titlebar');
                                     }
+                                });
+
+                                $dlg.closest('.ui-dialog').find('.ui-dialog-content').css({
+                                    'max-height': '400px',
+                                    'overflow-y': 'auto',
+                                    'overflow-x': 'auto',
+                                    'user-select': 'text',
+                                    'cursor': 'auto'
+                                });
+
+                                $dlg.closest('.ui-dialog')
+                                    .find('.ui-dialog-titlebar')
+                                    .on('mousedown', function () {
+                                        $(this).css('user-select', 'none');
+                                    })
+                                    .on('mouseup', function () {
+                                        $(this).css('user-select', 'auto');
+                                    });
+                            },
+                            error: function(xhr, thrownError) {
+                                var errorHeader = xhr.getResponseHeader('fot-error');
+                                if (errorHeader !== null) {
+                                    alert(errorHeader);
+                                } else {
+                                    alert(thrownError);
                                 }
-
-               
-            });
-                        
-                        
-
+                            }
+                        });
                     }
-                    
+
                     if (action === "code") {
-                        
                         var filename = $("#opOpen-filename").val(),
-                        re = new RegExp(cons.REG_EXP_FILENAME),
-                        author = $("#opOpen-author").val();
+                            re = new RegExp(cons.REG_EXP_FILENAME),
+                            author = $("#opOpen-author").val();
                         if (filename.match(re) === null) {
                             alert("You need to enter a valid filename.");
-                        }else if(author.match(re) === null) {
+                        } else if (author.match(re) === null) {
                             alert("You need to enter a valid author.");
                         }
                         $.ajax({
-                url: "qnetwork?cmd=opencode",
-                type: "POST",
-                data: {
-                    graphName: filename,
-                    author: author
-                },
-                dataType: "json",
-                success: function(data) {
-                    
-                    console.log(data.code);
-                    console.log(data.code_name);
-                    lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
-                    const $dlg = $(`<div id="draggableModal" style="white-space: pre-wrap; text-align: left;">${data.code}</div>`).appendTo('body');
+                            url: "qnetwork?cmd=opencode",
+                            type: "POST",
+                            data: {
+                                graphName: filename,
+                                author: author
+                            },
+                            dataType: "json",
+                            success: function(data) {
+                                console.log(data.code);
+                                console.log(data.code_name);
+                                lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
+                                const $dlg = $(`<div id="draggableModal" style="white-space: pre-wrap; text-align: left;">${data.code}</div>`).appendTo('body');
 
-
-
-  // abre como dialog do jQuery UI
-   // abre como dialog do jQuery UI
- $dlg.dialog({
-  title: data.code_name,
-  modal: false,
-  draggable: true,
-  resizable: true,
-  closeOnEscape: false,
-  width: 500,
-  height: 'auto',
-  maxHeight: 500,
-  open: function () {
-    $('.ui-widget-overlay').off('click');
-  },
-  close: function () {
-    $(this).dialog('destroy').remove();
-  },
-  create: function () {
-    // deixa só a barra de título arrastável
-    $(this).parent().draggable('option', 'handle', '.ui-dialog-titlebar');
-  }
-});
-
-// Aplica rolagem e permite seleção no conteúdo
-$dlg.closest('.ui-dialog').find('.ui-dialog-content').css({
-  'max-height': '400px',   // limite de altura
-  'overflow-y': 'auto',    // rolagem vertical
-  'overflow-x': 'auto',    // se quiser também rolagem horizontal
-  'user-select': 'text',   // garante que texto possa ser selecionado
-  'cursor': 'auto'
-});
-
-// Garante que só a barra de título desabilite seleção (não o conteúdo todo)
-$dlg.closest('.ui-dialog')
-  .find('.ui-dialog-titlebar')
-  .on('mousedown', function () {
-    $(this).css('user-select', 'none');
-  })
-  .on('mouseup', function () {
-    $(this).css('user-select', 'auto');
-  });
-                    
-                    
-                },
-                error: function(xhr, thrownError) {
-                                    var errorHeader = xhr.getResponseHeader('fot-error');
-
-                                    jsonManager.setName(tempFilename);
-
-                                    if (errorHeader !== null) {
-                                        alert(errorHeader);
-                                    } else {
-                                        alert(thrownError);
+                                $dlg.dialog({
+                                    title: data.code_name,
+                                    modal: false,
+                                    draggable: true,
+                                    resizable: true,
+                                    closeOnEscape: false,
+                                    width: 500,
+                                    height: 'auto',
+                                    maxHeight: 500,
+                                    open: function () {
+                                        $('.ui-widget-overlay').off('click');
+                                    },
+                                    close: function () {
+                                        $(this).dialog('destroy').remove();
+                                    },
+                                    create: function () {
+                                        $(this).parent().draggable('option', 'handle', '.ui-dialog-titlebar');
                                     }
-                                }
+                                });
 
-               
-            });
-                        
+                                $dlg.closest('.ui-dialog').find('.ui-dialog-content').css({
+                                    'max-height': '400px',
+                                    'overflow-y': 'auto',
+                                    'overflow-x': 'auto',
+                                    'user-select': 'text',
+                                    'cursor': 'auto'
+                                });
+
+                                $dlg.closest('.ui-dialog')
+                                    .find('.ui-dialog-titlebar')
+                                    .on('mousedown', function () {
+                                        $(this).css('user-select', 'none');
+                                    })
+                                    .on('mouseup', function () {
+                                        $(this).css('user-select', 'auto');
+                                    });
+                            },
+                            error: function(xhr, thrownError) {
+                                var errorHeader = xhr.getResponseHeader('fot-error');
+                                if (errorHeader !== null) {
+                                    alert(errorHeader);
+                                } else {
+                                    alert(thrownError);
+                                }
+                            }
+                        });
                     }
-                    
+
                     if (action === "report") {
                         var filename = $("#opOpen-filename").val(),
-                        re = new RegExp(cons.REG_EXP_FILENAME),
-                        author = $("#opOpen-author").val();
+                            re = new RegExp(cons.REG_EXP_FILENAME),
+                            author = $("#opOpen-author").val();
                         if (filename.match(re) === null) {
                             alert("You need to enter a valid filename.");
-                        }else if(author.match(re) === null) {
+                        } else if (author.match(re) === null) {
                             alert("You need to enter a valid author.");
                         }
                         $.ajax({
-                url: "qnetwork?cmd=openreport",
-                type: "POST",
-                data: {
-                    graphName: filename,
-                    author: author
-                },
-                dataType: "json",
-                success: function(data) {
-                    
-                    console.log(data.report);
-                    console.log(data.report_name);
-                    lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
-                    const $dlg = $(`<div id="draggableModal" style="white-space: pre-wrap; text-align: left;">${data.report}</div>`).appendTo('body');
+                            url: "qnetwork?cmd=openreport",
+                            type: "POST",
+                            data: {
+                                graphName: filename,
+                                author: author
+                            },
+                            dataType: "json",
+                            success: function(data) {
+                                console.log(data.report);
+                                console.log(data.report_name);
+                                lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
+                                const $dlg = $(`<div id="draggableModal" style="white-space: pre-wrap; text-align: left;">${data.report}</div>`).appendTo('body');
 
-
-
-  // abre como dialog do jQuery UI
-  $dlg.dialog({
-  title: data.report_name,
-  modal: false,
-  draggable: true,
-  resizable: true,
-  closeOnEscape: false,
-  width: 500,
-  height: 'auto',
-  maxHeight: 500,
-  open: function () {
-    $('.ui-widget-overlay').off('click');
-  },
-  close: function () {
-    $(this).dialog('destroy').remove();
-  },
-  create: function () {
-    // deixa só a barra de título arrastável
-    $(this).parent().draggable('option', 'handle', '.ui-dialog-titlebar');
-  }
-});
-
-// Aplica rolagem e permite seleção no conteúdo
-$dlg.closest('.ui-dialog').find('.ui-dialog-content').css({
-  'max-height': '400px',   // limite de altura
-  'overflow-y': 'auto',    // rolagem vertical
-  'overflow-x': 'auto',    // se quiser também rolagem horizontal
-  'user-select': 'text',   // garante que texto possa ser selecionado
-  'cursor': 'auto'
-});
-
-// Garante que só a barra de título desabilite seleção (não o conteúdo todo)
-$dlg.closest('.ui-dialog')
-  .find('.ui-dialog-titlebar')
-  .on('mousedown', function () {
-    $(this).css('user-select', 'none');
-  })
-  .on('mouseup', function () {
-    $(this).css('user-select', 'auto');
-  });
-                    
-                },
-                error: function(xhr, thrownError) {
-                                    var errorHeader = xhr.getResponseHeader('fot-error');
-
-                                    jsonManager.setName(tempFilename);
-
-                                    if (errorHeader !== null) {
-                                        alert(errorHeader);
-                                    } else {
-                                        alert(thrownError);
+                                $dlg.dialog({
+                                    title: data.report_name,
+                                    modal: false,
+                                    draggable: true,
+                                    resizable: true,
+                                    closeOnEscape: false,
+                                    width: 500,
+                                    height: 'auto',
+                                    maxHeight: 500,
+                                    open: function () {
+                                        $('.ui-widget-overlay').off('click');
+                                    },
+                                    close: function () {
+                                        $(this).dialog('destroy').remove();
+                                    },
+                                    create: function () {
+                                        $(this).parent().draggable('option', 'handle', '.ui-dialog-titlebar');
                                     }
-                                }
+                                });
 
-               
-            });
+                                $dlg.closest('.ui-dialog').find('.ui-dialog-content').css({
+                                    'max-height': '400px',
+                                    'overflow-y': 'auto',
+                                    'overflow-x': 'auto',
+                                    'user-select': 'text',
+                                    'cursor': 'auto'
+                                });
+
+                                $dlg.closest('.ui-dialog')
+                                    .find('.ui-dialog-titlebar')
+                                    .on('mousedown', function () {
+                                        $(this).css('user-select', 'none');
+                                    })
+                                    .on('mouseup', function () {
+                                        $(this).css('user-select', 'auto');
+                                    });
+                            },
+                            error: function(xhr, thrownError) {
+                                var errorHeader = xhr.getResponseHeader('fot-error');
+                                if (errorHeader !== null) {
+                                    alert(errorHeader);
+                                } else {
+                                    alert(thrownError);
+                                }
+                            }
+                        });
                     }
 
                     if (typeof callback === "function") {
                         callback();
                         callback = null;
                     }
-                }
-            },
+                }); // end require(["OpNew"], ...)
+            }, // end execute
+
             getLastAction: function() {
                 return lastAction;
             },
-            delete: function(filename,author){
+
+            delete: function(filename, author) {
                 var re = new RegExp(cons.REG_EXP_FILENAME);
                 if (filename.match(re) === null) {
                     alert("You need to enter a valid filename.");
-                }
-                else {
+                } else {
                     $.ajax({
                         url: "qnetwork?cmd=delete",
                         type: "POST",
@@ -588,7 +508,7 @@ $dlg.closest('.ui-dialog')
                             graphName: filename
                         },
                         success: function() {
-                            $('.file-row-open[data-filename="' + filename + '"][data-authorname="' + author + '"]').remove();      
+                            $('.file-row-open[data-filename="' + filename + '"][data-authorname="' + author + '"]').remove();
                         },
                         error: function(xhr, thrownError) {
                             var errorHeader = xhr.getResponseHeader('fot-error');
@@ -605,7 +525,7 @@ $dlg.closest('.ui-dialog')
 
         /* --- Private methods. --- */
 
-        function open(filename,author) {
+        function open(filename, author) {
             $.ajax({
                 url: "qnetwork?cmd=open",
                 type: "POST",
@@ -616,19 +536,13 @@ $dlg.closest('.ui-dialog')
                 dataType: "json",
                 success: function(data) {
                     lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
-                    
-                    //window.opcoes = [];
-                    //window.arrivals = [];
-                    //window.arrivalIndex = 0;
                     jsonManager.setGraph(data);
                     jsonManager.setSaved(true);
-                    //window.langSelecionada = jsonManager.getGraph().parameters.opParam_library;
                     if (data.name !== "") {
                         document.title = "ASDA - " + data.name;
                     }
                     constructGraph(data);
                     $("#opParamBox").values(jsonManager.getGraphParameters());
-                    
                 },
                 error: function(xhr, thrownError) {
                     var errorHeader = xhr.getResponseHeader('fot-error');
@@ -671,7 +585,6 @@ $dlg.closest('.ui-dialog')
                     if (!utils.mapIsEmpty(mapTargets)) {
                         for (var keyTarget in mapTargets) {
                             console.log(keyNode, keyTarget);
-                            
                             elementManager.linkElements($("#" + keyNode));
                             elementManager.linkElements($("#" + keyTarget));
                         }
@@ -679,65 +592,57 @@ $dlg.closest('.ui-dialog')
                 }
             }
         }
-        
-        function saveAs(filename, i){
- 
-                            if(i!==0)jsonManager.setName(filename + "_" + i);
 
-                            //var codename;
-                            if(jsonManager.getGraph().parameters.opParam_library === "Python") {
-                                jsonManager.getGraph().code_name = filename + "_" + i + ".py";
-                                jsonManager.getGraph().report_name = filename + "_" + i + "_Python.txt";
-                            }
-else if (jsonManager.getGraph().parameters.opParam_library === "Java") {
-    jsonManager.getGraph().code_name = filename + "_" + i + ": Controle.java";
-    jsonManager.getGraph().report_name = filename + "_" + i + "_Java.txt";
-}
-else if (jsonManager.getGraph().parameters.opParam_library === "R") {
-    jsonManager.getGraph().code_name = filename + "_" + i + ".r";
-    jsonManager.getGraph().report_name = filename + "_" + i + "_R.txt";
-}
-else if (jsonManager.getGraph().parameters.opParam_library === "C SMPL"){
-    jsonManager.getGraph().code_name = filename + "_" + i + ".c";
-    jsonManager.getGraph().report_name = filename + "_" + i + "_C_SMPL.txt";
-} 
-else if ( jsonManager.getGraph().parameters.opParam_library === "C SMPLX") {
-    jsonManager.getGraph().code_name = filename + "_" + i + ".c";
-    jsonManager.getGraph().report_name = filename + "_" + i + "_C_SMPLX.txt";
-}
-else {jsonManager.getGraph().code_name = filename + "_" + i;jsonManager.getGraph().report_name = filename + "_" + i;}
-//console.log(codename);
-//var reportname;
-                   
+        function saveAs(filename, i) {
+            if (i !== 0) jsonManager.setName(filename + "_" + i);
 
+            if (jsonManager.getGraph().parameters.opParam_library === "Python") {
+                jsonManager.getGraph().code_name = filename + "_" + i + ".py";
+                jsonManager.getGraph().report_name = filename + "_" + i + "_Python.txt";
+            } else if (jsonManager.getGraph().parameters.opParam_library === "Java") {
+                jsonManager.getGraph().code_name = filename + "_" + i + ": Controle.java";
+                jsonManager.getGraph().report_name = filename + "_" + i + "_Java.txt";
+            } else if (jsonManager.getGraph().parameters.opParam_library === "R") {
+                jsonManager.getGraph().code_name = filename + "_" + i + ".r";
+                jsonManager.getGraph().report_name = filename + "_" + i + "_R.txt";
+            } else if (jsonManager.getGraph().parameters.opParam_library === "C SMPL") {
+                jsonManager.getGraph().code_name = filename + "_" + i + ".c";
+                jsonManager.getGraph().report_name = filename + "_" + i + "_C_SMPL.txt";
+            } else if (jsonManager.getGraph().parameters.opParam_library === "C SMPLX") {
+                jsonManager.getGraph().code_name = filename + "_" + i + ".c";
+                jsonManager.getGraph().report_name = filename + "_" + i + "_C_SMPLX.txt";
+            } else {
+                jsonManager.getGraph().code_name = filename + "_" + i;
+                jsonManager.getGraph().report_name = filename + "_" + i;
+            }
 
-var newfilename = filename;
-if (i!==0)  newfilename = filename + "_" + i;
-                            $.ajax({
-                                url: 'qnetwork?cmd=save',
-                                type: 'POST',
-                                data: { filename: newfilename, graphJson: jsonManager.stringifyGraph(), 
-                                    gv_file: jsonManager.getGraph().gv, code_file: jsonManager.getGraph().code, 
-                                    report_file: jsonManager.getGraph().report, report_name: jsonManager.getGraph().report_name,
-                                    code_name: jsonManager.getGraph().code_name},
-                                success: function () {
-                                    lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
-
-                                    jsonManager.setSaved(true);
-
-                                    if(i === 0) document.title = "ASDA - " + filename;
+            var newfilename = filename;
+            if (i !== 0) newfilename = filename + "_" + i;
+            $.ajax({
+                url: 'qnetwork?cmd=saveAs',
+                type: 'POST',
+                data: {
+                    filename: newfilename,
+                    graphJson: jsonManager.stringifyGraph(),
+                    gv_file: jsonManager.getGraph().gv,
+                    code_file: jsonManager.getGraph().code,
+                    report_file: jsonManager.getGraph().report,
+                    report_name: jsonManager.getGraph().report_name,
+                    code_name: jsonManager.getGraph().code_name
+                },
+                success: function() {
+                    lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
+                    jsonManager.setSaved(true);
+                    if (i === 0) document.title = "ASDA - " + filename;
                     else document.title = "ASDA - " + newfilename;
                     return;
-                                },
-                                error: function (err) {
-                                    saveAs(filename, i+1);
-                                }
-                            });
-                        
-            
-            
-            
+                },
+                error: function(err) {
+                    saveAs(filename, i + 1);
+                }
+            });
         }
+
         return OpOpen;
     }
 );

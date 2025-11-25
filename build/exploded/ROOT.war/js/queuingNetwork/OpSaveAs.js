@@ -1,18 +1,52 @@
-define(["jquery", "LightBoxManager", "JsonManager", "Cons", "OpSaveAs"],
-    function($, lightBoxManager, jsonManager, cons, opSaveAs) {
+define(["jquery", "LightBoxManager", "JsonManager", "Cons"],
+    function($, lightBoxManager, jsonManager, cons) {
         "use strict";
 
         var lastAction = null, callback = null;
 
-        var OpSave = {
-            
+        var OpSaveAs = {
+            initialize: function() {
+                /* Close button of the light box. */
+                $(document).on("click", "#opSaveAs-btClose", function() {
+                    lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
+                });
+
+                $(document).on("click", "#opSaveAs-btSubmit", function() {
+                    OpSaveAs.execute("submit");
+                });
+                document.addEventListener("click", function(e) {
+                    if (e.target && e.target.classList.contains("file-item-save")) {
+                        var filename = e.target.getAttribute("data-filename");
+                        console.log("filename:", filename);
+                        document.getElementById("opSaveAs-filename").value = filename;
+                    }
+                });
+            },
             execute: function(action) {
-                
-                    //lastAction = action;
+                if (typeof action !== "string") {
+                    this.callback = action;
+                    console.log(this.callback);
+                    console.trace("OpSaveAs: set callback trace");
+                    lightBoxManager.openBox(cons.SHADOWING, cons.BOX_CONTAINER,
+                        "qnetwork?cmd=open-box&type=saveAs", function() {
+                        $("#opSaveAs-filename").focus();
+                    });
+
                     
+
+                } else {
+                    lastAction = action;
                     
-                        var filename = jsonManager.getGraph().name; 
-                            //jsonManager.setName(filename);
+                    if (action === "submit") {
+                        var filename = $("#opSaveAs-filename").val(),
+                            re = new RegExp(cons.REG_EXP_FILENAME);
+
+                        if (filename.match(re) === null) {
+                            alert("You need to enter a valid filename.");
+                            
+                        } 
+                        else {
+                            jsonManager.setName(filename);
                             //window.langSelecionada = document.getElementById("opParam_library").value;
                             //console.log(filename + "_" + window.langSelecionada + ".txt");
                             console.log(jsonManager.stringifyGraph());
@@ -49,7 +83,7 @@ else {
 //console.log(codename);
 
 //console.log(filename);
-if(filename === "untitled") {opSaveAs.execute(); return OpSave;}
+
 
                             $.ajax({
                                 url: 'qnetwork?cmd=verify',
@@ -64,27 +98,32 @@ if(filename === "untitled") {opSaveAs.execute(); return OpSave;}
                                     jsonManager.setSaved(true);
 
                                     document.title = "ASDA - "+ filename;
-                                    console.log("success save");
+                                    console.log(this.callback);
+                    if (typeof this.callback === "function") {
+                            this.callback();
+                            this.callback = null;
+                        }
+                        console.trace("OpSaveAs: use callback trace");
                                 },
                                 error: function (err) {
                                     console.error('Erro:', err);
                                     alert('Error while verifying graph.');
                                 }
                             });
-                        
-                        
-                        if (typeof callback === "function") {
-                            callback();
-                            callback = null;
                         }
-                    
-                
+                        
+                        if (typeof this.callback === "function") {
+                            this.callback();
+                            this.callback = null;
+                        }
+                    }
+                }
             },
             getLastAction: function() {
                 return lastAction;
             }
         };
 
-        return OpSave;
+        return OpSaveAs;
     }
 );

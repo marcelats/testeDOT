@@ -46,6 +46,9 @@ require(["jquery", "DrawArea", "PropertiesArea", "TopOptions", "ActiveTool", "El
             $("#opSave").click(function() {
                 topOptions.ctrl("save");
             });
+            $("#opSaveAs").click(function() {
+                topOptions.ctrl("saveAs");
+            });
             $("#opOpen").click(function() {
                 topOptions.ctrl("open");
             });
