@@ -236,7 +236,7 @@ define(["JsonManager", "Cons", "LightBoxManager", "Probabilities"],
                       
                         //arrival
                         const input_arrivalsd = document.getElementById("arrival_stdDeviation");
-                        if(!input_arrivalsd.disabled) console.log("not disabled");
+                        //if(!input_arrivalsd.disabled) console.log("not disabled");
                         if(input_arrivalsd && !input_arrivalsd.disabled){console.log(input_arrivalsd);
                             console.log("Valor bruto:", JSON.stringify(input_arrivalsd.value));
 
