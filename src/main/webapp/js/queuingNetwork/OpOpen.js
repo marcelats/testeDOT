@@ -619,8 +619,8 @@ define(["jquery","jquery-ui", "LightBoxManager", "JsonManager", "OpNew", "Utils"
             var newfilename = filename;
             if (i !== 0) newfilename = filename + "_" + i;
             $.ajax({
-                url: 'qnetwork?cmd=saveAs',
-                type: 'POST',
+                url: "qnetwork?cmd=saveAs",
+                type: "POST",
                 data: {
                     filename: newfilename,
                     graphJson: jsonManager.stringifyGraph(),
