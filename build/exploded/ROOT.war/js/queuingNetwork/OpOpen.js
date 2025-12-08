@@ -74,6 +74,7 @@ define(["jquery","jquery-ui", "LightBoxManager", "JsonManager", "OpNew", "Utils"
                         const currentlyPublic = checkboxEl.textContent === "✔";
                         checkboxEl.textContent = currentlyPublic ? "" : "✔";
 
+
                         $.ajax({
                             url: "qnetwork?cmd=public",
                             type: "POST",
