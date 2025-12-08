@@ -13,6 +13,15 @@ public class CommandResponse {
     private boolean forward;
     private boolean ajax;
     private String page;
+private String jsonPayload;
+
+public String getJsonPayload() {
+    return jsonPayload;
+}
+
+public void setJsonPayload(String jsonPayload) {
+    this.jsonPayload = jsonPayload;
+}
 
     public CommandResponse() {
         this.redirect = false;

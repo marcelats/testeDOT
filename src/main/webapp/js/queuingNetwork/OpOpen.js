@@ -51,15 +51,21 @@ define(["jquery","jquery-ui", "LightBoxManager", "JsonManager", "OpNew", "Utils"
                 });*/
 
                 console.log('file-item count =', document.querySelectorAll('.file-item').length);
+                
+                
+                
                 document.addEventListener("click", (e) => {
                     const checkbox = e.target.closest(".checkbox");
                     const row = e.target.closest(".file-row-open");
 
                     if (checkbox) {
                         e.stopPropagation();
-                        const checkboxEl = e.target;
-                        const filename = checkboxEl.dataset.filenameCheckbox;
-                        const authorId = checkboxEl.dataset.authorCheckbox;
+                        //const checkboxEl = e.target;
+                        //const filename = checkboxEl.dataset.filenameCheckbox;
+                        //const authorId = checkboxEl.dataset.authorCheckbox;
+                        const filename = checkbox.dataset.filenameCheckbox;
+                        const authorId = checkbox.dataset.authorCheckbox;
+                        
                         const userId = document.getElementById("current-user").dataset.userId;
                         console.log(authorId);
                         console.log(userId);
@@ -68,29 +74,37 @@ define(["jquery","jquery-ui", "LightBoxManager", "JsonManager", "OpNew", "Utils"
                             return;
                         }
 
-                        if (checkboxEl.dataset.busy === "true") return;
-                        checkboxEl.dataset.busy = "true";
+                        //if (checkboxEl.dataset.busy === "true") return;
+                        //checkboxEl.dataset.busy = "true";
 
-                        const currentlyPublic = checkboxEl.textContent === "✔";
-                        checkboxEl.textContent = currentlyPublic ? "" : "✔";
+if (checkbox.dataset.busy === "true") return;
+                        checkbox.dataset.busy = "true";
+
+                        //const currentlyPublic = checkboxEl.textContent === "✔";
+                        //checkboxEl.textContent = currentlyPublic ? "" : "✔";
 
 
                         $.ajax({
-                            url: "qnetwork?cmd=public",
-                            type: "POST",
-                            data: { graphName: filename },
-                            success: function() {
-                                jsonManager.setSaved(true);
-                            },
-                            error: function(xhr, ajaxOptions, thrownError) {
-                                checkboxEl.textContent = currentlyPublic ? "✔" : "";
-                                var errorHeader = xhr.getResponseHeader('fot-error');
-                                alert(errorHeader !== null ? errorHeader : thrownError);
-                            },
-                            complete: function() {
-                                checkboxEl.dataset.busy = "false";
-                            }
-                        });
+    url: "qnetwork?cmd=public",
+    type: "POST",
+    data: { graphName: filename },
+    success: function(respText) {
+        console.log("RAW RESPONSE:", respText);
+    console.log("TYPE:", typeof respText);
+        //const resp = JSON.parse(respText);
+        //checkboxEl.textContent = respText.publicGraph ? "✔" : "";
+        checkbox.textContent = respText.publicGraph ? "✔" : "";
+    },
+    error: function() {
+        alert("Erro ao alternar visibilidade.");
+    },
+
+        complete: function() {
+            checkbox.dataset.busy = "false";
+        }
+});
+
+
                     } else if (row) {
                         var filename = row.dataset.filename;
                         var authorId = row.dataset.authorname;

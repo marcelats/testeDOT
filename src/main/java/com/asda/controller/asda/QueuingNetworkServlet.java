@@ -54,9 +54,16 @@ public class QueuingNetworkServlet extends HttpServlet {
                     FlowControl.redirect(next.getPage(), req, res);
                 } else if (next.isForward()) {
                     FlowControl.forward(next.getPage(), req, res);
-                } else if (next.isAjax()) {
-                    FlowControl.ajaxRedirect(REDIRECT_HEADER, next.getPage(), req, res);
+                //} else if (next.isAjax()) {System.out.println("isajax");
+                  //  FlowControl.ajaxRedirect(REDIRECT_HEADER, next.getPage(), req, res);
                 }
+                else if (next.isAjax()) {
+    res.setContentType("application/json;charset=UTF-8");
+    res.setCharacterEncoding("UTF-8");
+    res.getWriter().write(next.getJsonPayload());
+    res.getWriter().flush();
+}
+
             }
         } catch (CommandException e) {
             res.sendError(HttpServletResponse.SC_BAD_REQUEST, e.toString());

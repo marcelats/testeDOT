@@ -1,90 +1,94 @@
 package com.asda.model.asdaCommands;
+
 import com.asda.controller.asda.JpaContextListener;
 import com.asda.Command;
 import com.asda.CommandException;
 import com.asda.CommandResponse;
 import com.asda.beans.AccountBean;
 import com.asda.model.accountsCommands.UserSessionManager;
+
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
-import jakarta.persistence.Query;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-/**
- *
- * @author Felipe Osorio Thomé
- */
+
+import org.json.JSONObject;
+
 public class PublicGraph implements Command {
-
-    private CommandResponse aResponse;
-
-    private EntityManager em;
+    
 
     @Override
     public CommandResponse execute(HttpServletRequest req, HttpServletResponse res)
         throws CommandException {
 
-            HttpSession session = req.getSession();
-            UserSessionManager sessionMgr = UserSessionManager.getInstance();
-            AccountBean account = sessionMgr.getAccountUser(session);
+        CommandResponse response = new CommandResponse();
+        response.setAjax(true);   // <-- ESSENCIAL: diz ao front controller que é resposta AJAX
 
-            String graphName = req.getParameter("graphName");
+        HttpSession session = req.getSession();
+        UserSessionManager sessionMgr = UserSessionManager.getInstance();
+        AccountBean account = sessionMgr.getAccountUser(session);
 
-            if (graphName != null ) {
-                em = JpaContextListener.getEmf().createEntityManager();
-                System.out.println(em);
-                System.out.println(account.getUserId());
-                try {
+        String graphName = req.getParameter("graphName");
 
-                    em.getTransaction().begin();
-                    em.createNamedQuery("graphs.togglePublic")
-                    .setParameter("user", account)
-                    .setParameter("name", graphName).executeUpdate();
-                    em.flush();
-em.clear();
-                    em.getTransaction().commit();
-                    
-                    
-/*Query q = em.createNativeQuery(
-    "UPDATE graphs SET publicgraph = NOT publicgraph WHERE graph_name = :name AND user_id = :user"
-);
-q.setParameter("name", graphName);
-q.setParameter("user", account);
-q.executeUpdate();*/
-
-/*em.getTransaction().begin();
-
-
-                em.createNativeQuery(
-                    "UPDATE graphs SET publicgraph = NOT publicgraph WHERE graph_name = :name AND user_id = :user"
-                )
-                .setParameter("name", graphName)
-.setParameter("user", account)
-                .executeUpdate(); // <- ESSENCIAL
-
-                em.getTransaction().commit();
-                em.close();*/
-/*Query q = em.createNativeQuery(
-    "UPDATE graphs SET publicgraph = NOT publicgraph WHERE graph_name = :name AND user_id = :user"
-);
-q.setParameter("name", graphName);
-q.setParameter("user", account);
-q.executeUpdate();*/
-
-
-
-
-                } catch (NoResultException e) {
-
-                    throw new CommandException("The graph name is invalid.");
-
-                } catch (Exception e) {
-                    System.out.println(e);
-                    throw new CommandException("An error occurred.");
-                }   
-                finally{em.close();}
-            }
-            return aResponse;
+        if (graphName == null || graphName.isBlank()) {
+            throw new CommandException("Graph name not provided.");
         }
+
+        EntityManager em = JpaContextListener.getEmf().createEntityManager();
+
+        try {
+            em.getTransaction().begin();
+
+            // Alterna publicGraph
+            em.createNativeQuery(
+                "UPDATE graphs SET publicGraph = NOT publicGraph " +
+                "WHERE graph_name = ? AND user_id = ?"
+            )
+            .setParameter(1, graphName)
+            .setParameter(2, account.getUserId())
+            .executeUpdate();
+
+            em.getTransaction().commit();
+
+            // Lê o novo valor
+            Boolean updatedValue = (Boolean) em.createNativeQuery(
+                "SELECT publicGraph FROM graphs WHERE graph_name = ? AND user_id = ?"
+            )
+            .setParameter(1, graphName)
+            .setParameter(2, account.getUserId())
+            .getSingleResult();
+
+            // Monta JSON com o novo estado
+            /*JSONObject json = new JSONObject();
+            json.put("graph", graphName);
+            json.put("public", updatedValue);
+em.close();
+            response.setPage(json.toString());  // <-- JSON vai no page()
+            */
+            
+
+response.setJsonPayload("{\"publicGraph\": " + updatedValue + "}");
+
+
+            
+            
+            return response;
+
+        } catch (NoResultException e) {
+
+            throw new CommandException("Graph not found.");
+
+        } catch (Exception e) {
+
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw new CommandException("An error occurred while updating visibility.");
+
+        } finally {
+            em.close();
+        }
+    }
 }
