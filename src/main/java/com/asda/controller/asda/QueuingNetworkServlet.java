@@ -74,7 +74,7 @@ public class QueuingNetworkServlet extends HttpServlet {
         commands.put("init", new Init());
         commands.put("open-properties", new OpenProperties());
         commands.put("open-box", new OpenBox());
-        commands.put("saveAs", new SaveGraph());
+        commands.put("saveas", new SaveGraph());
         commands.put("open", new OpenGraph());
         commands.put("public", new PublicGraph());
         commands.put("delete", new DeleteGraph());
