@@ -24,12 +24,12 @@ public class Enviador {
         URL url;
         if("Java".equals(lang) ||"Python".equals(lang) || "R".equals(lang) || lang==null)
         {// 2. Constrói POST para o container Python
-            url = new URL("http://container_b:8000/processar");
+            url = new URL("http://rjp_code:8000/processar");
         }
         else
         {
             System.out.println("lang = C"); 
-            url = new URL("http://meu-java:8002/processar");
+            url = new URL("http://c_code:8002/processar");
         }
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setDoOutput(true);
