@@ -1,3 +1,9 @@
+<%-- 
+    Document   : opOpen
+    Created on : 21/05/2014, 21:18:58
+    Author     : Felipe Osorio Thomé
+    Author     : Marcela Tiemi Shinzato
+--%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -10,81 +16,79 @@
     </head>
     <body>
         <div id="current-user" data-user-id="${currentUserId}" style="display:none;"></div>
-        <div id="opOpenBox" class="boxContent">
-            <div class="btCloseDiv cf">
-                <span class="boxTitle">Open</span>
-                <span id="opOpen-btClose"><img src="img/btClose.png"/></span>
+        <div id="op-open-box" class="box-content">
+            <div class="bt-close-div cf">
+                <span class="box-title">Open</span>
+                <span id="op-open-bt-close"><img src="img/btClose.png"/></span>
             </div>
 
-            <div id="opOpen-top" class="filesWindow">
-            <!-- Cabeçalho -->
-                <div class="filesHeader">
+            <div id="op-open-top" class="files-window">
+                <div class="files-header">
                     <span class="file-col">Filename</span>
                     <span class="author-col">Author</span>
                     <span class="privacy-col">Public</span>
                     <span class="date-col">Date</span>
                 </div>
 
-                        <!-- Lista de arquivos -->
-                <c:forEach var="arquivo" items="${arquivos}">
+                <c:forEach var="file" items="${files}">
                     <div class="file-row-open"
-                        data-filename="${arquivo.graphName}"
-                        data-authorname="${arquivo.user.userId}">
+                        data-filename="${file.graphName}"
+                        data-authorname="${file.user.userId}">
                         <span class="file-col">
-                            ${arquivo.graphName}
+                            ${file.graphName}
                         </span>
                         <span class="author-col">
-                            ${arquivo.user.userId}
+                            ${file.user.userId}
                         </span>
                         <span class="privacy-col">
-                            <span class="checkbox" data-filename-checkbox="${arquivo.graphName}" public="${arquivo.publicGraph ? "✔" : ""}" data-author-checkbox="${arquivo.user.userId}">
-                                ${arquivo.publicGraph ? "✔" : ""}
+                            <span class="checkbox" data-filename-checkbox="${file.graphName}" public="${file.publicGraph ? "✔" : ""}" data-author-checkbox="${file.user.userId}">
+                                ${file.publicGraph ? "✔" : ""}
                             </span>
                         </span>                      
                         <span class="date-col">
-                            <span>${arquivo.createdAtFormatado}</span>
+                            <span>${file.formattedCreatedAt}</span>
                         </span>
                     </div>
                 </c:forEach>
             </div>
-            <div id="opOpen-bottom" class="standardForm">
+            <div id="op-open-bottom" class="standard-form">
                 <form>
                     <div class="form-row">
-                        <label for="opOpen-filename">File name:</label>
-                        <input id="opOpen-filename" type="text" class="inputText large">
+                        <label for="op-open-filename">File name:</label>
+                        <input id="op-open-filename" type="text" class="input-text large">
                     </div>
 
                     <div class="form-row">
-                        <label for="opOpen-author">Author:</label>
-                        <input id="opOpen-author" type="text" class="inputText large">
+                        <label for="op-open-author">Author:</label>
+                        <input id="op-open-author" type="text" class="input-text large">
                     </div>
 
                     <div class="form-buttons">
-                        <input id="opOpen-btSubmit" type="button" value="Open" class="button">
-                        <input id="opCopy-btSubmit" type="button" value="Copy" class="button">
-                        <input id="opRename-btSubmit" type="button" value="Rename" class="button">
-                        <input id="opDelete-btSubmit" type="button" value="Delete" class="button">
-                        <input id="opGraph-btSubmit" type="button" value="Graph" class="button">
-                        <input id="opCode-btSubmit" type="button" value="Code" class="button">
-                        <input id="opReport-btSubmit" type="button" value="Report" class="button">
+                        <input id="op-open-bt-submit" type="button" value="Open" class="button">
+                        <input id="op-copy-bt-submit" type="button" value="Copy" class="button">
+                        <input id="op-rename-bt-submit" type="button" value="Rename" class="button">
+                        <input id="op-delete-bt-submit" type="button" value="Delete" class="button">
+                        <input id="op-graph-bt-submit" type="button" value="Graph" class="button">
+                        <input id="op-code-bt-submit" type="button" value="Code" class="button">
+                        <input id="op-report-bt-submit" type="button" value="Report" class="button">
                     </div>
 
                     <div class="form-row">
-                        <label for="opOpen-newname">Rename to:</label>
-                        <input id="opOpen-newname" type="text" class="inputText large">
+                        <label for="op-open-new-name">Rename to:</label>
+                        <input id="op-open-new-name" type="text" class="inputText large">
                     </div>
                 </form>
             </div>
         </div>
-        <!-- Modal Rename -->
-        <div id="renameModal" class="modal" style="display:none;">
+
+        <div id="rename-modal" class="modal" style="display:none;">
             <div class="modal-content">
-                <span id="renameClose" class="close">&times;</span>
-                <h3 id="renameTitle"></h3>
-                <input type="text" id="renameInput" class="inputText large">
+                <span id="rename-close" class="close">&times;</span>
+                <h3 id="rename-title"></h3>
+                <input type="text" id="rename-input" class="input-text large">
                 <div class="modal-buttons">
-                    <button id="renameOk" class="button">OK</button>
-                    <button id="renameCancel" class="button">Cancel</button>
+                    <button id="rename-ok" class="button">OK</button>
+                    <button id="rename-cancel" class="button">Cancel</button>
                 </div>
             </div>
         </div>

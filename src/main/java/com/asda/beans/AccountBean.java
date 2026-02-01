@@ -1,5 +1,4 @@
 package com.asda.beans;
-
 import com.asda.utils.Md5Hash;
 import java.io.Serializable;
 import java.util.List;
@@ -31,6 +30,7 @@ import org.hibernate.validator.constraints.NotEmpty;
     @NamedQuery(name="users.findUser",
                 query="SELECT u FROM AccountBean u WHERE u.email = :email AND u.passwordHash = :password"),
 })
+
 public class AccountBean implements Serializable {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -38,7 +38,7 @@ public class AccountBean implements Serializable {
     private Long userId;
     
     @OneToMany(mappedBy="user", cascade=CascadeType.PERSIST, orphanRemoval=true,
-            fetch=FetchType.LAZY)
+        fetch=FetchType.LAZY)
     private List<GraphBean> graphs;
     
     @Column(unique = true, nullable = false)

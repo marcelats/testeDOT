@@ -10,26 +10,29 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-
-@jakarta.ws.rs.Path("/enviar")
-public class Enviador {
+/**
+ *
+ * @author Marcela Tiemi Shinzato
+ */
+@jakarta.ws.rs.Path("/sendcode")
+public class CodeSender {
 
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public Response receberArquivo(@FormDataParam("arquivo")  InputStream fileInputStream,@FormDataParam("lang") String lang) throws IOException {
-        // 1. Salva temporariamente o graph.gv
+    public Response receiveFile(@FormDataParam("file") InputStream fileInputStream,@FormDataParam("lang") String lang) throws IOException {
+        // Save graph.gv temporarily
         Path tempPath = Files.createTempFile("graph", ".gv");
         Files.copy(fileInputStream, tempPath, StandardCopyOption.REPLACE_EXISTING);
         String boundary = "----JavaBoundary" + System.currentTimeMillis();
         URL url;
-        if("Java".equals(lang) ||"Python".equals(lang) || "R".equals(lang) || lang==null)
-        {// 2. Constrói POST para o container Python
-            url = new URL("http://rjp_code:8000/processar");
+        // Build POST to container
+        if("Java".equals(lang) ||"Python".equals(lang) || "R".equals(lang) || lang == null)
+        {
+            url = new URL("http://rjp_code:8000/process");
         }
         else
         {
-            System.out.println("lang = C"); 
-            url = new URL("http://c_code:8002/processar");
+            url = new URL("http://c_code:8002/process");
         }
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setDoOutput(true);
@@ -40,28 +43,29 @@ public class Enviador {
             out.writeBytes("--" + boundary + "\r\n");
             out.writeBytes("Content-Disposition: form-data; name=\"lang\"\r\n\r\n");
             out.writeBytes(lang + "\r\n");
-            // Cabeçalho da parte do arquivo
+            // header
             out.writeBytes("--" + boundary + "\r\n");
-            out.writeBytes("Content-Disposition: form-data; name=\"arquivo\"; filename=\"graph.gv\"\r\n");
+            out.writeBytes("Content-Disposition: form-data; name=\"file\"; filename=\"graph.gv\"\r\n");
             out.writeBytes("Content-Type: text/plain\r\n\r\n");
-            Files.copy(tempPath, out); // envia o conteúdo
+            Files.copy(tempPath, out); 
+            // send content
             out.writeBytes("\r\n--" + boundary + "--\r\n");
             out.flush();
         }
 
-        // 3. Lê resposta do container Python (o arquivo codigo.py)
+        // 3. Read response from container (the code file)
         int status = conn.getResponseCode();
         if (status != 200) {
             return Response.status(Response.Status.BAD_GATEWAY).entity("Error when calling container").build();
         }
 
         InputStream respostaPython = conn.getInputStream();
-        byte[] resultado = respostaPython.readAllBytes(); // código em bytes
+        byte[] result = respostaPython.readAllBytes(); // code in bytes
 
-        // 4. Retorna o código como download
-        return Response.ok(new ByteArrayInputStream(resultado))
+        // 4. Return code as download
+        return Response.ok(new ByteArrayInputStream(result))
                 .type("text/x-python")
-                .header("Content-Disposition", "attachment; filename=\"codigo.py\"")
+                .header("Content-Disposition", "attachment; filename=\"code.py\"")
                 .build();
         }
         

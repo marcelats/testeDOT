@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  *
  * @author Felipe Osorio Thomé
+ * @author Marcela Tiemi Shinzato
  */
 public class SignInCommand implements Command {
 
@@ -27,20 +28,20 @@ public class SignInCommand implements Command {
         throws CommandException {
             AccountBean account = new AccountBean();
 
-            if(!req.getParameter("si_name").equals("")) {
-                account.setName(req.getParameter("si_name"));
+            if(!req.getParameter("si-name").equals("")) {
+                account.setName(req.getParameter("si-name"));
             }
-            if(!req.getParameter("si_email").equals("")) {
-                account.setEmail(req.getParameter("si_email"));
+            if(!req.getParameter("si-email").equals("")) {
+                account.setEmail(req.getParameter("si-email"));
             }
-            if(!req.getParameter("si_course").equals("")) {
-                account.setCourse(req.getParameter("si_course"));
+            if(!req.getParameter("si-course").equals("")) {
+                account.setCourse(req.getParameter("si-course"));
             }
-            if(!req.getParameter("si_class").equals("")) {
-                account.setUserClass(req.getParameter("si_class"));
+            if(!req.getParameter("si-class").equals("")) {
+                account.setUserClass(req.getParameter("si-class"));
             }
-            if(!req.getParameter("si_password").equals("")) {
-                account.setPasswordHash(req.getParameter("si_password"));
+            if(!req.getParameter("si-password").equals("")) {
+                account.setPasswordHash(req.getParameter("si-password"));
             }
             account.setRegistrationDate(Calendar.getInstance());
 

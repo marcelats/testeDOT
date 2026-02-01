@@ -26,26 +26,26 @@
         <script type="text/javascript" src="js/index/simpleLightBox.js"></script>
     </head>
     <body>
-        <div id="wrapLogin">
-            <div id="topLogin">
+        <div id="wrap-login">
+            <div id="top-login">
                 <img src="img/logo.png"/>
             </div>
 
-            <div id="loginFormDiv" class="cf">
-                <form action="" method="post" id="login" class="standardForm">
+            <div id="login-form-div" class="cf">
+                <form action="" method="post" id="login" class="standard-form">
                     <div class="field">
-                        <label for="user" class="labelTop">User</label>
-                        <input name="user" id="user" class="inputText dark relLarge"/>
+                        <label for="user" class="label-top">User</label>
+                        <input name="user" id="user" class="input-text dark rel-large"/>
                     </div>
 
                     <div class="field">
-                        <label for="password" class="labelTop">Password</label>
-                        <input type="password" name="password" id="password" class="inputText dark relLarge"/>
+                        <label for="password" class="label-top">Password</label>
+                        <input type="password" name="password" id="password" class="input-text dark rel-large"/>
                     </div>
 
                     <h2>
                         <!--<span id="forgotPassLink" class="link">Forgot your password?</span> | -->
-                        <span id="newUserLink" class="link">New user</span>
+                        <span id="new-user-link" class="link">New user</span>
                     </h2>
 
                     <div class="right">
@@ -57,48 +57,48 @@
         </div>
 
         <div id="shadowing" class="shadowing">
-            <div id="wrapSignIn" class="box">
+            <div id="wrap-sign-in" class="box">
 
-                <div class="boxContent cf">
-                    <div class="btCloseDiv cf">
-                        <span class="boxTitle">Sign in</span>
+                <div class="box-content cf">
+                    <div class="bt-close-div cf">
+                        <span class="box-title">Sign in</span>
 
-                        <span id="btSignInClose">
+                        <span id="bt-sign-in-close">
                             <img src="img/btClose.png"/>
                         </span>
                     </div>
 
-                    <form action="" method="post" id="signin" class="standardForm">
+                    <form action="" method="post" id="signin" class="standard-form">
                         <h1>The fields with * are mandatory.</h1>
 
                         <div class="field">
-                            <label for="si_email" class="labelTop">Email *</label>
-                            <input name="si_email" id="si_email" class="inputText dark large"/>
+                            <label for="si-email" class="label-top">Email *</label>
+                            <input name="si-email" id="si-email" class="input-text dark large"/>
                         </div>
 
                         <div class="field">
-                            <label for="si_password" class="labelTop">Password *</label>
-                            <input name="si_password" type="password" id="si_password" class="inputText dark large"/>
+                            <label for="si-password" class="label-top">Password *</label>
+                            <input name="si-password" type="password" id="si-password" class="input-text dark large"/>
                         </div>
 
                         <div class="field">
-                            <label for="si_password" class="labelTop">Confirm Password *</label>
-                            <input name="si_password2" type="password" id="si_password2" class="inputText dark large"/>
+                            <label for="si-password" class="label-top">Confirm Password *</label>
+                            <input name="si-password2" type="password" id="si-password2" class="input-text dark large"/>
                         </div>
 
                         <div class="field">
-                            <label for="si_name" class="labelTop">Name</label>
-                            <input name="si_name" id="si_name" class="inputText dark large"/>
+                            <label for="si-name" class="label-top">Name</label>
+                            <input name="si-name" id="si-name" class="input-text dark large"/>
                         </div>
 
                         <div class="field">
-                            <label for="si_course" class="labelTop">Course</label>
-                            <input name="si_course" id="si_course" class="inputText dark large"/>
+                            <label for="si-course" class="label-top">Course</label>
+                            <input name="si-course" id="si-course" class="input-text dark large"/>
                         </div>
 
                         <div class="field">
-                            <label for="si_class" class="labelTop">Class</label>
-                            <input name="si_class" id="si_class" class="inputText dark large"/>
+                            <label for="si-class" class="label-top">Class</label>
+                            <input name="si-class" id="si-class" class="input-text dark large"/>
                         </div>
 
                         <div class="right">
@@ -109,20 +109,20 @@
                 </div>
             </div>
 
-            <div id="wrapForgotPass" class="box">
-                <div class="boxContent cf">
-                    <div class="btCloseDiv cf">
-                        <span class="boxTitle">Forgot password</span>
+            <div id="wrap-forgot-pass" class="box">
+                <div class="box-content cf">
+                    <div class="bt-close-div cf">
+                        <span class="box-title">Forgot password</span>
 
-                        <span id="btForgotPassClose">
+                        <span id="bt-forgot-pass-close">
                             <img src="img/btClose.png"/>
                         </span>
                     </div>
 
-                    <form action="" method="post" id="forgotPass" class="standardForm">
+                    <form action="" method="post" id="forgot-pass" class="standard-form">
                         <div class="field">
-                            <label for="fp_email" class="labelTop">Email</label>
-                            <input name="fp_email" id="fp_email" class="inputText dark large" />
+                            <label for="fp-email" class="label-top">Email</label>
+                            <input name="fp-email" id="fp-email" class="input-text dark large" />
                         </div>
 
                         <div class="right">

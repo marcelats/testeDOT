@@ -1,9 +1,6 @@
 /*
- * (Singleton) Top options controller.
- * 
- * author: Felipe Osorio Thomé
+ * author: Marcela Tiemi Shinzato
  */
-//const fs = require('fs');
 let modelType = "True";
 let warmupTime = "False";
 define(["jquery", "JsonManager", "LightBoxManager", "Cons"],
@@ -14,180 +11,120 @@ define(["jquery", "JsonManager", "LightBoxManager", "Cons"],
 
         var OpGen = {
             execute: function() {
-                
-                
-                //baixar o .gv
-                
-                    // Callback: textarea carregado
-                    console.log("passando pelo execute do opgen");
-                //const opParam = document.getElementById("opParam_library");
-                //const selectedValue = opParam?.value;
-                //console.log(selectedValue);
-                //window.langSelecionada = selectedValue;
-                if (jsonManager.getGraph().parameters.opParam_library === 'R' || jsonManager.getGraph().parameters.opParam_library === 'Java' || jsonManager.getGraph().parameters.opParam_library === 'Python')
+                const mapNodes = jsonManager.getGraph().mapNodes;
+                if (jsonManager.getGraph().parameters["op-param-library"] === 'R' || jsonManager.getGraph().parameters["op-param-library"] === 'Java' || jsonManager.getGraph().parameters["op-param-library"] === 'Python')
                 {
-                    const mapNodes = jsonManager.getGraph().mapNodes;
                     for (let key in mapNodes) 
                     {
-                        if (jsonManager.getGraph().mapNodes[key]?.properties?.multiServer_nbrServers !== undefined) 
+                        if (mapNodes[key]?.properties?.["ms-nbr-servers"] !== undefined) 
                         {
                             alert("Remove multiservers or use C language");
                             return;
                         }         
                     }  
                 }
-                //var count = 0;
-                //var parameters = jsonManager.getGraphParameters();
-                //var numCycles = parameters["opParam_numCycles"] || 0;
-                var batchSize = jsonManager.getGraph().parameters.opParam_batchSize || 0;
+                
+                var batchSize = jsonManager.getGraph().parameters["op-param-batch-size"] || 0;
                 let content;
-                var definedValue = jsonManager.getGraph().parameters.opParam_definedValue || 0;
-                var seed = jsonManager.getGraph().parameters.opParam_seed || 1;
+                var definedValue = jsonManager.getGraph().parameters["op-param-defined-value"] || 0;
+                var seed = jsonManager.getGraph().parameters["op-param-seed"] || 1;
 
-                /*const defined = document.getElementById("opParam_timeDefined");
-    const automatic = document.getElementById("opParam_timeAutomatic");
-    if (defined.checked) {
-      warmupTime = "True";
-    } else if (automatic.checked) {
-      warmupTime = "False";
-    }*/
-   //tem que ver como isso fica escrito no graph.parameters, essa e a utima coisa que falta, depois so testar, depois questionarios
-   //opParam_timeAutomatic":"on"
-   if (opParam_timeDefined == "on") {
+                
+    /*if (opParam_timeDefined == "on") {
       warmupTime = "True";
     } else if (opParam_timeAutomatic == "on") {
       warmupTime = "False";
-    }
-                //const execTimeOp = document.getElementById("opParam_execTimeOp");
-                //const maxEntitiesOp = document.getElementById("opParam_maxEntitiesOp");
-                //var execTime = 0;
-                //if(document.getElementById("opParam_execTime")) execTime = document.getElementById("opParam_execTime").value.trim();
-                //else console.log("opParam_execTime nao encontrado");
-                var maxEntities = 0;
-                //if(document.getElementById("opParam_maxEntities")) maxEntities = document.getElementById("opParam_maxEntities").value.trim();
-
-                // nenhum radio selecionado
-                /*if (!execTimeOp.checked && !maxEntitiesOp.checked) {
-                    alert("Select a model type.");
-                    return; // encerra fluxo
-                }*/
+    }*/
                 
-                /*if(execTimeOp.checked && jsonManager.getGraph().n_sources === 0){
-                    alert("Model is open and has no sources");
-                    return;
-                }
+                //var maxEntities = 0;
                 
-                if(execTimeOp.checked && jsonManager.getGraph().n_outs === 0){
-                    alert("Model is open and has no outs");
-                    return;
-                }*/
                 
-                if(jsonManager.getGraph().n_servers === 0){
+                if(jsonManager.getGraph().nServers === 0){
                     alert("Model has no servers");
                     return;
                 }
                 
-                const erros = [];
+                const errors = [];
 
-                for (const key in jsonManager.getGraph().mapNodes) {
-                  const node = jsonManager.getGraph().mapNodes[key];
-
-                  // Ignora nós do tipo "source"
-                  if (node.type === "source" && Object.keys(node.mapTargets).length === 0){erros.push(`Node ${node.id} (source) is not linked`);}
-                  if (node.type !== "source" && node.chega === 0) {
-                    erros.push(`Node ${node.id} (${node.type}) is not linked`);
-                  }
+                for (const key in mapNodes) {
+                    const node = mapNodes[key];
+                    if (node.type === "source" && Object.keys(node.mapTargets).length === 0)
+                        errors.push(`Node ${node.index} (source) is not linked`);
+                    if (node.type !== "source" && node.hasPrev === 0) {
+                        errors.push(`Node ${node.index} (${node.type}) is not linked`);
+                    }
                 }
 
-                if (erros.length > 0) {
-                  console.error("❌ Erros encontrados nos nós:");
-                  erros.forEach(msg => alert(" - " + msg));
-                  return; // indica que houve erro
+                if (errors.length > 0) {
+                  errors.forEach(msg => alert(" - " + msg));
+                  return; 
                 }
                 
-                for (const node of Object.values(jsonManager.getGraph().mapNodes)) {
-    if ((node.type === "server" && node.properties?.server_average === undefined) || (node.type === "multiServer" && node.properties?.multiServer_average === undefined)) {
-        alert(`server ${node.id}'s service average is undefined`);
-        return;} // <-- este return sai da função externa!
-    console.log(jsonManager.getGraph().opcoes, node.id, typeof node.id, jsonManager.getGraph().opcoes.some(obj => obj.value === node.id), node.properties.arrival_average);
-        if(jsonManager.getGraph().opcoes.some(obj => obj.value === node.id) && ((node.type === "server" && (node.properties.arrival_average === undefined || node.properties.arrival_average === ''))
-                || (node.type === "multiServer" && (node.properties.ms_arrival_average === undefined || node.properties.ms_arrival_average === '')))){
-            alert(`server ${node.id}'s arrival average is undefined`);
-        return;
-        }
-    }
+                for (const node of Object.values(mapNodes)) {
+                    if ((node.type === "server" && node.properties?.["server-average"] === undefined) || (node.type === "multiserver" && node.properties?.["ms-average"] === undefined)) {
+                        alert(`Server ${node.index}'s service average is undefined`);
+                        return;
+                    } 
+                    
+                    if(jsonManager.getGraph().firstArrivalSCs.some(obj => obj.value === node.id) && ((node.type === "server" && (node.properties["arrival-average"] === undefined || node.properties["arrival-average"] === ''))
+                            || (node.type === "multiserver" && (node.properties["ms-arrival-average"] === undefined || node.properties["ms-arrival-average"] === '')))){
+                        alert(`Server ${node.index}'s arrival average is undefined`);
+                        return;
+                    }
+                }
     
     
-    if (["Java", "Python"].includes(jsonManager.getGraph().parameters.opParam_library)) {
-    for (const node of Object.values(jsonManager.getGraph().mapNodes)) {
-        for (const key of [
-            "arrival_distribution",
-            "ms_arrival_distribution",
-            "server_distribution",
-            "multiServer_distribution"
-        ]) {
-            if (["HyperExponential", "Erlang"].includes(node.properties[key])) {
-                console.log("Distributions must be Exponential, Normal or Uniform");
-                return; // Sai da função inteira (para de verificar)
-            }
-        }
-    }
-}
+                if (["Java", "Python"].includes(jsonManager.getGraph().parameters["op-param-library"])) {
+                    for (const node of Object.values(mapNodes)) {
+                        for (const key of [
+                            "arrival-distribution",
+                            "ms-arrival-distribution",
+                            "server-distribution",
+                            "ms-distribution"
+                        ]) {
+                            if (["HyperExponential", "Erlang"].includes(node.properties[key])) {
+                                alert(`Distributions must be Exponential, Normal or Uniform`);
+                                return;
+                            }
+                        }
+                    }
+                }
          
-                const invalidNodeExists = Object.entries(jsonManager.getGraph().mapNodes).some(([nodeId, node]) => {
-                    if (node.type === "server" || node.type === "multiServer") {
-                        const soma = Object.values(node.mapTargets)
+                const invalidNodeExists = Object.entries(mapNodes).some(([nodeId, node]) => {
+                    if (node.type === "server" || node.type === "multiserver") {
+                        const sum = Object.values(node.mapTargets)
                             .reduce((a, v) => a + v, 0);
 
                         if (Object.values(node.mapTargets).length > 1) {
-                            const ok = soma >= 99.5 && soma <= 100.5;
+                            const ok = sum >= 99.5 && sum <= 100.5;
                             if (!ok) {
                                 alert("The sum of the probabilities for each node must be 100."); 
-                                return true; // parar iteração
+                                return true;
                             }
                         }
                     }
                     return false;
                 });
 
-                if (invalidNodeExists) return; // interrompe execute()
+                if (invalidNodeExists) return; 
+                if (!jsonManager.getGraph().parameters["op-param-exec-time"] || jsonManager.getGraph().parameters["op-param-exec-time"] === "" || Number(jsonManager.getGraph().parameters["op-param-exec-time"]) === 0) {
+                    alert("Execution time must be different from zero");
+                    return;
+                }
+                content = `digraph ${jsonManager.getGraph().name} {\n    comment=" ${jsonManager.getGraph().parameters["op-param-exec-time"]} 0 ${batchSize} 0 aberto ${warmupTime} ${definedValue} ${seed} " rankdir=LR\n`;
 
-
-                //if (execTimeOp.checked) {
-                    if (jsonManager.getGraph().parameters.opParam_execTime === "" || Number(jsonManager.getGraph().parameters.opParam_execTime) === 0) {
-                        alert("Execution time must be different from zero");
-                        return;
-                    }
-                    content = `digraph ${jsonManager.getGraph().name} {\n    comment=" ${jsonManager.getGraph().parameters.opParam_execTime} 0 ${batchSize} 0 aberto ${warmupTime} ${definedValue} ${seed} " rankdir=LR\n`;
-                //}
-
-                /*if (maxEntitiesOp.checked) {
-                    if (maxEntities === "" || Number(maxEntities) === 0) {
-                        alert("Max number of entities must be different from zero.");
-                        return;
-                    }
-                    content = `digraph ${jsonManager.getGraph().name} {\n    comment=" 0 ${numCycles} ${batchSize} ${maxEntities} fechado ${warmupTime} ${definedValue} ${seed} " rankdir=LR\n`;
-                }      */         
-
-                Object.values(jsonManager.getGraph().mapNodes).forEach(node => {
+                Object.values(mapNodes).forEach(node => {
 
                     switch (node.type) {
                         case "source":
-                            content += `    ${node.id} [label=Source comment=1]\n`;
+                            content += `    ${node.index} [label=Source comment=1]\n`;
                             break;
                         case "server":
-                            content += `    ${node.id} [label=CPU${node.id} comment=" 2`;
-                            //count+=1;
-                            console.log(node.properties.arrival_distribution);
-                            switch (node.properties.arrival_distribution)
+                            content += `    ${node.index} [label=CPU${node.index} comment=" 2`;
+                            switch (node.properties["arrival-distribution"])
                             {
-                                                               case "None":
-
-
-
+                                case "None":
                                     content += ` None`;
-
-
                                     break;
                                 case "Normal":
                                     content += ` 0`;
@@ -207,8 +144,7 @@ define(["jquery", "JsonManager", "LightBoxManager", "Cons"],
                                 default:
                                     content += ` 0`;    
                             }
-                            console.log(node.properties.server_distribution);
-                            switch (node.properties.server_distribution)
+                            switch (node.properties["server-distribution"])
                             {
                                 case "Normal":
                                     content += ` 0`;
@@ -228,41 +164,34 @@ define(["jquery", "JsonManager", "LightBoxManager", "Cons"],
                                 default:
                                     content += ` 0`;    
                             }
-
-                            if(node.properties.server_emptyQueue === 'on')
-                            {content += ` ${node.properties.arrival_average} ${node.properties.server_average} 1 true `;}
+                            if(node.properties["server-empty-queue"] === 'on')
+                            {content += ` ${node.properties["arrival-average"]} ${node.properties["server-average"]} 1 true `;}
                             else
-                            {content += ` ${node.properties.arrival_average} ${node.properties.server_average} 1 false `;}
-                            if(node.properties.server_length === 'on')
+                            {content += ` ${node.properties["arrival-average"]} ${node.properties["server-average"]} 1 false `;}
+                            if(node.properties["server-length"] === 'on')
                             {content += `true `;}               
                             else
                             {content += `false `;}
-                            if(node.properties.arrival_sequence)content +=`${node.properties.arrival_sequence} `;
+                            if(node.properties["arrival-sequence"])content +=`${node.properties["arrival-sequence"]} `;
                             else content += `0 `;
                             content += `${seed} `;
-   
-                            if(node.properties.arrival_stdDeviation) content +=`${node.properties.arrival_stdDeviation} `;
+                            if(node.properties["arrival-sd"]) content +=`${node.properties["arrival-sd"]} `;
                             else content += `0 `;
-                            if(node.properties.server_stdDeviation) content +=`${node.properties.server_stdDeviation} `;
+                            if(node.properties["server-sd"]) content +=`${node.properties["server-sd"]} `;
                             else content += `0 `;
-                            if(jsonManager.getGraph().opcoes.some(obj => parseInt(obj.value) === parseInt(node.id))) content += `true `;
+                            if(jsonManager.getGraph().firstArrivalSCs.some(obj => parseInt(obj.value) === parseInt(node.index))) content += `true `;
                             else content += `false `;
                             content +=`"]\n`;
                             break;
                         case "out":
-                            content += `    ${node.id} [label=Destination comment=3]\n`;
+                            content += `    ${node.index} [label=Destination comment=3]\n`;
                             break;
-                        case "multiServer":
-                            content += `    ${node.id} [label=CPU comment=" 2`;
-                            switch (node.properties.ms_arrival_distribution)
+                        case "multiserver":
+                            content += `    ${node.index} [label=CPU comment=" 2`;
+                            switch (node.properties["ms-arrival-distribution"])
                             {
                                 case "None":
-
-
-
                                     content += ` None`;
-
-
                                     break;
                                 case "Normal":
                                     content += ` 0`;
@@ -282,7 +211,7 @@ define(["jquery", "JsonManager", "LightBoxManager", "Cons"],
                                 default:
                                     content += ` 0`;    
                             }
-                            switch (node.properties.multiServer_distribution)
+                            switch (node.properties["ms-distribution"])
                             {
                                 case "Normal":
                                     content += ` 0`;
@@ -302,44 +231,42 @@ define(["jquery", "JsonManager", "LightBoxManager", "Cons"],
                                 default:
                                     content += ` 0`;    
                             }
-
-
-                            if(node.properties.multiServer_nbrServers)
+                            if(node.properties["ms-nbr-servers"])
                             {
-                                if(node.properties.multiServer_emptyQueue === 'on')
+                                if(node.properties["ms-empty-queue"] === 'on')
                                 {
-                                    content += ` ${node.properties.ms_arrival_average} ${node.properties.multiServer_average} ${node.properties.multiServer_nbrServers} true `;
+                                    content += ` ${node.properties["ms-arrival-average"]} ${node.properties["ms-average"]} ${node.properties["ms-nbr-servers"]} true `;
                                 }
                                 else
                                 {
-                                    content += ` ${node.properties.ms_arrival_average} ${node.properties.multiServer_average} ${node.properties.multiServer_nbrServers} false `;
+                                    content += ` ${node.properties["ms-arrival-average"]} ${node.properties["ms-average"]} ${node.properties["ms-nbr-servers"]} false `;
                                 }
 
                             } 
                             else
                             {
-                                if(node.properties.multiServer_emptyQueue === 'on')
+                                if(node.properties["ms-empty-queue"] === 'on')
                                 {
-                                    content += ` ${node.properties.ms_arrival_average} ${node.properties.multiServer_average} 1 true `;
+                                    content += ` ${node.properties["ms-arrival-average"]} ${node.properties["ms-average"]} 1 true `;
                                 }
                                 else
                                 {
-                                    content += ` ${node.properties.ms_arrival_average} ${node.properties.multiServer_average} 1 false `;
+                                    content += ` ${node.properties["ms-arrival-average"]} ${node.properties["ms-average"]} 1 false `;
                                 }
                             }
-                            if(node.properties.multiServer_length === 'on')
+                            if(node.properties["ms-length"] === 'on')
                             {content += `true `;}
                             else
                             {content += `false `;}    
-                            if(node.properties.ms_arrival_sequence) content += `${node.properties.ms_arrival_sequence} `;
+                            if(node.properties["ms-arrival-sequence"]) content += `${node.properties["ms-arrival-sequence"]} `;
                             else content +=`0 `;
                             content += `${seed} `;
 
-                            if(node.properties.multiServer_stdDeviation) content += `${node.properties.multiServer_stdDeviation} `;
+                            if(node.properties["ms-sd"]) content += `${node.properties["ms-sd"]} `;
                             else content +=`0 `;
-                            if(node.properties.ms_arrival_stdDeviation) content += `${node.properties.ms_arrival_stdDeviation} `;
+                            if(node.properties["ms-arrival-sd"]) content += `${node.properties["ms-arrival-sd"]} `;
                             else content +=`0 `;
-                            if(jsonManager.getGraph().opcoes.some(obj => parseInt(obj.value) === parseInt(node.id))) content += `true `;
+                            if(jsonManager.getGraph().firstArrivalSCs.some(obj => parseInt(obj.value) === parseInt(node.index))) content += `true `;
                             else content += `false `;
                             content +=`"]\n`;
                             break;
@@ -348,21 +275,15 @@ define(["jquery", "JsonManager", "LightBoxManager", "Cons"],
                     }
                 });
 
-                Object.values(jsonManager.getGraph().mapNodes).forEach(node => {
+                Object.values(mapNodes).forEach(node => {
                     Object.keys(node.mapTargets).forEach(targetId => {
                         var prob;
-                        //Object.values(jsonManager.getGraph().mapNodes).forEach(probnode=>{
-                        //    if(probnode.id === targetId){
-                                //if(probnode.properties.probability) prob = probnode.properties.probability;
-                                //if(probnode.properties.ms_probability) prob = probnode.properties.ms_probability;
-                        //    }
-                        //});
                         prob = node.mapTargets[targetId];
-                        if(prob)content += `    ${node.id} -> ${targetId} [comment=${prob}]\n`;
-                        else content += `    ${node.id} -> ${targetId} [comment=1]\n`;
+                        if(prob)content += `    ${node.index} -> ${mapNodes[targetId].index} [comment=${prob}]\n`;
+                        else content += `    ${node.index} -> ${mapNodes[targetId].index} [comment=1]\n`;
                     });
                 });
-                if(jsonManager.getGraph().parameters.opParam_library === 'C SMPL' || jsonManager.getGraph().parameters.opParam_library === 'C SMPLX' || jsonManager.getGraph().parameters.opParam_library === 'C ParSMPL'|| jsonManager.getGraph().parameters.opParam_library === 'C SIMPACK' || jsonManager.getGraph().parameters.opParam_library === 'C SIMPACK2')
+                if(jsonManager.getGraph().parameters["op-param-library"] === 'C SMPL' || jsonManager.getGraph().parameters["op-param-library"] === 'C SMPLX' || jsonManager.getGraph().parameters["op-param-library"] === 'C ParSMPL'|| jsonManager.getGraph().parameters["op-param-library"] === 'C SIMPACK' || jsonManager.getGraph().parameters["op-param-library"] === 'C SIMPACK2')
                 {
                     const arrivals = jsonManager.getGraph().arrivals;
                     if (arrivals.length === 0) 
@@ -370,62 +291,31 @@ define(["jquery", "JsonManager", "LightBoxManager", "Cons"],
                             alert("Add at least one arrival");
                             return;
                         } 
-                    var length = 0;
-                     /*arrivals.forEach((obj, index) => {
-                         length+=1;
-                    });*/
-console.log(typeof arrivals); // true se for array, false se não for
+                    //var length = 0;
 
                     content += `Arrivals ${arrivals.length} `;
                     arrivals.forEach((obj, index) => {
-                        console.log(`Objeto ${index}:`);
-                        console.log("numberClients:", obj.value_numberClients);
-                        console.log("arrivalTime:", obj.value_arrivalTime);
-                        console.log("serviceCenter:", obj.serviceCenter);
-                        content += `${obj.value_numberClients} ${obj.value_arrivalTime} ${obj.serviceCenter} `;
+                        console.log(obj);
+                        content += `${obj["parsedNumberClients"]} ${obj["valueArrivalTime"]} ${obj["serviceCenterValue"]} `;
                     });
                 }
 
                 content += "\n}\n";
+                console.log(content);
                 lightBoxManager.openBox(cons.SHADOWING, cons.BOX_CONTAINER,
                 "qnetwork?cmd=open-box&type=showText",
                 function() {
-                    const blob = new Blob([content], { type: "text/plain" }); // Criar um arquivo de texto
+                    const blob = new Blob([content], { type: "text/plain" });
                     window.graphBlob = blob;
                      
-                    blob.text().then(texto => {
-                        jsonManager.getGraph().gv = texto;
-                        /*const textarea = document.getElementById("textShow");
-                        console.log("Tentando pegar textShow:", document.getElementById("textShow"));
-console.log("HTML do body:", document.body.innerHTML.includes("textShow"));
-setTimeout(() => {
-  console.log("Agora existe?", document.getElementById("textShow"));
-}, 1000);
-                        if (textarea) {
-                            textarea.value = texto;
-                            window.dispatchEvent(new Event("genClicou"));
-                        } else {
-                            console.error("Textarea ainda não foi carregado.");
-                        }*/
-                        console.log(texto);
-                        
-                        /*document.addEventListener("DOMContentLoaded", function() {
-  waitForElement("textShow", function(el) {
-    console.log("Elemento encontrado:", el);
-    el.value = texto;
-    window.dispatchEvent(new Event("genClicou"));
-  });
-});*/
-                                                                                                            onDOMReady(() => {
-  waitForElement("textShow", function(el) {
-    console.log("Elemento encontrado:", el);
-    el.value = texto;
-    window.dispatchEvent(new Event("genClicou"));
-  });
-});
-
-console.log("dps do domcontentloaded");
-                        
+                    blob.text().then(text => {
+                        jsonManager.getGraph().gv = text;
+                        onDOMReady(() => {
+                            waitForElement("text-show", function(el) {
+                                el.value = text;
+                                window.dispatchEvent(new Event("genClicked"));
+                            });
+                        });                    
                     });
                 });
             },
@@ -437,9 +327,9 @@ console.log("dps do domcontentloaded");
     }
 );
   
- function checkModelType() { 
-    const defined = document.getElementById("opParam_timeDefined");
-    const automatic = document.getElementById("opParam_timeAutomatic");
+function checkModelType() { 
+    const defined = document.getElementById("op-param-time-defined");
+    const automatic = document.getElementById("op-param-time-automatic");
     if (defined.checked) {
       warmupTime = "True";
     } else if (automatic.checked) {
@@ -448,34 +338,29 @@ console.log("dps do domcontentloaded");
 }
 
 function waitForElement(id, callback) {
-  console.log("entrou no waitforelement");
-  const el = document.getElementById(id);
-  if (el) return callback(el);
-
-  // Se o body ainda não existe, espera
-  if (!document.body) {
-    console.warn("Body ainda não existe, tentando novamente...");
-    setTimeout(() => waitForElement(id, callback), 50);
-    return;
-  }
-
-  const observer = new MutationObserver(() => {
-    console.log("checando mutações no DOM...");
     const el = document.getElementById(id);
-    if (el) {
-      console.log("Elemento encontrado dentro do observer!");
-      observer.disconnect();
-      callback(el);
-    }
-  });
+    if (el) return callback(el);
 
-  // 🔥 Observa o body inteiro, porque o modal é injetado dinamicamente
-  observer.observe(document.body, { childList: true, subtree: true });
+    if (!document.body) {
+        setTimeout(() => waitForElement(id, callback), 50);
+        return;
+    }
+
+    const observer = new MutationObserver(() => {
+        const el = document.getElementById(id);
+        if (el) {
+            observer.disconnect();
+            callback(el);
+        }
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
 }
+
 function onDOMReady(callback) {
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", callback);
-  } else {
-    callback();
-  }
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", callback);
+    } else {
+        callback();
+    }
 }

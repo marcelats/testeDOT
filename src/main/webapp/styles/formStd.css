@@ -2,36 +2,37 @@
     Document   : formStd
     Created on : 22/05/2014, 02:03:58
     Author     : Felipe Osorio Thomé
+    Author     : Marcela Tiemi Shinzato
     Description:
         Class styles for forms.
 */
 
-.standardForm {
+.standard-form {
     font-size: 13px;
     background: #222;
 }
-.standardForm .field {
+.standard-form .field {
     margin-bottom: 5px;
 }
-.standardForm fieldset {
+.standard-form fieldset {
     display: block;
     border: solid 1px #eee;
     padding: 5px;
 }
-.standardForm legend {
+.standard-form legend {
     text-align: left;
     font-weight: 600;
     color: #eee;
 }
-.standardForm .labelTop {
+.standard-form .label-top {
     display: block;
     color: #eee;
     padding: 5px 0 5px 0;
 }
-.standardForm .labelLeft {
+.standard-form .label-left {
     padding: 0 5px 0 0;
 }
-.standardForm .inputText {
+.standard-form .input-text {
     border: none;
     padding: 3px;
     
@@ -39,7 +40,7 @@
     -moz-border-radius: 3px;
     border-radius: 3px;
 }
-.standardForm .button {
+.standard-form .button {
     color: #eee;
     text-shadow: 0 1px 0 #000;
     border: 1px solid #000;
@@ -63,44 +64,44 @@
     background-image: linear-gradient(top, #1e4447, #005e66);     
 }
 
-.standardForm .error {
+.standard-form .error {
     display: block;
     font-size: 11px;
     font-weight: 400;
     color: red;
 }
 
-.standardForm .left {
+.standard-form .left {
     text-align: left;
 }
-.standardForm .right {
+.standard-form .right {
     text-align: right;
 }
-.standardForm .center {
+.standard-form .center {
     text-align: center;
 }
 
-.inputText.dark {
+.input-text.dark {
     color: #eee;
     font-size: 13px;
     background: #141414;
     border: 2px solid #555;
 }
-.inputText.small {
+.input-text.small {
     width: 50px;
 }
-.inputText.medium {
+.input-text.medium {
     width: 100px;
 }
-.inputText.large {
+.input-text.large {
     width: 250px;
 }
-.inputText.relSmall {
+.input-text.rel-small {
     width: 20%;
 }
-.inputText.relMedium {
+.input-text.rel-medium {
     width: 50%;
 }
-.inputText.relLarge {
+.input-text.rel-large {
     width: 95%;
 }

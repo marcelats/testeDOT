@@ -1,3 +1,8 @@
+/*
+ * (Singleton) Open or Close a light box.
+ * 
+ * author: Felipe Osorio Thomé
+ */
 define([],
     function() {
         "use strict";

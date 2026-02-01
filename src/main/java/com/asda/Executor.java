@@ -10,14 +10,17 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-
-@jakarta.ws.rs.Path("/executar")
+/**
+ *
+ * @author Marcela Tiemi Shinzato
+ */
+@jakarta.ws.rs.Path("/execute")
 public class Executor {
 
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public Response receberArquivo(@FormDataParam("arquivo") InputStream fileInputStream,@FormDataParam("lang") String lang) throws IOException {
-        // 1. Salva temporariamente o graph.gv
+    public Response receiveFile(@FormDataParam("file") InputStream fileInputStream,@FormDataParam("lang") String lang) throws IOException {
+        // Save code temporarily
         Path tempPath;
         switch (lang) {
             case "R":
@@ -36,44 +39,44 @@ public class Executor {
                 tempPath = Files.createTempFile("code", ".py");
                 break;
         }
-        //System.out.println(new String(fileInputStream.readAllBytes(), StandardCharsets.UTF_8));
         Files.copy(fileInputStream, tempPath, StandardCopyOption.REPLACE_EXISTING);
 
-        // 2. Constrói POST para o container Python
+        // Build POST to container
         String boundary = "----JavaBoundary" + System.currentTimeMillis();
-        URL url = new URL("http://executor:8000/executar");
+        URL url = new URL("http://executor:8000/execute");
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setDoOutput(true);
         conn.setRequestMethod("POST");
         conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
-        conn.setConnectTimeout(5000); // até 5 segundos para conectar
-        conn.setReadTimeout(20000);   // até 20 segundos aguardando resposta
+        conn.setConnectTimeout(5000); 
+        conn.setReadTimeout(20000);  
 
         try (DataOutputStream out = new DataOutputStream(conn.getOutputStream())) {
             out.writeBytes("--" + boundary + "\r\n");
             out.writeBytes("Content-Disposition: form-data; name=\"lang\"\r\n\r\n");
             out.writeBytes(lang + "\r\n");
-            // Cabeçalho da parte do arquivo
+            // header
             out.writeBytes("--" + boundary + "\r\n");
             switch (lang) {
             case "R":
-                out.writeBytes("Content-Disposition: form-data; name=\"arquivo\"; filename=\"code.r\"\r\n");
+                out.writeBytes("Content-Disposition: form-data; name=\"file\"; filename=\"code.r\"\r\n");
                 break;
             case "Java":
-                out.writeBytes("Content-Disposition: form-data; name=\"arquivo\"; filename=\"code.zip\"\r\n");
+                out.writeBytes("Content-Disposition: form-data; name=\"file\"; filename=\"code.zip\"\r\n");
                 break;
             case "C SMPL":
-                out.writeBytes("Content-Disposition: form-data; name=\"arquivo\"; filename=\"code.c\"\r\n");
+                out.writeBytes("Content-Disposition: form-data; name=\"file\"; filename=\"code.c\"\r\n");
                 break;
             case "C SMPLX":
-                out.writeBytes("Content-Disposition: form-data; name=\"arquivo\"; filename=\"code.c\"\r\n");
+                out.writeBytes("Content-Disposition: form-data; name=\"file\"; filename=\"code.c\"\r\n");
                 break;
             default:
-                out.writeBytes("Content-Disposition: form-data; name=\"arquivo\"; filename=\"code.py\"\r\n");
+                out.writeBytes("Content-Disposition: form-data; name=\"file\"; filename=\"code.py\"\r\n");
                 break;
         }       
             out.writeBytes("Content-Type: application/zip\r\n\r\n");
-            Files.copy(tempPath, out); // envia o conteúdo
+            Files.copy(tempPath, out); 
+            // send content
             out.writeBytes("\r\n--" + boundary + "--\r\n");
             out.flush();
         }
@@ -87,8 +90,8 @@ public class Executor {
             }
 
             try (InputStream respostaPython = conn.getInputStream()) {
-                byte[] resultado = respostaPython.readAllBytes();
-                return Response.ok(new ByteArrayInputStream(resultado))
+                byte[] result = respostaPython.readAllBytes();
+                return Response.ok(new ByteArrayInputStream(result))
                         .type("text/x-python")
                         .header("Content-Disposition", "attachment; filename=\"report.txt\"")
                         .build();

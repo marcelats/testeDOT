@@ -2,6 +2,7 @@
     Document   : multiServerProperties
     Created on : 11/02/2014, 19:19:32
     Author     : Felipe Osorio Thomé
+    Author     : Marcela Tiemi Shinzato
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -11,36 +12,36 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     </head>
     <body>
-        <div id="multiServerProperties" class="standardForm">
+        <div id="ms-properties" class="standard-form">
             <form>
-                <input type="hidden" id="callerId">
-                <input type="hidden" id="callerType">
+                <input type="hidden" id="caller-id">
+                <input type="hidden" id="caller-type">
 
                 <fieldset>
                     <legend>Server type</legend>
                     <div class="field">
-                        <label for="multiServer_nbrServers" class="labelLeft">Number of servers</label>
-                        <input id="multiServer_nbrServers" type="text" class="inputText small" value="1">
+                        <label for="ms-nbr-servers" class="label-left">Number of servers</label>
+                        <input id="ms-nbr-servers" type="text" class="input-text small" value="1">
                     </div>
                 </fieldset>
 
                 <fieldset>
                     <legend>Queue statistics</legend>
                     <div class="field">
-                        <label for="multiServer_emptyQueue" class="labelLeft">Empty queue</label>
-                        <input id="multiServer_emptyQueue" type="checkbox">
+                        <label for="ms-empty-queue" class="label-left">Empty queue</label>
+                        <input id="ms-empty-queue" type="checkbox">
                     </div>
 
                     <div class="field">
-                        <label for="multiServer_length" class="labelLeft">Length (max / min)</label>
-                        <input id="multiServer_length" type="checkbox">
+                        <label for="ms-length" class="label-left">Length (max / min)</label>
+                        <input id="ms-length" type="checkbox">
                     </div>
                 </fieldset>
 
-                <fieldset disabled id="ms_arrival_fieldset">
+                <fieldset disabled id="ms-arrival-fieldset">
                     <legend>Arrival distribution</legend>
                     <div class="field">
-                        <select id="ms_arrival_distribution" class="inputText">
+                        <select id="ms-arrival-distribution" class="input-text">
                             <option>Exponential</option>
                             <option>HyperExponential</option>
                             <option>Normal</option>
@@ -50,25 +51,20 @@
                     </div>
 
                     <div class="field">
-                        <label for="ms_arrival_average" class="labelLeft">Average</label>
-                        <input id="ms_arrival_average" type="text" class="inputText small">
+                        <label for="ms-arrival-average" class="label-left">Average</label>
+                        <input id="ms-arrival-average" type="text" class="input-text small">
                     </div>
 
-                    <div class="field" class="multiServerArrivalSD">
-                        <label for="ms_arrival_stdDeviation" class="labelLeft">Standard deviation</label>
-                        <input type="text" id="ms_arrival_stdDeviation" class="inputText small">
+                    <div class="field" class="ms-arrival-sd">
+                        <label for="ms-arrival-sd" class="label-left">Standard deviation</label>
+                        <input type="text" id="ms-arrival-sd" class="input-text small">
                     </div>
-
-                    <!--<div class="field">
-                        <label for="ms_arrival_sequence" class="labelLeft">Random number generation seed</label>
-                        <input type="text" id="ms_arrival_sequence" class="inputText small">
-                    </div>-->
                 </fieldset>
                 
                 <fieldset>
                     <legend>Service distribution</legend>
                     <div class="field">
-                        <select id="multiServer_distribution" class="inputText">
+                        <select id="ms-distribution" class="input-text">
                             <option>Exponential</option>
                             <option>HyperExponential</option>
                             <option>Normal</option>
@@ -78,29 +74,21 @@
                     </div>
 
                     <div class="field">
-                        <label for="multiServer_average" class="labelLeft">Average</label>
-                        <input id="multiServer_average" type="text" class="inputText small">
+                        <label for="ms-average" class="label-left">Average</label>
+                        <input id="ms-average" type="text" class="input-text small">
                     </div>
 
-                    <div class="field" class="multiServerSD">
-                        <label for="multiServer_stdDeviation" class="labelLeft">Standard deviation</label>
-                        <input type="text" id="multiServer_stdDeviation" class="inputText small">
+                    <div class="field" class="ms-sd">
+                        <label for="ms-sd" class="label-left">Standard deviation</label>
+                        <input type="text" id="ms-sd" class="input-text small">
                     </div>
-                    <!--<div class="field">
-                        <label for="multiServer_sequence" class="labelLeft">Random number generation seed</label>
-                        <input id="multiServer_sequence" type="text" class="inputText small">
-                    </div>-->
                     
                 </fieldset><br>
-                <!--<div class="field">
-                    <label for="ms_probability" class="labelLeft">Probability</label>
-                    <input id="ms_probability" type="text" class="inputText small">
-                </div>-->
                 <div class="field">
-                    <input id ="ms_prob-bt" type="button" value="Probabilities" class="button">
+                    <input id ="ms-prob-bt" type="button" value="Probabilities" class="button">
                 </div>
-                <input id="ms_btCancel" type="button" value="Cancel" class="button">
-                <input id ="btSubmit" type="button" value="Ok" class="button">
+                <input id="ms-bt-cancel" type="button" value="Cancel" class="button">
+                <input id ="ms-bt-submit" type="button" value="Ok" class="button">
             </form>
         </div>
     </body>

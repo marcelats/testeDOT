@@ -4,7 +4,6 @@ import com.asda.Command;
 import com.asda.CommandException;
 import com.asda.CommandResponse;
 import com.asda.beans.AccountBean;
-
 import com.asda.model.accountsCommands.UserSessionManager;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,6 +17,7 @@ import jakarta.servlet.http.HttpSession;
 /**
  *
  * @author Felipe Osorio Thomé
+ * @author Marcela Tiemi Shinzato
  */
 public class OpenGv implements Command {
     private CommandResponse aResponse;
@@ -26,19 +26,14 @@ public class OpenGv implements Command {
     @Override
     public CommandResponse execute(HttpServletRequest req, HttpServletResponse res)
         throws CommandException, IOException {
-        System.out.println("execute do opengv");
             HttpSession session = req.getSession();
             UserSessionManager sessionMgr = UserSessionManager.getInstance();
             AccountBean account = sessionMgr.getAccountUser(session);
             String graphName = req.getParameter("graphName");
-String author = req.getParameter("author");
-            
+            String author = req.getParameter("author");
             if (graphName != null ) {
                 String graph = findGv(account, graphName, author);
-
                 if (graph != null ) {
-                    System.out.println("graph!=null");
-
                     res.setContentType("text/plain;charset=UTF-8");  
                     PrintWriter out;
                     try {
@@ -57,9 +52,7 @@ String author = req.getParameter("author");
         throws CommandException {
             String graph = null;
             try {
-                System.out.println("try");
                 em = JpaContextListener.getEmf().createEntityManager();
-                System.out.println(em);
                 graph = (String) em.createNamedQuery("graphs.findGv")
                         .setParameter("user", account.getUserId())
                         .setParameter("name", graphName)
@@ -67,17 +60,12 @@ String author = req.getParameter("author");
                         .getSingleResult();
                 System.out.println(graph);
             } catch (NoResultException e) {
-                System.out.println("catch 1");
                 throw new CommandException("The graph name is invalid.");
-
             } catch (Exception e) {
-System.out.println(e);
                 throw new CommandException("An error occurred.");
-            }
-            finally{
+            } finally {
                 em.close();
             }
-
             return graph;
         }
 }

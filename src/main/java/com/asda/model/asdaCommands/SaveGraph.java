@@ -10,72 +10,57 @@ import com.asda.beans.AccountBean;
 import com.asda.controller.asda.JpaContextListener;
 import com.asda.model.accountsCommands.UserSessionManager;
 import java.io.IOException;
-
-
+/**
+ *
+ * @author Marcela Tiemi Shinzato
+ */
 @WebServlet("/saveAs")
 public class SaveGraph extends HttpServlet implements Command {
 
     private CommandResponse aResponse;
-
     private EntityManager em;
 
     @Override
     public CommandResponse execute(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException, CommandException {
- 
         HttpSession session = req.getSession();
         UserSessionManager sessionMgr = UserSessionManager.getInstance();
         AccountBean account = sessionMgr.getAccountUser(session);
-        
-
         if (req.getParameter("filename") != null) {
             String filename = req.getParameter("filename");
             String graphJson = req.getParameter("graphJson");
-            String gv_file = req.getParameter("gv_file");
-            String code_file = req.getParameter("code_file");
-            String code_name = req.getParameter("code_name");
-            String report_file = req.getParameter("report_file");
-            String report_name = req.getParameter("report_name");
+            String gvFile = req.getParameter("gvFile");
+            String codeFile = req.getParameter("codeFile");
+            String codeName = req.getParameter("codeName");
+            String reportFile = req.getParameter("reportFile");
+            String reportName = req.getParameter("reportName");
             em = JpaContextListener.getEmf().createEntityManager();
             
             try {
                 em.getTransaction().begin();
-                System.out.println("filename: " + filename);
-                System.out.println("graphJson: " + graphJson);
-                System.out.println("user ID: " + account);
-
                 em.createNativeQuery(
                     "INSERT INTO graphs (graph_name, graph_json, user_id, publicGraph, gv, code, report, report_name, code_name) " +
-                    "VALUES (:filename, :graphJson, :user, false, :gv, :code, :report, :report_name, :code_name)"
+                    "VALUES (:filename, :graphJson, :user, false, :gv, :code, :report, :reportName, :codeName)"
                 )
                 .setParameter("filename", filename)
                 .setParameter("graphJson", graphJson)
-                .setParameter("user", account.getUserId()) // <- deve ser ID
-                .setParameter("gv", gv_file)
-                .setParameter("code", code_file)
-                .setParameter("report", report_file)
-                .setParameter("report_name", report_name)
-                .setParameter("code_name", code_name)
-                .executeUpdate(); // <- ESSENCIAL
-
+                .setParameter("user", account.getUserId()) 
+                .setParameter("gv", gvFile)
+                .setParameter("code", codeFile)
+                .setParameter("report", reportFile)
+                .setParameter("reportName", reportName)
+                .setParameter("codeName", codeName)
+                .executeUpdate();
                 em.getTransaction().commit();
                 em.close();
-
-
-                return aResponse; // Se você já respondeu direto, não precisa retornar um CommandResponse
-
+                return aResponse; 
             } catch (NoResultException e) {
-
                 throw new CommandException("The graph name is invalid.");
-
             } catch (Exception e) {
-
                 e.printStackTrace();
                 throw new CommandException("An error occurred.");
-            }
-            finally{
+            } finally {
                 em.close();
             }
-   
         }
         return null;
     }

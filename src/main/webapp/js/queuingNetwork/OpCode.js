@@ -1,3 +1,6 @@
+/*
+ * author: Marcela Tiemi Shinzato
+ */
 require.config({
     paths: {
         JSZip: "https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min"
@@ -12,76 +15,45 @@ function($, lightBoxManager, cons, JSZip, jsonManager) {
 
     var OpCode = {
         initialize: function() {
-            const btn = document.getElementById("opCode");
+            const btn = document.getElementById("op-code");
             btn.style.opacity = '0.3';
             btn.style.pointerEvents = 'none';
-            /*document.querySelector("#opParam_library")?.addEventListener("change", function () {
-                window.langSelecionada = this.value;
-            });*/
-            window.addEventListener("genClicou", () => {
+            
+            window.addEventListener("genClicked", () => {
                 btn.style.opacity = '1';
                 btn.style.pointerEvents = 'auto';
             });
-            $(document).on("click", "#opCode-btClose", function() {
+            $(document).on("click", "#op-code-bt-close", function() {
                 lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
             });
 
-            $(document).on("click", "#opCode-btOk", function() {
-                const textarea = document.getElementById("textEditor");
-                if (textarea) {
-                    const textoAtual = textarea.value;
-                    const blobCode = new Blob([textoAtual], { type: "text/plain" });
-                    window.codeBlob = blobCode;
-                    
+            $(document).on("click", "#op-code-bt-ok", function() {
+                const textArea = document.getElementById("text-editor");
+                if (textArea) {
+                    window.codeBlob = new Blob([textArea.value], { type: "text/plain" });
                     lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
-                } else {
-                    console.error("Textarea não encontrado.");
                 }
             });
 
-            $(document).on("click", "#opCode-download", function() {
-                const textarea = document.getElementById("textEditor");
-                if (textarea) {
-                    const textoAtual = textarea.value;
-                    const blobCode = new Blob([textoAtual], { type: "text/plain" });
-                    window.codeBlob = blobCode;
-                    const url = URL.createObjectURL(blobCode);
+            $(document).on("click", "#op-code-download", function() {
+                const textArea = document.getElementById("text-editor");
+                if (textArea) {
+                    const codeBlob = new Blob([textArea.value], { type: "text/plain" });
+                    window.codeBlob = codeBlob;
+                    const url = URL.createObjectURL(codeBlob);
                     const a = document.createElement("a");
                     a.href = url;
                     
-                    /*if(window.langSelecionada === 'Python' || window.langSelecionada === 'R' || !window.langSelecionada)
-                    { 
-                        const a = document.createElement("a");
-                        a.href = url;
-                    }
-                    if(jsonManager.getGraph().parameters.opParam_library === 'Python'|| !jsonManager.getGraph().parameters.opParam_library)
+                    if(jsonManager.getGraph().parameters["op-param-library"] === 'Java')
                     {
-                        a.download = jsonManager.getGraph().name + ".py";
-                    }
-                    else if(jsonManager.getGraph().parameters.opParam_library === 'R')
-                    {
-                        a.download = jsonManager.getGraph().name + ".r";
-                    }
-                     else if(jsonManager.getGraph().parameters.opParam_library === 'C SMPL' || jsonManager.getGraph().parameters.opParam_library === 'C SMPLX' || jsonManager.getGraph().parameters.opParam_library === 'C ParSMPL' || jsonManager.getGraph().parameters.opParam_library === 'C SIMPACK')
-                    {
-                        a.download = jsonManager.getGraph().name + ".c";
-                    }
-                    else if (window.langSelecionada === 'C SIMPACK2')
-                    {
-                        a.download = "code.cpp";
-                    }*/
-                    if(jsonManager.getGraph().parameters.opParam_library === 'Java')
-                    {
-                        const novoZip = new JSZip();
-                        window.listaArquivos.forEach(arquivo => {
-                            if (arquivo.nome !== "Controle.java") {
-                                  // Adiciona cada arquivo ao ZIP
-                                novoZip.file(arquivo.nome, arquivo.conteudo);
+                        const newZip = new JSZip();
+                        window.filesList.forEach(file => {
+                            if (file.name !== "Controle.java") {
+                                newZip.file(file.name, file.content);
                             }
                         });
-                        novoZip.file("Controle.java", blobCode);
-                        // Gera o ZIP e inicia o download
-                        novoZip.generateAsync({ type: "blob" })
+                        newZip.file("Controle.java", codeBlob);
+                        newZip.generateAsync({ type: "blob" })
                         .then(blob => {
                             const url = URL.createObjectURL(blob);
                             const a = document.createElement("a");
@@ -91,19 +63,17 @@ function($, lightBoxManager, cons, JSZip, jsonManager) {
                             a.click();
                             document.body.removeChild(a);
                             URL.revokeObjectURL(url);
-                        })
-                        .catch(err => {
-                            console.error("Erro ao gerar o zip:", err);
                         }); 
                     } 
-                    else {a.download = jsonManager.getGraph().code_name;}
+                    else 
+                    {
+                        a.download = jsonManager.getGraph().codeName;
+                    }
                     
                     document.body.appendChild(a);
                     a.click();
                     document.body.removeChild(a);
                     URL.revokeObjectURL(url);
-                } else {
-                    console.error("Textarea não encontrado.");
                 }
             });
         },
@@ -112,140 +82,85 @@ function($, lightBoxManager, cons, JSZip, jsonManager) {
             lightBoxManager.openBox(cons.SHADOWING, cons.BOX_CONTAINER,
                 "qnetwork?cmd=open-box&type=editor",
                 function() {
-                    // Callback: textarea carregado
-                    const blobGraph = window.graphBlob;
+                    const graphBlob = window.graphBlob;
 
-                    if (blobGraph) {
+                    if (graphBlob) {
                         const formData = new FormData();
-                        formData.append("arquivo", blobGraph, jsonManager.getGraph().name + ".gv");
-                        const opParam = document.querySelector("#opParam_library");
-                        if(jsonManager.getGraph().parameters.opParam_library)formData.append('lang', jsonManager.getGraph().parameters.opParam_library);
+                        formData.append("file", graphBlob, jsonManager.getGraph().name + ".gv");
+                        const opParam = document.querySelector("#op-param-library");
+                        if(jsonManager.getGraph().parameters["op-param-library"])formData.append('lang', jsonManager.getGraph().parameters["op-param-library"]);
                         else formData.append('lang', 'Python');
-                        console.log(jsonManager.getGraph().parameters.opParam_library);
-                        fetch("/ROOT/api/enviar", {
+                        fetch("/ROOT/api/sendcode", {
                             method: "POST",
                             body: formData
                         })
-
                         .then(response => {
-                            if (response.ok) window.dispatchEvent(new Event("codeEditorClicou"));
-                            return response.blob(); // se for arquivo vindo do backend
+                            if (response.ok) window.dispatchEvent(new Event("codeEditorClicked"));
+                            return response.blob();
                         })
-
                         .then(blobCode => {         
-                            /*const url = URL.createObjectURL(blobCode);
-                           
-                            const a = document.createElement("a");
-                            a.href = url;
-                            if(window.langSelecionada === 'R')
+                            if(jsonManager.getGraph().parameters["op-param-library"] === 'Python' || jsonManager.getGraph().parameters["op-param-library"] === 'R' || !jsonManager.getGraph().parameters["op-param-library"])
                             {
-                                a.download = jsonManager.getGraph().name + ".r";
-                            }
-                            else if(window.langSelecionada === 'Java')
-                            {
-                                a.download = jsonManager.getGraph().name + ".zip";
-                            } 
-                            else if(window.langSelecionada === 'C SMPL' || window.langSelecionada === 'C SMPLX' || window.langSelecionada === 'C ParSMPL' || window.langSelecionada === 'C SIMPACK')
-                            {
-                                a.download = jsonManager.getGraph().name + ".c";
-                            }
-                            else if (window.langSelecionada === 'C SIMPACK2')
-                            {
-                                a.download = "code.cpp";
-                            }
-                            else 
-                            {
-                                a.download = jsonManager.getGraph().name + ".py";
-                            }
-                            document.body.appendChild(a);
-                            a.click();
-                            document.body.removeChild(a);
-                            URL.revokeObjectURL(url);*/
-                            
-                            
-                            if(jsonManager.getGraph().parameters.opParam_library === 'Python' || jsonManager.getGraph().parameters.opParam_library === 'R' || !jsonManager.getGraph().parameters.opParam_library)
-                            {
-                                //console.log("!document.getElementById("opParam_library").value");
-                                blobCode.text().then(texto => {
-                                    const textarea = document.getElementById("textEditor");
-                                    if (textarea) {
-                                        textarea.value = texto;
-                                        
-                                        const blobCode = new Blob([texto], { type: "text/plain" });
+                                blobCode.text().then(text => {
+                                    const textArea = document.getElementById("textEditor");
+                                    if (textArea) {
+                                        textArea.value = text;
+                                        const blobCode = new Blob([text], { type: "text/plain" });
                                         window.codeBlob = blobCode;
-                                        jsonManager.getGraph().code = texto;
-                                    } else {
-                                        console.error("Textarea ainda não foi carregado.");
+                                        jsonManager.getGraph().code = text;
                                     }
                                 });
                             }
-                            else if(jsonManager.getGraph().parameters.opParam_library === 'Java')
+                            else if(jsonManager.getGraph().parameters["op-param-library"] === 'Java')
                             {
                                 JSZip.loadAsync(blobCode).then(zip => {
-                                // Encontra o arquivo Controle.java (case-sensitive!)
                                     const file = zip.file("Controle.java");
                                     if (!file) {
-                                        throw new Error("Arquivo Controle.java não encontrado no zip");
+                                        throw new Error("File Controle.java not found in zip");
                                     }
-                                    // Lê o conteúdo como texto
                                     return file.async("text");
                                 })
-                                .then(conteudoTexto => {
-                                    const textarea = document.getElementById("textEditor");
-                                    if (textarea) {
-                                        textarea.value = conteudoTexto;
-                                        const blobCode = new Blob([textarea.value], { type: "text/plain" });
+                                .then(textContent => {
+                                    const textArea = document.getElementById("textEditor");
+                                    if (textArea) {
+                                        textArea.value = textContent;
+                                        const blobCode = new Blob([textArea.value], { type: "text/plain" });
                                         window.codeBlob = blobCode;
-                                        jsonManager.getGraph().code = conteudoTexto;
-                                    } else {
-                                        console.error("Textarea ainda não foi carregado.");
+                                        jsonManager.getGraph().code = textContent;
                                     }
-                                })
-                                .catch(error => {
-                                    console.error("Erro:", error);
                                 });
                                 JSZip.loadAsync(blobCode)
                                 .then(zip => {
-                                    const arquivosJava = [];
-                                    zip.forEach((caminho, file) => {
+                                    const javaFiles = [];
+                                    zip.forEach((path, file) => {
                                         if (file.name.endsWith(".java")) {
-                                            arquivosJava.push(file.async("text").then(texto => ({
-                                                nome: file.name,
-                                                conteudo: texto
+                                            javaFiles.push(file.async("text").then(text => ({
+                                                name: file.name,
+                                                content: text
                                             })));
                                         }
                                     });
-                                    return Promise.all(arquivosJava);
-                                }).then(listaArquivos => {
-                                    window.listaArquivos = listaArquivos;
+                                    return Promise.all(javaFiles);
+                                }).then(filesList => {
+                                    window.filesList = filesList;
                                 });
                             }
                             else
                             {
-                                console.log("!window.langSelecionada");
-                                blobCode.text().then(texto => {
-                                    const textarea = document.getElementById("textEditor");
-                                    if (textarea) {
-                                        textarea.value = texto;
-                                        
-                                        const blobCode = new Blob([texto], { type: "text/plain" });
+                                blobCode.text().then(text => {
+                                    const textArea = document.getElementById("textEditor");
+                                    if (textArea) {
+                                        textArea.value = text;
+                                        const blobCode = new Blob([text], { type: "text/plain" });
                                         window.codeBlob = blobCode;
-                                        jsonManager.getGraph().code = texto;
-                                    } else {
-                                        console.error("Textarea ainda não foi carregado.");
+                                        jsonManager.getGraph().code = text;
                                     }
                                 });
                             }
-                        })
-                        .catch(error => {
-                            console.error("Erro ao baixar código:", error);
                         });
                     }
                 }
             );
-    
-            
-
         },
 
         getLastAction: function() {

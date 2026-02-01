@@ -16,7 +16,7 @@ import jakarta.servlet.http.HttpSession;
 
 /**
  *
- * @author Felipe Osorio Thomé
+ * @author Marcela Tiemi Shinzato
  */
 public class CopyFile implements Command {
 

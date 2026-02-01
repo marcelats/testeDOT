@@ -16,12 +16,12 @@ import org.json.JSONObject;
 
 /**
  *
- * @author Felipe Osorio Thomé
+ * @author Marcela Tiemi Shinzato
  */
 public class OpenReport implements Command {
     private CommandResponse aResponse;
     private EntityManager em;
-    private String report, report_name;
+    private String report, reportName;
 
     @Override
     public CommandResponse execute(HttpServletRequest req, HttpServletResponse res)
@@ -30,31 +30,18 @@ public class OpenReport implements Command {
             UserSessionManager sessionMgr = UserSessionManager.getInstance();
             AccountBean account = sessionMgr.getAccountUser(session);
             String graphName = req.getParameter("graphName");
-String author = req.getParameter("author");
-            
+            String author = req.getParameter("author");
             if (graphName != null ) {
                 Object graph = findReport(account, graphName, author);
-
                 if (graph != null) {
-Object[] result = (Object[]) graph;
-report = (String) result[0];
-report_name = (String) result[1];
-System.out.println("report : " + report);
-System.out.println("report_name : " + report_name);
-res.setContentType("application/json;charset=UTF-8");
-res.setCharacterEncoding("UTF-8");
-
-PrintWriter out = res.getWriter();
-out.print("{\"report\":" + JSONObject.quote(report) + ", \"report_name\":" + JSONObject.quote(report_name) + "}");
-out.flush();   
-
-                    /*try {
-                        out = res.getWriter();
-                    } catch (IOException ex) {
-                        throw new CommandException("IO Exception (response PrintWriter).");
-                    }
-                    out.print(graph);
-                    out.flush();*/
+                    Object[] result = (Object[]) graph;
+                    report = (String) result[0];
+                    reportName = (String) result[1];
+                    res.setContentType("application/json;charset=UTF-8");
+                    res.setCharacterEncoding("UTF-8");
+                    PrintWriter out = res.getWriter();
+                    out.print("{\"report\":" + JSONObject.quote(report) + ", \"report_name\":" + JSONObject.quote(reportName) + "}");
+                    out.flush();   
                 }
             }
             return aResponse;
@@ -70,19 +57,13 @@ out.flush();
                         .setParameter("name", graphName)
                         .setParameter("author", author)
                         .getSingleResult();
-               
-
-array = (Object[]) graph; // só funciona se a implementação realmente retornar Object[]
+                array = (Object[]) graph;
 
             } catch (NoResultException e) {
-                System.out.println(e);
                 throw new CommandException("The graph name is invalid.");
-
             } catch (Exception e) {
-System.out.println(e);
                 throw new CommandException("An error occurred.");
-            }
-            finally{
+            } finally {
                 em.close();
             }
 

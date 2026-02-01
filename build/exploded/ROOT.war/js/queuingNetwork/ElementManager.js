@@ -1,232 +1,219 @@
-/*
+/* *
  * Add, remove or link elements in a div.
- * 
+ *
  * author: Felipe Osorio Thomé
+ * author: Marcela Tiemi Shinzato
  */
+define([
+    "jquery",
+    "jsPlumb",
+    "DrawArea",
+    "PropertiesArea",
+    "JsonManager",
+    "Utils"
+], function ($, jsPlumb, drawArea, propertiesArea, jsonManager, utils) {
 
-define(["jquery", "jsPlumb", "DrawArea", "PropertiesArea", "JsonManager", "Utils"],
-    function($, jsPlumb, drawArea, propertiesArea, jsonManager, utils) {
-        "use strict";
+    "use strict";
 
-        function ElementManager(folder, format, drawArea) {
-            this.folder = folder;
-            this.format = format;
-            this.drawArea = drawArea;
-            this.prevElement = null;
-            this.prevEndPoint = null;
+    function ElementManager(folder, format, drawArea) {
+        this.folder = folder;
+        this.format = format;
+        this.drawArea = drawArea;
+        this.prevElement = null;
+        this.prevEndPoint = null;
+    }
+
+    ElementManager.prototype.add = function (type, position, id) {
+
+        const elementDiv = document.createElement("div");
+        const img = document.createElement("img");
+        const idDiv = document.createElement("div");
+
+        elementDiv.id = id;            
+        elementDiv.name = type;
+
+        img.src = this.folder + type + this.format;
+
+        idDiv.className = "id-div";
+        idDiv.textContent = "?";       
+
+        $(elementDiv).css({
+            position: "absolute",
+            left: position.x + "px",
+            top: position.y + "px"
+        });
+
+        elementDiv.appendChild(idDiv);
+        elementDiv.appendChild(img);
+
+        this.addEventHandlers(elementDiv);
+
+        document.getElementById(this.drawArea).appendChild(elementDiv);
+
+        this.updateVisualIndexes();
+        
+        console.log(
+  "snapshot:",
+  structuredClone(jsonManager.getGraph())
+);
+        return elementDiv;
+    };
+
+    ElementManager.prototype.addEventHandlers = function (element) {
+
+        $(element).click((event) => {
+            drawArea.ctrl(event, element);
+        });
+
+        $(element).dblclick(() => {
+            propertiesArea.ctrl(element);
+        });
+
+        $(element).draggable({
+            drag: () => jsPlumb.repaint(element),
+            stop: (event) => {
+                jsonManager.changeNodePosition(element);
+                utils.stopPropagation(event);
+            }
+        });
+    };
+
+    ElementManager.prototype.remove = function (element) {
+
+        this.prevElement = null;
+        this.prevEndPoint = null;
+
+        jsPlumb.detachAllConnections(element);
+        jsPlumb.removeAllEndpoints(element);
+
+        element.parentNode.removeChild(element);
+
+        delete jsonManager.getMapNodes()[element.id];
+
+        Object.values(jsonManager.getMapNodes()).forEach((node) => {
+            delete node.mapTargets[element.id];
+        });
+        
+        jsonManager.removeNode(element);
+
+        this.updateVisualIndexes();
+    };
+
+    ElementManager.prototype.linkElements = function (element) {
+
+        if (!element) return null;
+
+        const graph = jsonManager.getGraph();
+
+        const sourceOpts = {
+            anchor: "RightMiddle",
+            isSource: true,
+            endpoint: "Blank",
+            maxConnections: -1
+        };
+
+        const targetOpts = {
+            anchor: "LeftMiddle",
+            isTarget: true,
+            endpoint: "Blank",
+            maxConnections: -1
+        };
+
+        const connectorOpts = {
+            paintStyle: { lineWidth: 3, strokeStyle: "#660700" },
+            overlays: [["PlainArrow", { location: 1, width: 15, length: 12 }]]
+        };
+
+        const getEndpoint = (el, type) => {
+            const eps = jsPlumb.getEndpoints(el) || [];
+            for (const ep of eps) {
+                if (type === "source" && ep.isSource) return ep;
+                if (type === "target" && ep.isTarget) return ep;
+            }
+            return jsPlumb.addEndpoint(el, type === "source" ? sourceOpts : targetOpts);
+        };
+
+        if (!this.prevElement) {
+
+            const sourceType = jsonManager.getMapNodes()[element.id]?.type;
+            if (sourceType === "out") return null;
+
+            this.prevElement = element;
+            this.prevEndPoint = getEndpoint(element, "source");
+            return null;
         }
 
-        ElementManager.prototype.add = function(type, position, id) {
-            var img = document.createElement("img"),
-                elementDiv = document.createElement("div"),
-                idDiv = document.createElement("div");
+        const sourceEl = this.prevElement;
+        const targetEl = element;
 
-            img.src = this.folder + type + this.format;
-            elementDiv.id = id;
-            elementDiv.name = type;
-            idDiv.innerHTML = elementDiv.id;
+        const sourceType = jsonManager.getMapNodes()[sourceEl.id]?.type;
+        const targetType = jsonManager.getMapNodes()[targetEl.id]?.type;
 
-            $(idDiv).addClass("idDiv");
-            $(elementDiv).css({
-                position: "absolute",
-                left: (position.x) + "px",
-                top: (position.y) + "px"
-            });
+        if (
+            targetType === "source" ||
+            (sourceType === "source" && targetType === "out")
+        ) {
+            this.prevElement = null;
+            this.prevEndPoint = null;
+            return null;
+        }
 
-            this.addEventHandlers(elementDiv);
+        const exists = jsPlumb.select({
+            source: sourceEl,
+            target: targetEl
+        }).length > 0;
 
-            elementDiv.appendChild(idDiv);
-            elementDiv.appendChild(img);
-            document.getElementById(this.drawArea).appendChild(elementDiv);
+        if (exists) {
+            this.prevElement = null;
+            this.prevEndPoint = null;
+            return null;
+        }
 
-            return elementDiv;
-        };
-
-        ElementManager.prototype.addEventHandlers = function(element) {
-            $(element).click(function(event) {
-                drawArea.ctrl(event, element);
-            });
-
-            $(element).dblclick(function() {
-                propertiesArea.ctrl(element);
-            });
-
-            $(element).draggable({
-                drag: function() {
-                    jsPlumb.repaintEverything();
-                },
-                stop: function(event) {
-                    jsonManager.changeNodePosition(element);
-                    
-                    utils.stopPropagation(event);
-                }
-            });
-        };
-
-        ElementManager.prototype.remove = function(element) {
-            var father = element.parentNode;
-
-            jsPlumb.detachAllConnections(element);
-            father.removeChild(element);
-
-            // 1. Remove do graph.mapNodes
-            delete jsonManager.graph.mapNodes[element.id];
-
-            // 2. Recria mapeamento de ID antigo -> novo ID sequencial
-            const novoMapa = new Map();
-            const chavesAntigas = Object.keys(jsonManager.graph.mapNodes);
-            chavesAntigas.forEach((oldId, index) => {
-                novoMapa.set(oldId, index);
-            });
-
-            // 3. Atualiza os nós com os novos IDs
-            const novosMapNodes = {};
-            chavesAntigas.forEach((oldId) => {
-                const no = jsonManager.graph.mapNodes[oldId];
-                const novoId = novoMapa.get(oldId);
-
-                // Atualiza id no objeto
-                no.id = novoId;
-
-                // Atualiza targets
-                const novosTargets = {};
-                Object.keys(no.mapTargets).forEach((targetIdAntigo) => {
-                    const novoTarget = novoMapa.get(targetIdAntigo);
-                    if (novoTarget !== undefined) {
-                        novosTargets[novoTarget] = no.mapTargets[targetIdAntigo];
-                    }
-                });
-                no.mapTargets = novosTargets;
-
-                novosMapNodes[novoId] = no;
-            });
-            jsonManager.graph.mapNodes = novosMapNodes;
-
-            // 4. Atualiza a interface (DOM)
-            $(".idDiv").each(function() {
-                const $div = $(this);
-                const $element = $div.closest("div");
-                const oldId = $element.attr("id");
-                const novoId = novoMapa.get(oldId);
-
-                if (novoId !== undefined) {
-                    jsPlumb.removeAllEndpoints($element);
-                    $element.attr("id", novoId);
-                    $div.text(novoId);
-                }
-            });
-
-            // 5. Recriar conexões jsPlumb
-            Object.values(jsonManager.graph.mapNodes).forEach((no) => {
-                Object.keys(no.mapTargets).forEach((targetId) => {
-                    jsPlumb.connect({
-                        source: no.id.toString(),
-                        target: targetId.toString(),
-                        paintStyle: {lineWidth: 3, strokeStyle: "#660700"},
-                        anchors: ["RightMiddle", "LeftMiddle"],
-                        endpoint: "Blank",
-                        overlays: [["PlainArrow", {location: 1, width: 15, length: 12}]]
-                    });
-                });
-            });
-        };
-
-
-        ElementManager.prototype.linkElements = function(element) {
-            
-            var connection = null;
-            
-            var targetEndPoint,
-            sourceOption = {
-                anchor: "RightMiddle",
-                isSource: true,
-                endpoint: "Blank"
-            },
-            targetOption = {
-                anchor: "LeftMiddle",
-                isTarget: true,
-                endpoint: "Blank"
-            },
-            linkConnector = {
-                paintStyle: {lineWidth: 3, strokeStyle: "#660700"},
-                overlays: [["PlainArrow", {location: 1, width: 15, length: 12}]]
-            };
-
-            console.log(this.prevElement);
-            var sourceType;
-            if (this.prevElement) {
-                var id = parseInt($(this.prevElement).attr("id")); // agora funciona
-                sourceType = jsonManager.getGraph().mapNodes[id].type;
-                console.log(jsonManager.getGraph().mapNodes[id].mapTargets);
-                console.log(Object.keys(jsonManager.getGraph().mapNodes[id].mapTargets)[0], typeof Object.keys(jsonManager.getGraph().mapNodes[id].mapTargets)[0]);
-                console.log(id, typeof id);
-                if(sourceType === "source" && Object.keys(jsonManager.getGraph().mapNodes[id].mapTargets).length !== 0) 
-                    if(parseInt(Object.keys(jsonManager.getGraph().mapNodes[id].mapTargets)[0]) !== parseInt($(element).attr("id"))) return 0;
-            }
-          
-            console.log(element);
-            var targetType;
-            if (element) {
-                var id = parseInt($(element).attr("id")); // agora funciona
-                targetType = jsonManager.getGraph().mapNodes[id].type;
-            }
-
-            if (this.prevEndPoint === null) {
-                this.prevElement = element;
-                /* Tells jsPlumb to create the first end point */
-                this.prevEndPoint = jsPlumb.addEndpoint(element, sourceOption);
-                console.log("this.prevEndPoint === null");
-            } else {
-                
-                /* Avoid links between the same element or links that already exists */
-                if (!checkExistingLinks(this.prevElement, element)) {
-                    if(sourceType==="out"){console.log("caso 1 elementmanager");return 0;}
-                    if(targetType==="source"){console.log("caso 2 elementmanager");return 0;}
-                    if(sourceType==="source" && targetType==="out"){console.log("caso 3 elementmanager");return 0;}
-                    /* Tells jsPlumb to create the second end point */
-                    targetEndPoint = jsPlumb.addEndpoint(element, targetOption);
-                    /* Finally, connects elements */
-                    console.log(this.prevEndPoint, targetEndPoint);
-
-                    connection = jsPlumb.connect({source: this.prevEndPoint, target: targetEndPoint}, linkConnector);
-                    console.log(connection);
-                    if (this.prevElement) {
-                        connection.sourceId = $(this.prevElement).attr("id"); // agora funciona
-                        console.log($(this.prevElement).attr("id"));
-                }
-
-                console.log(element);
-
-                if (element) {
-                    connection.targetId = $(element).attr("id"); // agora funciona
-                    console.log($(element).attr("id"));
-                }
-                    /* Reinitialize variables for a future link */
-                    this.prevElement = null;
-                    this.prevEndPoint = null;
-                } else {
-                    //if(this.prevElement === element) console.log("this.prevElement === element");
-                    if(checkExistingLinks(this.prevElement, element)) console.log("checkExistingLinks(this.prevElement, element)");
-                    this.prevElement = null;
-                    this.prevEndPoint = null;
-                }
-            }
-
-            function checkExistingLinks(prevElement, element) {
-                var flag = false;
-
-                jsPlumb.select({source: prevElement.id}).each(function(connection) {
-                    if (connection.targetId === element.id) {
-                        flag = true;
-                    }
-                });
-
-                return flag;
-            }
-            console.log(connection);
-            return connection;
-        };
-
-        return ElementManager;
-    }
+        const connection = jsPlumb.connect({
+            source: this.prevEndPoint,
+            target: getEndpoint(targetEl, "target")
+        }, connectorOpts);
+console.log(
+  "snapshot:",
+  structuredClone(jsonManager.getMapNodes())
 );
+        //jsonManager.getMapNodes()[sourceEl.id].mapTargets[targetEl.id] = 100;
+
+        this.prevElement = null;
+        this.prevEndPoint = null;
+console.log(
+  "snapshot:",
+  structuredClone(jsonManager.getGraph())
+);
+        return connection;
+    };
+
+    ElementManager.prototype.updateVisualIndexes = function () {
+
+        let index = 0;
+
+        const $container = $("#" + this.drawArea);
+
+        $container.children("div").each(function () {
+
+            const $element = $(this);
+            const realId = $element.attr("id");
+
+            if (!realId) return; 
+
+            const $idDiv = $element.children(".id-div");
+            if ($idDiv.length === 0) return;
+
+            $idDiv.text(index);
+            $element.attr("data-node-index", index);
+
+            if (jsonManager.getMapNodes()[realId]) {
+                jsonManager.getMapNodes()[realId].index = index;
+            }
+
+            index++;
+        });
+    };
+
+    return ElementManager;
+});

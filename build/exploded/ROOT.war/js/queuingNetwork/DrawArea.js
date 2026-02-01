@@ -1,3 +1,9 @@
+/*
+ * (Singleton) Draw area controller. He can be called by to ways: clicking on
+ * the div drawArea or an added element.
+ * 
+ * author: Felipe Osorio Thomé
+ */
 define(["ActiveTool", "DivManager", "IdManager", "JsonManager", "Cons", "Utils"],
 function(activeTool, divManager, idManager, jsonManager, cons, utils) {
     "use strict";
@@ -7,14 +13,11 @@ function(activeTool, divManager, idManager, jsonManager, cons, utils) {
     var DrawArea = {
         initialize: function(manager) {
             elementManager = manager;
-            //window.gv = "";
-            //                window.code = "";
-            //                window.report = "";
         },
         ctrl: function(event, element) {
             var tool = activeTool.getTool();
             if (typeof element === "undefined") {
-                if (tool === "server" || tool === "multiServer" || tool === "source" || tool === "out") {
+                if (tool === "server" || tool === "multiserver" || tool === "source" || tool === "out") {
                     addElement(utils.captureCoordinates(event), tool);
                 }
             }
@@ -38,16 +41,16 @@ function(activeTool, divManager, idManager, jsonManager, cons, utils) {
             y: coordinates.y - drawAreaPosition.y - cons.HALF_ELEM_SIZE
         };
         var element = elementManager.add(tool, position, idManager.getNewCid());
-        jsonManager.addNode(element);
+        jsonManager.add(element);
     }
 
     function remElement(element) {   
-        jsonManager.removeNode(element);
+        elementManager.remove(element);
     }
     function linkElements(element) {
 
             var connection;
-            connection =  elementManager.linkElements(element);
+            connection = elementManager.linkElements(element);
             
 
             divManager.blockDiv(cons.LEFT_TOOLS);
@@ -57,8 +60,6 @@ function(activeTool, divManager, idManager, jsonManager, cons, utils) {
             
             }
         }
-
-    // <<< FIM DO CÓDIGO >>>
 
     return DrawArea;
 });

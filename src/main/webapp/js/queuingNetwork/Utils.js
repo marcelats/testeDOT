@@ -2,6 +2,7 @@
  * (Singleton)
  * 
  * author: Felipe Osorio Thomé
+ * author: Marcela Tiemi Shinzato
  */
 
 define([],
@@ -45,6 +46,15 @@ define([],
                     }
                 }
                 return true;
+            },
+            resetCodeExecute: function(){
+                const btnCode = document.getElementById("op-code");
+                btnCode.style.opacity = '0.3';
+                btnCode.style.pointerEvents = 'none';
+                const btnExecute = document.getElementById("op-execute");
+                btnExecute.style.opacity = '0.3';
+                btnExecute.style.pointerEvents = 'none';
+                window.flag = false;
             }
         };
 

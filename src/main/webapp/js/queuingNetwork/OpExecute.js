@@ -1,3 +1,6 @@
+/*
+ * author: Marcela Tiemi Shinzato
+ */
 require.config({
     paths: {
         JSZip: "https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min"
@@ -12,45 +15,34 @@ function($, JSZip, jsonManager, lightBoxManager, cons) {
 
     var OpExecute = {
         initialize: function() {
-            const btn = document.getElementById("opExecute");
+            const btn = document.getElementById("op-execute");
             btn.style.opacity = '0.3';
             btn.style.pointerEvents = 'none';
 
-            window.addEventListener("codeEditorClicou", () => {
+            window.addEventListener("codeEditorClicked", () => {
                 btn.style.opacity = '1';
                 btn.style.pointerEvents = 'auto';
                 window.flag = true;
             });
             
-            $(document).on("click", "#showText-btClose", function() {
+            $(document).on("click", "#show-text-bt-close", function() {
                 lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
             });
-/*var reportname;
-                            if(jsonManager.getGraph().parameters.opParam_library === "Python") reportname = jsonManager.getGraph().name + "_Python.txt";
-else if (jsonManager.getGraph().parameters.opParam_library === "Java") reportname = jsonManager.getGraph().name + "_Java.txt";
-else if (jsonManager.getGraph().parameters.opParam_library === "R") reportname = jsonManager.getGraph().name + "_R.txt";
-else if (jsonManager.getGraph().parameters.opParam_library === "C SMPL") reportname = jsonManager.getGraph().name + "_C_SMPL.txt";
-else if (jsonManager.getGraph().parameters.opParam_library === "C SMPLX") reportname = jsonManager.getGraph().name + "_C_SMPLX.txt";
-else reportname = jsonManager.getGraph().name;*/
 
-            $(document).on("click", "#showText-download", function() {
-                const textarea = document.getElementById("textShow");
-                if (textarea) {
-                    const textoAtual = textarea.value;
-                    const blobCode = new Blob([textoAtual], { type: "text/plain" });
+            $(document).on("click", "#show-text-download", function() {
+                const textArea = document.getElementById("textShow");
+                if (textArea) {
+                    const blobCode = new Blob([textArea.value], { type: "text/plain" });
                     const url = URL.createObjectURL(blobCode);
                     const a = document.createElement("a");
                     a.href = url;
                     a.download = !window.flag
                         ? jsonManager.getGraph().name + ".gv"
-                        : jsonManager.getGraph().report_name;
-                    
+                        : jsonManager.getGraph().reportName;
                     document.body.appendChild(a);
                     a.click();
                     document.body.removeChild(a);
                     URL.revokeObjectURL(url);
-                } else {
-                    console.error("Textarea não encontrado.");
                 }
             });
         },
@@ -69,64 +61,50 @@ else reportname = jsonManager.getGraph().name;*/
                     const blobCode = window.codeBlob;
                     if (blobCode) {
                         const formData = new FormData();
-                        formData.append('lang', jsonManager.getGraph().parameters.opParam_library);
+                        formData.append('lang', jsonManager.getGraph().parameters.op_param_library);
 
-                        if (jsonManager.getGraph().parameters.opParam_library === 'R') {
-                            formData.append("arquivo", blobCode, jsonManager.getGraph().name + ".r");
-                        } else if (jsonManager.getGraph().parameters.opParam_library === 'Java') {
-                            const novoZip = new JSZip();
+                        if (jsonManager.getGraph().parameters.op_param_library === 'R') {
+                            formData.append("file", blobCode, jsonManager.getGraph().name + ".r");
+                        } else if (jsonManager.getGraph().parameters.op_param_library === 'Java') {
+                            const newZip = new JSZip();
 
-                            window.listaArquivos.forEach(arquivo => {
-                                if (arquivo.nome !== "Controle.java") {
-                                    novoZip.file(arquivo.nome, arquivo.conteudo);
+                            window.filesList.forEach(file => {
+                                if (file.name !== "Controle.java") {
+                                    newZip.file(file.name, file.content);
                                 }
                             });
 
-                            const controleTexto = await blobCode.text();
-                            novoZip.file("Controle.java", controleTexto);
+                            const textControl = await blobCode.text();
+                            newZip.file("Controle.java", textControl);
 
                             try {
-                                const zipBlob = await novoZip.generateAsync({ type: "blob" });
-                                formData.append("arquivo", zipBlob, jsonManager.getGraph().name + ".zip");
+                                const zipBlob = await newZip.generateAsync({ type: "blob" });
+                                formData.append("file", zipBlob, jsonManager.getGraph().name + ".zip");
                             } catch (err) {
-                                console.error("Erro ao gerar ou enviar o zip:", err);
                             }
-                        } else if (jsonManager.getGraph().parameters.opParam_library === 'C SMPL' || jsonManager.getGraph().parameters.opParam_library === 'C SMPLX') {
-                            formData.append("arquivo", blobCode, jsonManager.getGraph().name + ".c");
+                        } else if (jsonManager.getGraph().parameters.op_param_library === 'C SMPL' || jsonManager.getGraph().parameters.op_param_library === 'C SMPLX') {
+                            formData.append("file", blobCode, jsonManager.getGraph().name + ".c");
                         } else {
-                            formData.append("arquivo", blobCode, jsonManager.getGraph().name + ".py");
+                            formData.append("file", blobCode, jsonManager.getGraph().name + ".py");
                         }
 
-                        fetch("/ROOT/api/executar", {
+                        fetch("/ROOT/api/execute", {
                             method: "POST",
                             body: formData
                         })
                         .then(res => res.blob())
-                        .then(blobReport => {
-                            
-                            /*const url = URL.createObjectURL(blobReport);
-                            const a = document.createElement("a");
-                            a.href = url;
-                            a.download = jsonManager.getGraph().name + ".txt";
-                            document.body.appendChild(a);
-                            a.click();
-                            document.body.removeChild(a);
-                            URL.revokeObjectURL(url);*/
-                            blobReport.text().then(texto => {
-                                jsonManager.getGraph().report = texto;
-                                    const textarea = document.getElementById("textShow");
-                                    if (textarea) {
-                                        textarea.value = texto;
-                                        
-                                        const blobReport = new Blob([texto], { type: "text/plain" });
+                        .then(blobReport => {  
+                            blobReport.text().then(text => {
+                                jsonManager.getGraph().report = text;
+                                    const textArea = document.getElementById("text-show");
+                                    if (textArea) {
+                                        textArea.value = text;
+                                        const blobReport = new Blob([text], { type: "text/plain" });
   
-                                    } else {
-                                        console.error("Textarea ainda não foi carregado.");
                                     }
                                 });
                         })
                         .catch(error => {
-                            console.error("Error when downloading report", error);
                         });
                     }
                 }

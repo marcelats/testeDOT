@@ -1,4 +1,5 @@
-/* author: Felipe Osorio Thomé */
+/* author: Felipe Osorio Thomé
+   author: Marcela Tiemi Shinzato */
 
 html {
     width: 100%;
@@ -29,13 +30,13 @@ h2 {
     cursor: pointer;
 }
 
-#wrapLogin {
+#wrap-login {
     position: relative;
     width: 300px;
     margin: 0px auto;
 }
 
-#topLogin {
+#top-login {
     max-width: 300px;
     padding: 5px 0 5px 0;
     margin-bottom: 5px;
@@ -50,7 +51,7 @@ h2 {
     box-shadow: 0 0 3px rgba(180,180,180,.5);
 }
 
-#bottomLogin {
+#bottom-login {
     max-width: 300px;
     margin-top: 5px;
     text-align: center;
@@ -66,7 +67,7 @@ h2 {
     box-shadow: 0 0 3px rgba(180,180,180,.5);
 }
 
-#loginFormDiv {
+#login-form-div {
     max-width: 300px;
     padding: 5px;
     background-color: #222;

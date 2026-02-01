@@ -15,7 +15,7 @@ import java.util.Objects;
 
 /**
  *
- * @author Felipe Osorio Thomé
+ * @author Marcela Tiemi Shinzato
  */
 public class DeleteGraph implements Command {
 
@@ -42,8 +42,8 @@ public class DeleteGraph implements Command {
                     try {
                         System.out.println(em);
                         em.getTransaction().begin();
-                                    em.createNamedQuery("graphs.deleteGraph").setParameter("name", graphName).executeUpdate();
-                                    em.getTransaction().commit();
+                        em.createNamedQuery("graphs.deleteGraph").setParameter("name", graphName).executeUpdate();
+                        em.getTransaction().commit();
                     } catch (NoResultException e) {
 
                         throw new CommandException("The graph name is invalid.");

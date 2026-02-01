@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  *
  * @author Felipe Osorio Thomé
+ * @author Marcela Tiemi Shinzato
  */
 public class HomeServlet extends HttpServlet {
     
@@ -23,10 +24,9 @@ public class HomeServlet extends HttpServlet {
             throws ServletException, IOException {
         FlowControl.forward(WELCOME_PAGE, req, res);
         
-        try ( /***/ EntityManagerFactory factory = Persistence.createEntityManagerFactory("ASDA_JSPPU")) {
+        try (EntityManagerFactory factory = Persistence.createEntityManagerFactory("ASDA_JSPPU")) {
             EntityManager manager = factory.createEntityManager();
             manager.close();
-            /***/
         }
 
     }

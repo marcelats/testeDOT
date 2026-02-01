@@ -18,6 +18,7 @@ import java.util.Objects;
 /**
  *
  * @author Felipe Osorio Thomé
+ * @author Marcela Tiemi Shinzato
  */
 public class OpenGraph implements Command {
     private CommandResponse aResponse;
@@ -31,7 +32,7 @@ public class OpenGraph implements Command {
             AccountBean account = sessionMgr.getAccountUser(session);
             String graphName = req.getParameter("graphName");
 
-            if(!Objects.equals(Long.valueOf(req.getParameter("author")), account.getUserId())){
+            if (!Objects.equals(Long.valueOf(req.getParameter("author")), account.getUserId())) {
                 res.sendError(HttpServletResponse.SC_FORBIDDEN, "Copy the file first.");
                 return aResponse;
             }
@@ -40,6 +41,7 @@ public class OpenGraph implements Command {
 
                 if (graph != null && Objects.equals(account.getUserId(), graph.getUser().getUserId())) {
                     String graphJson = graph.getGraphJson();
+                    System.out.println(graphJson);
 
                     res.setContentType("application/json");    
                     PrintWriter out;
@@ -65,17 +67,12 @@ public class OpenGraph implements Command {
                         .setParameter("name", graphName)
                         .getSingleResult();
             } catch (NoResultException e) {
-
                 throw new CommandException("The graph name is invalid.");
-
             } catch (Exception e) {
-
                 throw new CommandException("An error occurred.");
-            }
-            finally{
+            } finally{
                 em.close();
             }
-
             return graph;
         }
 }

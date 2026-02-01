@@ -18,6 +18,7 @@ import java.util.List;
 /**
  *
  * @author Felipe Osorio Thomé
+ * @author Marcela Tiemi Shinzato
  */
 public class OpenBox implements Command {
 
@@ -29,17 +30,13 @@ public class OpenBox implements Command {
     @Override
     public CommandResponse execute(HttpServletRequest req, HttpServletResponse res)
         throws CommandException, ServletException, IOException {
-            System.out.println("execute do openbox.java");
             String type = req.getParameter(TYPE);
             HttpSession session = req.getSession();
             UserSessionManager sessionMgr = UserSessionManager.getInstance();
             AccountBean account = sessionMgr.getAccountUser(session);
             List<GraphBean> graph = findGraphs(account);   
-            req.setAttribute("arquivos", graph);
+            req.setAttribute("files", graph);
             req.setAttribute("currentUserId", account.getUserId());
-            System.out.println("req: " + req);
-            System.out.println("account: " + account);
-            System.out.println(account.getUserId());
 
             switch (type) {
                 case "new":
@@ -65,7 +62,7 @@ public class OpenBox implements Command {
                 case "arrival":
                     aResponse = new CommandResponse();
                     aResponse.setForward(true);
-                    aResponse.setPage(DIRECTORY + "chegada.jsp");
+                    aResponse.setPage(DIRECTORY + "arrival.jsp");
                     break;
                 case "editor":
                     aResponse = new CommandResponse();
@@ -75,17 +72,14 @@ public class OpenBox implements Command {
                 case "showText":
                     aResponse = new CommandResponse();
                     aResponse.setForward(true);
-                    aResponse.setPage(DIRECTORY + "ShowText.jsp");
+                    aResponse.setPage(DIRECTORY + "showText.jsp");
                     break;
                 case "prob":
                     aResponse = new CommandResponse();
                     aResponse.setForward(true);
-                    aResponse.setPage(DIRECTORY + "opProb.jsp");
+                    aResponse.setPage(DIRECTORY + "probabilities.jsp");
                     break;
             }
-        System.out.println("Arquivos recebidos: " + graph);
-
-
         return aResponse;
     }
     public List<GraphBean> findGraphs(AccountBean account) throws CommandException 

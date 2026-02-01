@@ -8,10 +8,8 @@
     <script src="js/libs/jquery-ui-1.10.4.custom.js"></script>
 </head>
 <body>
-    <!-- Botão para abrir o modal -->
     <button id="openModalBtn">Abrir Modal</button>
 
-    <!-- Modal -->
     <div id="myModal" title="Meu Modal" style="display:none;">
         <p>Conteúdo do modal aqui!</p>
         <input type="text" id="modalInput" placeholder="Digite algo...">
@@ -19,7 +17,6 @@
 
     <script>
         $(function() {
-            // Inicializa o dialog, mas não abre ainda
             $("#myModal").dialog({
                 autoOpen: false,
                 modal: true,
@@ -33,10 +30,9 @@
                 }
             });
 
-            // Ao clicar no botão, abre o modal
             $("#openModalBtn").click(function() {
                 $("#myModal").dialog("open");
-                $("#modalInput").focus(); // foca no input do modal
+                $("#modalInput").focus(); 
             });
         });
     </script>

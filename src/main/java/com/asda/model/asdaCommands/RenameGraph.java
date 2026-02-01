@@ -15,12 +15,11 @@ import java.util.Objects;
 
 /**
  *
- * @author Felipe Osorio Thomé
+ * @author Marcela Tiemi Shinzato
  */
 public class RenameGraph implements Command {
 
     private CommandResponse aResponse;
-
     private EntityManager em;
 
     @Override
@@ -44,14 +43,10 @@ public class RenameGraph implements Command {
                         em.createNamedQuery("graphs.renameGraph").setParameter("name", graphName).setParameter("newName", newName).executeUpdate();
                         em.getTransaction().commit();
                     } catch (NoResultException e) {
-
                         throw new CommandException("The graph name is invalid.");
-
                     } catch (Exception e) {
-
                         throw new CommandException("An error occurred.");
-                    }
-                    finally{
+                    } finally {
                         em.close();
                     }
                 }
@@ -68,11 +63,8 @@ public class RenameGraph implements Command {
                     .setParameter("name", graphName)
                     .getSingleResult();
         } catch (NoResultException e) {
-
             throw new CommandException("The graph name is invalid.");
-
         } catch (Exception e) {
-
             throw new CommandException("An error occurred.");
         }
         return graph;

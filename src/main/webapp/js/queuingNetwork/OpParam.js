@@ -1,42 +1,44 @@
-define(["jquery", "jquery-ui","domReady!", "LightBoxManager", "JsonManager", "Arrival"],
-    function($, _,dr, lightBoxManager, jsonManager, arrival) {
+/*
+ * author: Felipe Osorio Thomé
+ * author: Marcela Tiemi Shinzato
+ */
+define(["jquery", "jquery-ui", "domReady!", "LightBoxManager", "JsonManager", "Arrival", "Utils"],
+    function($, _, dr, lightBoxManager, jsonManager, arrival, utils) {
         "use strict";
 
         var lastAction = null, callback = null;
 
         var OpParam = {
             initialize: function() {
-                $("#opParamBox").dialog({
+                $("#op-param-box").dialog({
                     autoOpen: false,
                     modal: false,
                     width: 300,
                     resizable: false,
-                    dialogClass: "no-titlebar", // remove cabeçalho nativo
-                    show: { effect: "fadeIn", duration: 200 },   // efeito na abertura
-                    hide: { effect: "fadeOut", duration: 200 }   // efeito no fechamento
+                    dialogClass: "no-titlebar", 
+                    show: { effect: "fadeIn", duration: 200 },   
+                    hide: { effect: "fadeOut", duration: 200 }  
                 });
 
                 /* Close button of the light box. */
-                $(document).on("click", "#opParam-btClose", function() {
-                    $("#opParamBox").dialog("close");
+                $(document).on("click", "#op-param-bt-close", function() {
+                    $("#op-param-box").dialog("close");
                 });
                 
-                $(document).on("click", "#opParam-btSubmit", function() {
+                $(document).on("click", "#op-param-bt-submit", function() {
                     OpParam.execute("submit");
                 });
 
-                $(document).on("click", "#chegada-btSubmit", function() {
+                $(document).on("click", "#arrival-bt-submit", function() {
                     OpParam.execute("submitArrival");
                 });
 
-                $(document).on("click", "#chegada-bt", function() {
-                    console.log("clicou em arrival");
+                $(document).on("click", "#arrival-bt", function() {
                     lightBoxManager.openBox(  
                         "shadow2",
-                        "boxArrival",
+                        "box-arrival",
                         "qnetwork?cmd=open-box&type=arrival", 
                         function() {
-                            console.log("box arrival aberta");
                             arrival.execute();
                         }
                     );
@@ -44,78 +46,53 @@ define(["jquery", "jquery-ui","domReady!", "LightBoxManager", "JsonManager", "Ar
             },
             execute: function(action) {
                 if (typeof action !== "string") {
-                    $("#opParamBox").dialog("open");      
-                    $("#opParamBox").values(jsonManager.getGraphParameters());
+                    $("#op-param-box").dialog("open");      
+                    $("#op-param-box").values(jsonManager.getGraphParameters());
                     callback = action;
                 } else {
                     lastAction = action;
-                    
-                    if (action === "submit") {
-                        
-const opParam_library = document.getElementById("opParam_library");      
-                        if(opParam_library)  {
-                            //window.langSelecionada = opParam_library.value;
-                          }
-
-                        const input_batchSize = document.getElementById("opParam_batchSize");      
-                        if(input_batchSize && !input_batchSize.disabled) { 
-                            if (isNaN(input_batchSize.value) || input_batchSize.value < 0) {
+                    if (action === "submit") {   
+                        const opParamLibrary = document.getElementById("op-param-library");      
+                        const inputBatchSize = document.getElementById("op-param-batch-size");      
+                        if(inputBatchSize && !inputBatchSize.disabled) { 
+                            if (isNaN(inputBatchSize.value) || inputBatchSize.value < 0) {
                                 alert("Batch size cannot be negative and must be a number.");
                                 return;
-                            } else {
-                                //window.batchSize = input_batchSize.value;
-                            }
+                            } 
                         }
-                        
-                        const input_seed = document.getElementById("opParam_seed");
-
-                        
-                          let valor = parseInt(input_seed.value, 10);
-                          input_seed.value = valor;
-
-                          if (isNaN(valor) || valor < 0 || valor > 15) {
+                        const inputSeed = document.getElementById("op-param-seed");
+                        let value = parseInt(inputSeed.value, 10);
+                        inputSeed.value = value;
+                        if (isNaN(value) || value < 0 || value > 15) {
                             alert("Seed must be between 0 and 15.");
                             return;
-                          } 
-
-                          //window.seed = valor;
-                        
-                        const input_execTime = document.getElementById("opParam_execTime");      
-                        if(input_execTime && !input_execTime.disabled) { if (isNaN(input_execTime.value) || input_execTime.value < 0) {
-                            alert("Execution time cannot be negative and must be a number.");
-                            return;
-                          }else{//window.execTime = input_execTime.value;
-                            } }
-                          
-                        /*const input_maxEntities = document.getElementById("opParam_maxEntities");      
-                        if(input_maxEntities && !input_maxEntities.disabled)  if (isNaN(input_maxEntities.value) || input_maxEntities.value < 0) {
-                            alert("Max number of entities cannot be negative and must be a number.");
-                            return;
-                          } */
-                        
-                        const boolean_warmuptime = document.getElementById("opParam_execTime");      
-                        if(input_execTime && !input_execTime.disabled) { if (isNaN(input_execTime.value) || input_execTime.value < 0) {
-                            alert("Execution time cannot be negative and must be a number.");
-                            return;
-                          }else{
-                            //window.execTime = input_execTime.value;
                         } 
-
-                        
-                        var parameters = $("#opParamBox").values();
-                        jsonManager.setGraphParameters(parameters);
-                        $("#opParamBox").dialog("close");
-                        const btnCode = document.getElementById("opCode");
-                        btnCode.style.opacity = '0.3';
-                        btnCode.style.pointerEvents = 'none';
-                        const btnExecute = document.getElementById("opExecute");
-                        btnExecute.style.opacity = '0.3';
-                        btnExecute.style.pointerEvents = 'none';
-                        window.flag = false;
-                    }}
+                        const inputExecTime = document.getElementById("op-param-exec-time");      
+                        if(inputExecTime && !inputExecTime.disabled) 
+                        { 
+                            if (isNaN(inputExecTime.value) || inputExecTime.value < 0) 
+                            {
+                                alert("Execution time cannot be negative and must be a number.");
+                                return;
+                            }
+                        } 
+                        const booleanWarmupTime = document.getElementById("op-param-exec-time");      
+                        if(booleanWarmupTime && !booleanWarmupTime.disabled) 
+                        { 
+                            if (isNaN(booleanWarmupTime.value) || booleanWarmupTime.value < 0) 
+                            {
+                                alert("Execution time cannot be negative and must be a number.");
+                                return;
+                            }
+                            var parameters = $("#op-param-box").values();
+                            jsonManager.setGraphParameters(parameters);
+                            $("#op-param-box").dialog("close");
+                            utils.resetCodeExecute();
+                        }
+                    }
                     
                     if (action === "submitArrival") {
-                        lightBoxManager.closeBox("shadow2","boxArrival");
+                        lightBoxManager.closeBox("shadow2", "box-arrival");
                     }
 
                     if (typeof callback === "function") {
@@ -128,7 +105,6 @@ const opParam_library = document.getElementById("opParam_library");
                 return lastAction;
             }
         };
-
         return OpParam;
     }
 );

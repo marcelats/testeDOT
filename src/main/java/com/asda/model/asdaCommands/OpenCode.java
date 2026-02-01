@@ -12,17 +12,17 @@ import jakarta.persistence.NoResultException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.util.Objects;
 import org.json.JSONObject;
 
 /**
  *
  * @author Felipe Osorio Thomé
+ * @author Marcela Tiemi Shinzato
  */
 public class OpenCode implements Command {
     private CommandResponse aResponse;
     private EntityManager em;
-    private String code, code_name;
+    private String code, codeName;
 
     @Override
     public CommandResponse execute(HttpServletRequest req, HttpServletResponse res)
@@ -31,31 +31,20 @@ public class OpenCode implements Command {
             UserSessionManager sessionMgr = UserSessionManager.getInstance();
             AccountBean account = sessionMgr.getAccountUser(session);
             String graphName = req.getParameter("graphName");
-String author = req.getParameter("author");
+            String author = req.getParameter("author");
             
             if (graphName != null ) {
                 Object graph = findCode(account, graphName, author);
 
                 if (graph != null) {
-Object[] result = (Object[]) graph;
-code = (String) result[0];
-code_name = (String) result[1];
-System.out.println("code : " + code);
-System.out.println("code_name : " + code_name);
-res.setContentType("application/json;charset=UTF-8");
-res.setCharacterEncoding("UTF-8");
-
-PrintWriter out = res.getWriter();
-out.print("{\"code\":" + JSONObject.quote(code) + ", \"code_name\":" + JSONObject.quote(code_name) + "}");
-out.flush();   
-
-                    /*try {
-                        out = res.getWriter();
-                    } catch (IOException ex) {
-                        throw new CommandException("IO Exception (response PrintWriter).");
-                    }
-                    out.print(graph);
-                    out.flush();*/
+                    Object[] result = (Object[]) graph;
+                    code = (String) result[0];
+                    codeName = (String) result[1];
+                    res.setContentType("application/json;charset=UTF-8");
+                    res.setCharacterEncoding("UTF-8");
+                    PrintWriter out = res.getWriter();
+                    out.print("{\"code\":" + JSONObject.quote(code) + ", \"code_name\":" + JSONObject.quote(codeName) + "}");
+                    out.flush();   
                 }
             }
             return aResponse;
@@ -70,23 +59,17 @@ out.flush();
                         .setParameter("user", account.getUserId())
                         .setParameter("name", graphName)
                         .setParameter("author", author)
-                        .getSingleResult();
-               
-
-array = (Object[]) graph; // só funciona se a implementação realmente retornar Object[]
+                        .getSingleResult();   
+                array = (Object[]) graph;
 
             } catch (NoResultException e) {
                 System.out.println(e);
                 throw new CommandException("The graph name is invalid.");
-
             } catch (Exception e) {
-System.out.println(e);
                 throw new CommandException("An error occurred.");
-            }
-            finally{
+            } finally {
                 em.close();
             }
-
             return array;
         }
 }

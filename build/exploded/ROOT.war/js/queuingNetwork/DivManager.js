@@ -30,7 +30,6 @@ define(["jquery"],
                         width: $("#" + divId).width(),
                         height: $("#" + divId).height()
                     });
-
                     document.getElementById(divId).appendChild(div);
 
                     $("#" + divId).fadeTo("fast", 0.5);

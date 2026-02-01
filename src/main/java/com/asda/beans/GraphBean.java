@@ -20,6 +20,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  * GraphBean bean.
  *
  * @author Felipe Osorio Thomé
+ * @author Marcela Tiemi Shinzato
  */
 @Entity
 @Table(name = "graphs",
@@ -78,13 +79,13 @@ public class GraphBean implements Serializable {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
     
-    @Column(name = "gv")
+    @Column(name = "gv", columnDefinition="TEXT")
     private String gv;
     
-    @Column(name = "code")
+    @Column(name = "code", columnDefinition="TEXT")
     private String code;
     
-    @Column(name = "report")
+    @Column(name = "report", columnDefinition="TEXT")
     private String report;
     
     @Column(name = "report_name")
@@ -140,7 +141,7 @@ public class GraphBean implements Serializable {
         return createdAt;
     }
     
-    public String getCreatedAtFormatado() {
+    public String getFormattedCreatedAt() {
         if (createdAt == null) return "";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
         return createdAt.format(formatter);

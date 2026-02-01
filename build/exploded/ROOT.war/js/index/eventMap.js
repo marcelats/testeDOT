@@ -1,39 +1,40 @@
-/* author: Felipe Osorio Thomé */
+/* author: Felipe Osorio Thomé
+   author: Marcela Tiemi Shinzato */
 
 /* Event mapping */
 $(document).ready(function() {
     validateLogIn();
 
-    $("#newUserLink").click(function() {
-        openLightBox("shadowing", "wrapSignIn");
+    $("#new-user-link").click(function() {
+        openLightBox("shadowing", "wrap-sign-in");
         /* Now, the container div is not 'display:none' anymore */
         validateSignIn();
     });
 
-    $("#forgotPassLink").click(function() {
-        openLightBox("shadowing", "wrapForgotPass");
+    $("#forgot-pass-link").click(function() {
+        openLightBox("shadowing", "wrap-forgot-pass");
         /* Now, the container div is not 'display:none' anymore */
         validateForgotPass();
     });
 
-    $("#btSignInClose").click(function() {
-        closeLightBox("shadowing", "wrapSignIn");
+    $("#bt-sign-in-close").click(function() {
+        closeLightBox("shadowing", "wrap-sign-in");
     });
 
-    $("#btForgotPassClose").click(function() {
-        closeLightBox("shadowing", "wrapForgotPass");
+    $("#bt-forgot-pass-close").click(function() {
+        closeLightBox("shadowing", "wrap-forgot-pass");
     });
 
     /* Centering the div. */
-    $("#wrapLogin").css({
-        top: $(window).height() > $("#wrapLogin").outerHeight() ?
-            (($(window).height() - $("#wrapLogin").outerHeight()) / 2) * 0.8 : 0
+    $("#wrap-login").css({
+        top: $(window).height() > $("#wrap-login").outerHeight() ?
+            (($(window).height() - $("#wrap-login").outerHeight()) / 2) * 0.8 : 0
     });
 
     $(window).resize(function() {
-        $("#wrapLogin").css({
-            top: $(window).height() > $("#wrapLogin").outerHeight() ?
-                (($(window).height() - $("#wrapLogin").outerHeight()) / 2) * 0.8 : 0
+        $("#wrap-login").css({
+            top: $(window).height() > $("#wrap-login").outerHeight() ?
+                (($(window).height() - $("#wrap-login").outerHeight()) / 2) * 0.8 : 0
         });
     });
 });
@@ -86,27 +87,27 @@ function validateLogIn() {
 function validateSignIn() {
     $('#signin').validate({
         rules: {
-            si_email: {
+            "si-email": {
                 required: true,
                 email: true
             },
-            si_password: {
+            "si-password": {
                 required: true
             },
-            si_password2: {
+            "si-password2": {
                 required: true,
                 equalTo: "#si_password"
             }
         },
         messages: {
-            si_email: {
+            "si-email": {
                 required: "Please enter your email",
                 email: "Please enter a valid email"
             },
-            si_password: {
+            "si-password": {
                 required: "Please enter your password"
             },
-            si_password2: {
+            "si-password2": {
                 required: "Please repeat your password",
                 equalTo: "Please enter the password as above"
             }
@@ -134,15 +135,15 @@ function validateSignIn() {
 }
 
 function validateForgotPass() {
-    $('#forgotPass').validate({
+    $('#forgot-pass').validate({
         rules: {
-            fp_email: {
+            "fp-email": {
                 required: true,
                 email: true
             }
         },
         messages: {
-            fp_email: {
+            "fp-email": {
                 required: "Please enter your email",
                 email: "Please enter a valid email"
             }

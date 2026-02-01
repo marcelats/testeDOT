@@ -15,7 +15,7 @@ import com.asda.model.asdaCommands.PublicGraph;
 import com.asda.model.asdaCommands.SaveGraph;
 import com.asda.model.asdaCommands.DeleteGraph;
 import com.asda.model.asdaCommands.RenameGraph;
-import com.asda.model.asdaCommands.VerificarGraphServlet;
+import com.asda.model.asdaCommands.VerifyGraphServlet;
 import com.asda.model.asdaCommands.CopyFile;
 import com.asda.utils.FlowControl;
 import java.io.IOException;
@@ -29,10 +29,10 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  *
  * @author Felipe Osorio Thomé
+ * @author Marcela Tiemi Shinzato
  */
 public class QueuingNetworkServlet extends HttpServlet {
 
-    private static final String REDIRECT_HEADER = "fot-redirect";
     private HashMap commands;
 
     @Override
@@ -54,16 +54,13 @@ public class QueuingNetworkServlet extends HttpServlet {
                     FlowControl.redirect(next.getPage(), req, res);
                 } else if (next.isForward()) {
                     FlowControl.forward(next.getPage(), req, res);
-                //} else if (next.isAjax()) {System.out.println("isajax");
-                  //  FlowControl.ajaxRedirect(REDIRECT_HEADER, next.getPage(), req, res);
                 }
                 else if (next.isAjax()) {
-    res.setContentType("application/json;charset=UTF-8");
-    res.setCharacterEncoding("UTF-8");
-    res.getWriter().write(next.getJsonPayload());
-    res.getWriter().flush();
-}
-
+                    res.setContentType("application/json;charset=UTF-8");
+                    res.setCharacterEncoding("UTF-8");
+                    res.getWriter().write(next.getJsonPayload());
+                    res.getWriter().flush();
+                }
             }
         } catch (CommandException e) {
             res.sendError(HttpServletResponse.SC_BAD_REQUEST, e.toString());
@@ -81,16 +78,16 @@ public class QueuingNetworkServlet extends HttpServlet {
         commands.put("init", new Init());
         commands.put("open-properties", new OpenProperties());
         commands.put("open-box", new OpenBox());
-        commands.put("saveas", new SaveGraph());
+        commands.put("save-as", new SaveGraph());
         commands.put("open", new OpenGraph());
         commands.put("public", new PublicGraph());
         commands.put("delete", new DeleteGraph());
         commands.put("rename", new RenameGraph());
-        commands.put("verify", new VerificarGraphServlet());
+        commands.put("verify", new VerifyGraphServlet());
         commands.put("copy", new CopyFile());
-        commands.put("opengv", new OpenGv());
-        commands.put("opencode", new OpenCode());
-        commands.put("openreport", new OpenReport());
+        commands.put("open-gv", new OpenGv());
+        commands.put("open-code", new OpenCode());
+        commands.put("open-report", new OpenReport());
     }
 
     /**

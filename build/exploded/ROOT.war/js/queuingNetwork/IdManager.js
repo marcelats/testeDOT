@@ -2,6 +2,7 @@
  * (Singleton) Generate an unique id for an element in the graph.
  * 
  * author: Felipe Osorio Thomé
+ * author: Marcela Tiemi Shinzato
  */
 
 define([],
@@ -12,7 +13,6 @@ define([],
 
         return {
             getNewCid: function() {
-                console.log("getnewcid");
                 return ++newCid;
             },
             setStartCid: function(start) {
