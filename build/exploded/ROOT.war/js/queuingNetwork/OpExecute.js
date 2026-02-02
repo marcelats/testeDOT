@@ -51,7 +51,7 @@ function($, JSZip, jsonManager, lightBoxManager, cons) {
             lightBoxManager.openBox(cons.SHADOWING, cons.BOX_CONTAINER,
                 "qnetwork?cmd=open-box&type=showText",
                 async function() {
-                    const titleSpan = document.querySelector(".boxTitle");
+                    const titleSpan = document.querySelector(".box-title");
 
             if (window.flag === true) {
                 titleSpan.textContent = "Report File";
