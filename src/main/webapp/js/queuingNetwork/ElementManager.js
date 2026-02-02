@@ -224,7 +224,7 @@ console.log(
             const el = this;
             const nodeId = el.id;
             if (!nodeId || !mapNodes[nodeId]) return;
-            //mapNodes[nodeId].index = index;
+            mapNodes[nodeId].index = index;
             $(el).children(".id-div").text(index);
             index++;
         });
