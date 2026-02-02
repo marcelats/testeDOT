@@ -50,7 +50,8 @@ define([
 
         document.getElementById(this.drawArea).appendChild(elementDiv);
 
-        this.updateVisualIndexes();
+        //this.updateVisualIndexes();
+        //updateDOMIndexes();
         
         console.log(
   "snapshot:",
@@ -96,7 +97,8 @@ define([
         
         jsonManager.removeNode(element);
 
-        this.updateVisualIndexes();
+        //this.updateVisualIndexes();
+        this.updateDOMIndexes();
     };
 
     ElementManager.prototype.linkElements = function (element) {
@@ -211,6 +213,19 @@ console.log(
                 jsonManager.getMapNodes()[realId].index = index;
             }
 
+            index++;
+        });
+    };
+
+    ElementManager.prototype.updateDOMIndexes = function () {
+        let index = 0;
+        const mapNodes = jsonManager.getGraph().mapNodes;
+        $("#" + this.drawArea).children("div").each(function () {
+            const el = this;
+            const nodeId = el.id;
+            if (!nodeId || !mapNodes[nodeId]) return;
+            //mapNodes[nodeId].index = index;
+            $(el).children(".id-div").text(index);
             index++;
         });
     };

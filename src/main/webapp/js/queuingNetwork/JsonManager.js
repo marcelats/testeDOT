@@ -41,6 +41,17 @@ define([
         this.hasPrev = 0;
     }
 
+    function rebuildIndexes() {
+        let i = 0;
+
+        Object.values(graph.mapNodes).sort((a, b) => {
+            return parseInt(a.x) - parseInt(b.x);
+        }).forEach(node => {
+            node.index = i++;
+        });
+    }
+
+
     var graph = new Graph(),
         saved = true,
         loading = false;
@@ -102,6 +113,7 @@ define([
 
             saved = false;
             utils.resetCodeExecute();
+            rebuildIndexes();
 
             if (element.name === "source") graph.nSources += 1;
             else if (element.name === "out") graph.nOuts += 1;
@@ -113,7 +125,7 @@ define([
             if (element.name === "source") graph.nSources -= 1;
             else if (element.name === "out") graph.nOuts -= 1;
             else graph.nServers -= 1;
-
+            rebuildIndexes();
             //jsPlumb.detachAllConnections(element);
 
             //delete graph.mapNodes[element.id];

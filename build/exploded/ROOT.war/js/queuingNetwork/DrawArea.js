@@ -41,7 +41,13 @@ function(activeTool, divManager, idManager, jsonManager, cons, utils) {
             y: coordinates.y - drawAreaPosition.y - cons.HALF_ELEM_SIZE
         };
         var element = elementManager.add(tool, position, idManager.getNewCid());
+        console.log(element);
         jsonManager.add(element);
+        console.log(
+  "snapshot:",
+  structuredClone(jsonManager.getGraph())
+);
+        elementManager.updateDOMIndexes();
     }
 
     function remElement(element) {   

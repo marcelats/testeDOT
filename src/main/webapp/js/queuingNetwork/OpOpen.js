@@ -515,6 +515,7 @@ console.log(keyNode,keyTarget);
                         }
                     }
                 }
+                elementManager.updateDOMIndexes();
                 jsonManager.setLoading(false);
             }
         }
