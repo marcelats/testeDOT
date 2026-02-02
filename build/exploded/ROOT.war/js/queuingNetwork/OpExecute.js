@@ -30,7 +30,7 @@ function($, JSZip, jsonManager, lightBoxManager, cons) {
             });
 
             $(document).on("click", "#show-text-download", function() {
-                const textArea = document.getElementById("textShow");
+                const textArea = document.getElementById("text-show");
                 if (textArea) {
                     const blobCode = new Blob([textArea.value], { type: "text/plain" });
                     const url = URL.createObjectURL(blobCode);
