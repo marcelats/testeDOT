@@ -89,13 +89,13 @@ public class Executor {
                         .build();
             }
 
-            try (InputStream respostaPython = conn.getInputStream()) {
-                byte[] result = respostaPython.readAllBytes();
-                return Response.ok(new ByteArrayInputStream(result))
-                        .type("text/x-python")
-                        .header("Content-Disposition", "attachment; filename=\"report.txt\"")
-                        .build();
-            }
+        try (InputStream pythonResponse = conn.getInputStream()) {
+            byte[] result = pythonResponse.readAllBytes();
+            return Response.ok(new ByteArrayInputStream(result))
+                    .type("text/x-python")
+                    .header("Content-Disposition", "attachment; filename=\"report.txt\"")
+                    .build();
+        }
 
         } catch (java.net.SocketTimeoutException e) {
             return Response.status(Response.Status.GATEWAY_TIMEOUT)
