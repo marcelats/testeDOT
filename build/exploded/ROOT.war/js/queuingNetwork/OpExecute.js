@@ -61,7 +61,7 @@ function($, JSZip, jsonManager, lightBoxManager, cons) {
                     const blobCode = window.codeBlob;
                     if (blobCode) {
                         const formData = new FormData();
-                        formData.append('lang', jsonManager.getGraph().parameters.op_param_library);
+                        formData.append('lang', jsonManager.getGraph().parameters["op-param-library"]);
 
                         if (jsonManager.getGraph().parameters.op_param_library === 'R') {
                             formData.append("file", blobCode, jsonManager.getGraph().name + ".r");
