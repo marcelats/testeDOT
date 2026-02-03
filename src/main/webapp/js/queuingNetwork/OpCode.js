@@ -148,7 +148,7 @@ function($, lightBoxManager, cons, JSZip, jsonManager) {
                             else
                             {
                                 blobCode.text().then(text => {
-                                    const textArea = document.getElementById("textEditor");
+                                    const textArea = document.getElementById("text-editor");
                                     if (textArea) {
                                         textArea.value = text;
                                         const blobCode = new Blob([text], { type: "text/plain" });
