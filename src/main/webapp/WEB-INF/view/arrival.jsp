@@ -38,7 +38,6 @@
                 </select>
             </fieldset>
                         
-           
            <div><input id ="arrival-bt-submit" type="button" value="Ok" class="button"></div>
         </div>
     </body>

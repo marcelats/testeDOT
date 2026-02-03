@@ -14,7 +14,7 @@ function($, jsonManager) {
                 window.observer = new MutationObserver((obs) => {
                     const select = document.getElementById("service-center");
                     if (select) {
-                        fillSelect(select);
+                        fillSelect();
                         obs.disconnect();
                         window.isObserving = false;
                     }
@@ -24,7 +24,7 @@ function($, jsonManager) {
             }
         },
         execute: function () {
-            fillSelect(document.getElementById("service-center"));  
+            fillSelect();  
             showCurrent();
             const number_clients = document.getElementById("number-clients");
             number_clients.style.opacity = '0.5';
@@ -45,7 +45,7 @@ function($, jsonManager) {
                 service_center.style.pointerEvents = 'auto';
                 const select = document.getElementById("service-center");
                 if (select) {
-                    fillSelect(select); 
+                    fillSelect(); 
                     window.observer.disconnect();
                     window.isObserving = false;
                 }
@@ -131,33 +131,33 @@ function($, jsonManager) {
                 } 
             });
 
-            function fillSelect(select) {
+            function fillSelect() {
+                const select = document.getElementById("service-center");
                 select.innerHTML = "";
                 jsonManager.getGraph().firstArrivalSCs.forEach(firstArrivalSC => {
                     const option = document.createElement("option");
-                    option.value = firstArrivalSC.value;
-                    option.textContent = firstArrivalSC.text;
+                    option.value = firstArrivalSC;
+                    option.text = firstArrivalSC;
                     select.appendChild(option);
                 });
-                const $sel = $("#service-center");
-                    
-                    try {
-                      $sel.selectmenu("refresh");
-                    } catch (e) {
-                      $sel.trigger("change");
-                    }
+                const $sel = $("#service-center");   
+                try {
+                    $sel.selectmenu("refresh");
+                } catch (e) {
+                    $sel.trigger("change");
+                }
             }
             function showCurrent() {
                 if (jsonManager.getGraph().arrivals.length === 0) {
                     const $sel = $("#service-center");
                     if ($sel.find("option[value='']").length === 0) {
-                      $sel.prepend($("<option>", { value: "", text: "" }));
+                        $sel.prepend($("<option>", { value: "", text: "" }));
                     }
                     $sel.val("");
                     try {
-                      $sel.selectmenu("refresh");
+                        $sel.selectmenu("refresh");
                     } catch (e) {
-                      $sel.trigger("change");
+                        $sel.trigger("change");
                     }
                     return;
                 }
