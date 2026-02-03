@@ -316,7 +316,7 @@ define(["jquery", "jquery-ui", "LightBoxManager", "JsonManager", "Utils", "Cons"
                                 },
                                 dataType: "json",
                                 success: function(data) {
-                                    openText(data.code_name, data.code);
+                                    openText(data.codeName, data.code);
                                 },
                                 error: function(xhr, thrownError) {
                                     var errorHeader = xhr.getResponseHeader('fot-error');
@@ -344,7 +344,7 @@ define(["jquery", "jquery-ui", "LightBoxManager", "JsonManager", "Utils", "Cons"
                                 },
                                 dataType: "json",
                                 success: function(data) {
-                                    openText(data.data.code_name, data.report);
+                                    openText(data.reportName, data.report);
                                 },
                                 error: function(xhr, thrownError) {
                                     var errorHeader = xhr.getResponseHeader('fot-error');
