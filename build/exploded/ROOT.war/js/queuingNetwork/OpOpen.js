@@ -316,7 +316,7 @@ define(["jquery", "jquery-ui", "LightBoxManager", "JsonManager", "Utils", "Cons"
                                 },
                                 dataType: "json",
                                 success: function(data) {
-                                    openText(data.codeName, data.code);
+                                    openText(data.code_name, data.code);
                                 },
                                 error: function(xhr, thrownError) {
                                     var errorHeader = xhr.getResponseHeader('fot-error');
@@ -331,6 +331,7 @@ define(["jquery", "jquery-ui", "LightBoxManager", "JsonManager", "Utils", "Cons"
                     }
 
                     if (action === "report") {
+                        
                         var filename = checkFilename();
                         var author = checkAuthor();
                         if (filename && author)
@@ -344,7 +345,9 @@ define(["jquery", "jquery-ui", "LightBoxManager", "JsonManager", "Utils", "Cons"
                                 },
                                 dataType: "json",
                                 success: function(data) {
-                                    openText(data.reportName, data.report);
+                                    console.log(data);
+                                    console.log(data.reportName);
+                                    openText(data.report_name, data.report);
                                 },
                                 error: function(xhr, thrownError) {
                                     var errorHeader = xhr.getResponseHeader('fot-error');
@@ -356,6 +359,7 @@ define(["jquery", "jquery-ui", "LightBoxManager", "JsonManager", "Utils", "Cons"
                                 }
                             });
                         }
+                        
                     }
 
                     if (typeof callback === "function") {
@@ -421,6 +425,7 @@ define(["jquery", "jquery-ui", "LightBoxManager", "JsonManager", "Utils", "Cons"
 
         function openText(title, data)
         {
+            console.log(title);
             lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
             const $dlg = $(`<div id="draggableModal" style="white-space: pre-wrap; text-align: left;">${data}</div>`).appendTo('body');
 
@@ -542,7 +547,10 @@ console.log(keyNode,keyTarget);
                 jsonManager.getGraph().codeName = filename + "_" + i;
                 jsonManager.getGraph().reportName = filename + "_" + i;
             }
-
+            console.log(
+  "snapshot:",
+  structuredClone(jsonManager.getGraph())
+);
             var newFilename = filename;
             if (i !== 0) newFilename = filename + "_" + i;
             $.ajax({
