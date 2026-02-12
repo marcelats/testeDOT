@@ -94,6 +94,8 @@
                     <li><div id="out" class="node" tabindex="0"><img src="img/icon/out.gif" title="Out"/></div></li>
                     <li><div id="link" class="node" tabindex="0"><img src="img/icon/link.gif" title="Link"/></div></li>
                     <li><div id="erase" class="node" tabindex="0"><img src="img/icon/erase.gif" title="Erase"/></div></li>
+                    <button id="undo-btn">Undo</button>
+                    <button id="redo-btn">Redo</button>
                     </ul>
                 </div>
 

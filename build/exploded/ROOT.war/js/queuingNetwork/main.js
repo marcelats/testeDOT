@@ -5,11 +5,11 @@
 require([
     "jquery", "DrawArea", "PropertiesArea", "TopOptions",
     "ActiveTool", "ElementManager", "JqueryPlugins",
-    "Cons", "JsonManager", "domReady!"
+    "Cons", "JsonManager", "domReady!", "HistoryManager"
 ], function (
     $, drawArea, propertiesArea, topOptions,
     activeTool, ElementManager, jqueryPlugins,
-    cons, jsonManager
+    cons, jsonManager, _, history
 ) {
     "use strict";
 
@@ -75,6 +75,12 @@ require([
         $("#out").click(() => activeTool.setTool("out"));
         $("#link").click(() => activeTool.setTool("link"));
         $("#erase").click(() => activeTool.setTool("erase"));
+        $("#undo-btn").click(function(){
+            history.undo();
+        });
+        $("#redo-btn").click(function(){
+            history.redo();
+        });
 
         $("#draw-area").click(event => drawArea.ctrl(event));
 

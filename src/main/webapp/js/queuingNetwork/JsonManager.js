@@ -30,15 +30,15 @@ define([
         this.report = "";
     }
 
-    function Node(id, type, x, y) {
+    function Node(id, type, x, y, properties, mapTargets, hasPrev) {
         this.id = id;          
         this.index = null;     
         this.type = type;
         this.x = x;
         this.y = y;
-        this.properties = {};
-        this.mapTargets = {};
-        this.hasPrev = 0;
+        this.properties = properties || {};
+        this.mapTargets = mapTargets || {};
+        this.hasPrev = hasPrev || 0;
     }
 
     function rebuildIndexes() {
@@ -108,7 +108,10 @@ define([
                 element.id,
                 element.name,
                 $(element).css("left"),
-                $(element).css("top")
+                $(element).css("top"),
+                element.properties,
+                element.mapTargets,
+                element.hasPrev
             );
 
             saved = false;
@@ -189,7 +192,29 @@ define([
                 }
             this.nullButtons();
         },
+        
+        remLink: function(connection){
+            console.log(connection);
+            console.log(connection.sourceId);
+            console.log(typeof connection.sourceId);
+            console.log(connection.targetId);
+            const sourceId = Number(connection.sourceId);
+            const targetId = Number(connection.targetId);
 
+            const mapNodes = graph.mapNodes;
+
+            if (mapNodes[sourceId] && targetId in mapNodes[sourceId].mapTargets) {
+                delete mapNodes[sourceId].mapTargets[targetId];
+                Object.keys(mapNodes[sourceId].mapTargets).forEach((key) => {
+                    mapNodes[sourceId].mapTargets[key] = 0;
+                });
+            }
+
+            console.log(
+  "snapshot:",
+  structuredClone(graph)
+);
+        },
 
         changeNodePosition: function (element) {
             graph.mapNodes[element.id].x = $(element).css("left");

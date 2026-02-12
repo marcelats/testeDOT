@@ -11,7 +11,7 @@ define([
     "PropertiesArea",
     "JsonManager",
     "Utils"
-], function ($, jsPlumb, drawArea, propertiesArea, jsonManager, utils) {
+], function ($, jsPlumb, drawAreaController, propertiesArea, jsonManager, utils) {
 
     "use strict";
 
@@ -63,7 +63,7 @@ define([
     ElementManager.prototype.addEventHandlers = function (element) {
 
         $(element).click((event) => {
-            drawArea.ctrl(event, element);
+            drawAreaController.ctrl(event, element);
         });
 
         $(element).dblclick(() => {
@@ -78,6 +78,12 @@ define([
             }
         });
     };
+    
+    /* ElementManager.prototype.addEventHandlersLink = function (connection) {
+        jsPlumb.bind("click", function (connection, originalEvent) {
+            drawArea.ctrl(originalEvent, connection);
+        });
+    };*/
 
     ElementManager.prototype.remove = function (element) {
 
@@ -175,19 +181,38 @@ define([
             source: this.prevEndPoint,
             target: getEndpoint(targetEl, "target")
         }, connectorOpts);
-console.log(
-  "snapshot:",
-  structuredClone(jsonManager.getMapNodes())
-);
+
         //jsonManager.getMapNodes()[sourceEl.id].mapTargets[targetEl.id] = 100;
 
         this.prevElement = null;
         this.prevEndPoint = null;
+        //this.addEventHandlersLink(connection);
 console.log(
   "snapshot:",
   structuredClone(jsonManager.getGraph())
 );
+console.log(connection);
+console.log(connection.canvas);
+setTimeout(() => {
+    console.log("Canvas:", connection.canvas);
+    $(connection.canvas).css("background", "red");
+}, 500);
+
+        connection.bind("click", (conn, originalEvent) => {
+            console.log("clicking in link");
+            this.drawAreaController.ctrl(originalEvent, conn);
+        });
+
+
+
         return connection;
+    };
+    
+    
+    ElementManager.prototype.removeLink = function (link) {
+        jsonManager.remLink(link);
+        jsPlumb.detach(link);
+        
     };
 
     ElementManager.prototype.updateVisualIndexes = function () {
@@ -229,6 +254,60 @@ console.log(
             index++;
         });
     };
+    
+    ElementManager.prototype.linkByIds = function(sourceId, targetId) {
+
+        const sourceEl = document.getElementById(sourceId);
+        const targetEl = document.getElementById(targetId);
+
+        const connection = this.connectElements(sourceEl, targetEl);
+
+        connection.bind("click", (conn, originalEvent) => {
+            drawAreaController.ctrl(originalEvent, conn);
+        });
+
+        return connection;
+    };
+
+    
+    ElementManager.prototype.getConnectorOptions = function () {
+        return {
+            paintStyle: { lineWidth: 3, strokeStyle: "#660700" },
+            overlays: [["PlainArrow", { location: 1, width: 15, length: 12 }]]
+        };
+    };
+    
+    ElementManager.prototype.connectElements = function (sourceEl, targetEl) {
+
+        const sourceOpts = {
+            anchor: "RightMiddle",
+            isSource: true,
+            endpoint: "Blank",
+            maxConnections: -1
+        };
+
+        const targetOpts = {
+            anchor: "LeftMiddle",
+            isTarget: true,
+            endpoint: "Blank",
+            maxConnections: -1
+        };
+
+        const getEndpoint = (el, type) => {
+            const eps = jsPlumb.getEndpoints(el) || [];
+            for (const ep of eps) {
+                if (type === "source" && ep.isSource) return ep;
+                if (type === "target" && ep.isTarget) return ep;
+            }
+            return jsPlumb.addEndpoint(el, type === "source" ? sourceOpts : targetOpts);
+        };
+
+        return jsPlumb.connect({
+            source: getEndpoint(sourceEl, "source"),
+            target: getEndpoint(targetEl, "target")
+        }, this.getConnectorOptions());
+    };
+
 
     return ElementManager;
 });

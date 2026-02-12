@@ -4,8 +4,10 @@
  * 
  * author: Felipe Osorio Thomé
  */
-define(["ActiveTool", "DivManager", "IdManager", "JsonManager", "Cons", "Utils"],
-function(activeTool, divManager, idManager, jsonManager, cons, utils) {
+define(["ActiveTool", "DivManager", "IdManager", "JsonManager", "Cons", "Utils", "HistoryManager", "jsPlumb"],
+function(activeTool, divManager, idManager, jsonManager, cons, utils, history, jsPlumb) {
+    
+
     "use strict";
 
     var elementManager = null;
@@ -23,14 +25,20 @@ function(activeTool, divManager, idManager, jsonManager, cons, utils) {
             }
             else {
                 if (tool === "erase") {
-                    remElement(element);
+                    console.log(element);
+                    if(isNode(element)) remElement(element);
+                    else remLink(element);
                 } else if (tool === "link") {
-                    linkElements(element);
+                    if(isNode(element)) linkElements(element);
                 }
                 utils.stopPropagation(event);
             }
         },
         linkElements: function(element){linkElements(element);}
+    };
+
+    function isNode(obj) {
+        return obj instanceof HTMLElement;
     };
 
     function addElement(coordinates, tool) {
@@ -40,32 +48,76 @@ function(activeTool, divManager, idManager, jsonManager, cons, utils) {
             x: coordinates.x - drawAreaPosition.x - cons.HALF_ELEM_SIZE,
             y: coordinates.y - drawAreaPosition.y - cons.HALF_ELEM_SIZE
         };
-        var element = elementManager.add(tool, position, idManager.getNewCid());
-        console.log(element);
-        jsonManager.add(element);
-        console.log(
-  "snapshot:",
-  structuredClone(jsonManager.getGraph())
-);
-        elementManager.updateDOMIndexes();
+        var id = idManager.getNewCid();
+        history.execute({
+            redo: () => {
+                var element = elementManager.add(tool, position, id);
+                jsonManager.add(element);
+                elementManager.updateDOMIndexes();
+            },
+            undo: () => elementManager.remove(document.getElementById(id))
+        });
     }
 
     function remElement(element) {   
-        elementManager.remove(element);
+        const nodeData = structuredClone(jsonManager.getMapNodes()[element.id]);
+
+        history.execute({
+            redo: () => elementManager.remove(element),
+            undo: () => {
+                const el = elementManager.add(nodeData.type, {x: nodeData.x, y: nodeData.y}, nodeData.id);
+                jsonManager.add(nodeData);
+                elementManager.updateDOMIndexes();
+            }
+        });
     }
+    
+    function remLink(connection){
+        
+        const sourceId = connection.sourceId;
+        const targetId = connection.targetId;
+
+        history.execute({
+            redo: () => elementManager.removeLink(connection),
+            undo: () => elementManager.linkByIds(sourceId, targetId)
+        });
+
+    }
+    
     function linkElements(element) {
 
-            var connection;
-            connection = elementManager.linkElements(element);
-            
+        const previewConnection = elementManager.linkElements(element);
 
-            divManager.blockDiv(cons.LEFT_TOOLS);
-            
-            if(connection !== 0 && connection !== null) {
-                jsonManager.linkNodes(connection);
-            
-            }
+        divManager.blockDiv(cons.LEFT_TOOLS);
+
+        if (previewConnection !== 0 && previewConnection !== null) {
+
+            const sourceId = previewConnection.source.id;
+            const targetId = previewConnection.target.id;
+
+            elementManager.removeLink(previewConnection);
+
+            history.execute({
+
+                redo: function () {
+                    const conn = elementManager.linkByIds(sourceId, targetId);
+                    jsonManager.linkNodes(conn);
+                },
+
+                undo: function () {
+                    const conn = jsPlumb.select({
+                        source: sourceId,
+                        target: targetId
+                    }).get(0);
+
+                    if (conn) {
+                        elementManager.removeLink(conn);
+                    }
+                }
+
+            });
         }
+    }
 
     return DrawArea;
 });
