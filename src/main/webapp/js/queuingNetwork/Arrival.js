@@ -2,7 +2,7 @@
  * 
  * author: Marcela Tiemi Shinzato
  */
-define(["jquery", "JsonManager", "LighBoxManager"],
+define(["jquery", "JsonManager", "LightBoxManager"],
 function($, jsonManager, lightBoxManager) {
     "use strict";
 

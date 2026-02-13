@@ -131,7 +131,7 @@
                     <p id="modal-message"></p>
                 </div>
                 <div class="modal-footer">
-                    <button onclick="closelightBoxManager.showAlert()">OK</button>
+                    <button id="alert-ok-btn">OK</button>
                 </div>
             </div>
         </div>

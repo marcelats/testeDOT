@@ -5,11 +5,12 @@
 require([
     "jquery", "DrawArea", "PropertiesArea", "TopOptions",
     "ActiveTool", "ElementManager", "JqueryPlugins",
-    "Cons", "JsonManager", "domReady!", "HistoryManager"
+    "Cons", "JsonManager", "domReady!", "HistoryManager",
+    "LightBoxManager"
 ], function (
     $, drawArea, propertiesArea, topOptions,
     activeTool, ElementManager, jqueryPlugins,
-    cons, jsonManager, _, history
+    cons, jsonManager, _, history, lightBoxManager
 ) {
     "use strict";
 
@@ -83,6 +84,10 @@ require([
         });
 
         $("#draw-area").click(event => drawArea.ctrl(event));
+        
+        $("#alert-ok-btn").click(function(){
+            lightBoxManager.closeAlert();
+        });
 
         $(document).bind("ajaxComplete", function (_, xhr) {
             const redirect = xhr.getResponseHeader("fot-redirect");
