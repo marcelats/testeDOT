@@ -54,7 +54,7 @@ function ($, jsonManager, lightBoxManager) {
 
                 const value = parseFloat(probValue.value);
                 if (isNaN(value) || value < 0) {
-                    alert("Probability cannot be negative and must be a number.");
+                    lightBoxManager.showlightBoxManager.showAlert("Probability cannot be negative and must be a number.");
                     return;
                 }
 
@@ -68,7 +68,7 @@ function ($, jsonManager, lightBoxManager) {
                 }
 
                 if (sum + value > 100) {
-                    alert("The sum of probabilities for each node cannot exceed 100.");
+                    lightBoxManager.showAlert("The sum of probabilities for each node cannot exceed 100.");
                     return;
                 }
 

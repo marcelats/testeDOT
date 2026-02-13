@@ -193,10 +193,6 @@ console.log(
 );
 console.log(connection);
 console.log(connection.canvas);
-setTimeout(() => {
-    console.log("Canvas:", connection.canvas);
-    $(connection.canvas).css("background", "red");
-}, 500);
 
         connection.bind("click", (conn, originalEvent) => {
             console.log("clicking in link");

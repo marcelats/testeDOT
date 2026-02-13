@@ -2,8 +2,8 @@
  * 
  * author: Marcela Tiemi Shinzato
  */
-define(["jquery", "JsonManager"],
-function($, jsonManager) {
+define(["jquery", "JsonManager", "LighBoxManager"],
+function($, jsonManager, lightBoxManager) {
     "use strict";
 
     var lastAction = null;
@@ -63,12 +63,12 @@ function($, jsonManager) {
                 let valueNumberClients = parseInt(numberClients.value, 10);
                 numberClients.value = valueNumberClients;
                 if (isNaN(valueNumberClients) || valueNumberClients < 0) {
-                    alert("Number of clients cannot be negative and must be an integer.");
+                    lightBoxManager.showAlert("Number of clients cannot be negative and must be an integer.");
                     return;
                 }
                 const arrivalTime = document.getElementById("arrival-time");
                 if(arrivalTime)  if (isNaN(arrivalTime.value) || arrivalTime.value < 0) {
-                    alert("Arrival time cannot be negative and must be a number.");
+                    lightBoxManager.showAlert("Arrival time cannot be negative and must be a number.");
                     return;
                 } 
                 

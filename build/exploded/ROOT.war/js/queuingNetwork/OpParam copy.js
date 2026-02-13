@@ -56,7 +56,7 @@ define(["jquery", "jquery-ui", "domReady!", "LightBoxManager", "JsonManager", "A
                         const inputBatchSize = document.getElementById("op-param-batch-size");      
                         if(inputBatchSize && !inputBatchSize.disabled) { 
                             if (isNaN(inputBatchSize.value) || inputBatchSize.value < 0) {
-                                alert("Batch size cannot be negative and must be a number.");
+                                lightBoxManager.showAlert("Batch size cannot be negative and must be a number.");
                                 return;
                             } 
                         }
@@ -64,7 +64,7 @@ define(["jquery", "jquery-ui", "domReady!", "LightBoxManager", "JsonManager", "A
                         let value = parseInt(inputSeed.value, 10);
                         inputSeed.value = value;
                         if (isNaN(value) || value < 0 || value > 15) {
-                            alert("Seed must be between 0 and 15.");
+                            lightBoxManager.showAlert("Seed must be between 0 and 15.");
                             return;
                         } 
                         const inputExecTime = document.getElementById("op-param-exec-time");      
@@ -72,7 +72,7 @@ define(["jquery", "jquery-ui", "domReady!", "LightBoxManager", "JsonManager", "A
                         { 
                             if (isNaN(inputExecTime.value) || inputExecTime.value < 0) 
                             {
-                                alert("Execution time cannot be negative and must be a number.");
+                                lightBoxManager.showAlert("Execution time cannot be negative and must be a number.");
                                 return;
                             }
                         } 
@@ -81,7 +81,7 @@ define(["jquery", "jquery-ui", "domReady!", "LightBoxManager", "JsonManager", "A
                         { 
                             if (isNaN(booleanWarmupTime.value) || booleanWarmupTime.value < 0) 
                             {
-                                alert("Execution time cannot be negative and must be a number.");
+                                lightBoxManager.showAlert("Execution time cannot be negative and must be a number.");
                                 return;
                             }
                             var parameters = $("#op-param-box").values();

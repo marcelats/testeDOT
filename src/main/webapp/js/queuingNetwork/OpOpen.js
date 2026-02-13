@@ -55,7 +55,7 @@ define(["jquery", "jquery-ui", "LightBoxManager", "JsonManager", "Utils", "Cons"
                         const authorId = checkbox.dataset.authorCheckbox;
                         const userId = document.getElementById("current-user").dataset.userId;
                         if (authorId !== userId) {
-                            alert("Only the author can alter the visibility");
+                            lightBoxManager.showAlert("Only the author can alter the visibility");
                             return;
                         }
                         if (checkbox.dataset.busy === "true") return;
@@ -68,7 +68,7 @@ define(["jquery", "jquery-ui", "LightBoxManager", "JsonManager", "Utils", "Cons"
                                 checkbox.textContent = respText.publicGraph ? "✔" : "";
                             },
                             error: function() {
-                                alert("Error while altering visibility");
+                                lightBoxManager.showAlert("Error while altering visibility");
                             },
                             complete: function() {
                                 checkbox.dataset.busy = "false";
@@ -140,9 +140,9 @@ define(["jquery", "jquery-ui", "LightBoxManager", "JsonManager", "Utils", "Cons"
                                 error: function(xhr, thrownError) {
                                     var errorHeader = xhr.getResponseHeader('fot-error');
                                     if (errorHeader !== null) {
-                                        alert(errorHeader);
+                                        lightBoxManager.showAlert(errorHeader);
                                     } else {
-                                        alert(thrownError);
+                                        lightBoxManager.showAlert(thrownError);
                                     }
                                 }
                             });
@@ -173,9 +173,9 @@ define(["jquery", "jquery-ui", "LightBoxManager", "JsonManager", "Utils", "Cons"
                                 error: function(xhr, thrownError) {
                                     var errorHeader = xhr.getResponseHeader('fot-error');
                                     if (errorHeader !== null) {
-                                        alert(errorHeader);
+                                        lightBoxManager.showAlert(errorHeader);
                                     } else {
-                                        alert(thrownError);
+                                        lightBoxManager.showAlert(thrownError);
                                     }
                                 }
                             });
@@ -203,9 +203,9 @@ define(["jquery", "jquery-ui", "LightBoxManager", "JsonManager", "Utils", "Cons"
                                     var errorHeader = xhr.getResponseHeader('fot-error');
                                     jsonManager.setName(tempFilename);
                                     if (errorHeader !== null) {
-                                        alert(errorHeader);
+                                        lightBoxManager.showAlert(errorHeader);
                                     } else {
-                                        alert(thrownError);
+                                        lightBoxManager.showAlert(thrownError);
                                     }
                                 }
                             });
@@ -233,9 +233,9 @@ define(["jquery", "jquery-ui", "LightBoxManager", "JsonManager", "Utils", "Cons"
                                 error: function(xhr, thrownError) {
                                     var errorHeader = xhr.getResponseHeader('fot-error');
                                     if (errorHeader !== null) {
-                                        alert(errorHeader);
+                                        lightBoxManager.showAlert(errorHeader);
                                     } else {
-                                        alert(thrownError);
+                                        lightBoxManager.showAlert(thrownError);
                                     }
                                 }
                             });
@@ -266,9 +266,9 @@ define(["jquery", "jquery-ui", "LightBoxManager", "JsonManager", "Utils", "Cons"
                                     var errorHeader = xhr.getResponseHeader('fot-error');
                                     jsonManager.setName(tempFilename);
                                     if (errorHeader !== null) {
-                                        alert(errorHeader);
+                                        lightBoxManager.showAlert(errorHeader);
                                     } else {
-                                        alert(thrownError);
+                                        lightBoxManager.showAlert(thrownError);
                                     }
                                 }
                             });
@@ -293,9 +293,9 @@ define(["jquery", "jquery-ui", "LightBoxManager", "JsonManager", "Utils", "Cons"
                                 error: function(xhr, thrownError) {
                                     var errorHeader = xhr.getResponseHeader('fot-error');
                                     if (errorHeader !== null) {
-                                        alert(errorHeader);
+                                        lightBoxManager.showAlert(errorHeader);
                                     } else {
-                                        alert(thrownError);
+                                        lightBoxManager.showAlert(thrownError);
                                     }
                                 }
                             });
@@ -321,9 +321,9 @@ define(["jquery", "jquery-ui", "LightBoxManager", "JsonManager", "Utils", "Cons"
                                 error: function(xhr, thrownError) {
                                     var errorHeader = xhr.getResponseHeader('fot-error');
                                     if (errorHeader !== null) {
-                                        alert(errorHeader);
+                                        lightBoxManager.showAlert(errorHeader);
                                     } else {
-                                        alert(thrownError);
+                                        lightBoxManager.showAlert(thrownError);
                                     }
                                 }
                             });
@@ -352,9 +352,9 @@ define(["jquery", "jquery-ui", "LightBoxManager", "JsonManager", "Utils", "Cons"
                                 error: function(xhr, thrownError) {
                                     var errorHeader = xhr.getResponseHeader('fot-error');
                                     if (errorHeader !== null) {
-                                        alert(errorHeader);
+                                        lightBoxManager.showAlert(errorHeader);
                                     } else {
-                                        alert(thrownError);
+                                        lightBoxManager.showAlert(thrownError);
                                     }
                                 }
                             });
@@ -376,7 +376,7 @@ define(["jquery", "jquery-ui", "LightBoxManager", "JsonManager", "Utils", "Cons"
             delete: function(filename, author) {
                 var re = new RegExp(cons.REG_EXP_FILENAME);
                 if (filename.match(re) === null) {
-                    alert("You need to enter a valid filename.");
+                    lightBoxManager.showAlert("You need to enter a valid filename.");
                 } else {
                     $.ajax({
                         url: "qnetwork?cmd=delete",
@@ -391,9 +391,9 @@ define(["jquery", "jquery-ui", "LightBoxManager", "JsonManager", "Utils", "Cons"
                         error: function(xhr, thrownError) {
                             var errorHeader = xhr.getResponseHeader('fot-error');
                             if (errorHeader !== null) {
-                                alert(errorHeader);
+                                lightBoxManager.showAlert(errorHeader);
                             } else {
-                                alert(thrownError);
+                                lightBoxManager.showAlert(thrownError);
                             }
                         }
                     });
@@ -407,7 +407,7 @@ define(["jquery", "jquery-ui", "LightBoxManager", "JsonManager", "Utils", "Cons"
         {
             var filename = $("#op-open-filename").val();
             if (filename.match(re) === null) {
-                alert("You need enter a valid filename.");
+                lightBoxManager.showAlert("You need enter a valid filename.");
                 return null;
             }
             return filename;
@@ -417,7 +417,7 @@ define(["jquery", "jquery-ui", "LightBoxManager", "JsonManager", "Utils", "Cons"
         {
             var author = $("#op-open-author").val();
             if (author.match(re) === null) {
-                alert("You need to enter a valid author.");
+                lightBoxManager.showAlert("You need to enter a valid author.");
                 return null;
             }
             return author;

@@ -121,5 +121,20 @@
         <div id="shadow3" class="shadow3">
             <div id="box-prob" class="box"></div>
         </div>
+ 
+        <div id="global-alert-modal" class="modal-overlay" style="display:none;">
+            <div class="modal-box">
+                <div class="modal-header">
+                    <span id="modal-title">Mensagem</span>
+                </div>
+                <div class="modal-body">
+                    <p id="modal-message"></p>
+                </div>
+                <div class="modal-footer">
+                    <button onclick="closelightBoxManager.showAlert()">OK</button>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
+

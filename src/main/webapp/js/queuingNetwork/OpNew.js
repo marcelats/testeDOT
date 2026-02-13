@@ -59,7 +59,7 @@ define(["jquery", "LightBoxManager", "JsonManager", "Cons", "IdManager", "jsPlum
                                         this.newGraph();
                                     },
                                     error: function (err) {
-                                        alert('Error while verifying graph.');
+                                        lightBoxManager.showAlert('Error while verifying graph.');
                                     }
                                 });   
                             }

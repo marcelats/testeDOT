@@ -32,7 +32,7 @@ define(["jquery", "LightBoxManager", "JsonManager", "Cons", "OpSaveAs", "Utils"]
                         document.title = "ASDA - "+ filename;
                     },
                     error: function (err) {
-                        alert('Error while verifying graph.');
+                        lightBoxManager.showAlert('Error while verifying graph.');
                     }
                 });
                 if (typeof callback === "function") {

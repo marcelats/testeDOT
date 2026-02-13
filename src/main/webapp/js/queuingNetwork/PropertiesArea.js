@@ -80,26 +80,26 @@ define(["JsonManager", "Cons", "LightBoxManager", "Probabilities", "Utils"],
                         //server
                         const inputServer = document.getElementById("server-average");
                         if(inputServer)  if (isNaN(inputServer.value) || inputServer.value < 0) {
-                            alert("Average cannot be negative and must be a number.");
+                            lightBoxManager.showAlert("Average cannot be negative and must be a number.");
                             return;
                         } 
                         //multiserver
                         const inputMultiserver = document.getElementById("ms-average");
                         if(inputMultiserver)  if (isNaN(inputMultiserver.value) || inputMultiserver.value < 0) {
-                            alert("Average cannot be negative and must be a number.");
+                            lightBoxManager.showAlert("Average cannot be negative and must be a number.");
                             return;
                         } 
                         //arrival
                         const inputArrival = document.getElementById("arrival-average");
                         if(inputArrival && !inputArrival.disabled)  if (isNaN(inputArrival.value) || inputArrival.value < 0) {
-                            alert("Arrival average cannot be negative and must be a number.");
+                            lightBoxManager.showlightBoxManager.showAlert("Arrival average cannot be negative and must be a number.");
                             console.log("arrival average");
                             return;
                         } 
                         //ms arrival
                         const inputMsArrival = document.getElementById("ms-arrival-average");
                         if(inputMsArrival && !inputMsArrival.disabled)  if (isNaN(inputMsArrival.value) || inputMsArrival.value < 0) {
-                            alert("Arrival average cannot be negative and must be a number.");
+                            lightBoxManager.showlightBoxManager.showAlert("Arrival average cannot be negative and must be a number.");
                             console.log("ms arrival average");
                             return;
                         } 
@@ -109,7 +109,7 @@ define(["JsonManager", "Cons", "LightBoxManager", "Probabilities", "Utils"],
                             let valueServerSd = parseInt(inputServerSd.value, 10);
                             inputServerSd.value = valueServerSd;
                             if (isNaN(valueServerSd) || valueServerSd < 0) {
-                            alert("Standard deviation cannot be negative and must be an integer.");
+                            lightBoxManager.showlightBoxManager.showAlert("Standard deviation cannot be negative and must be an integer.");
                             return;
                           } 
                         }  
@@ -119,7 +119,7 @@ define(["JsonManager", "Cons", "LightBoxManager", "Probabilities", "Utils"],
                             let valueMultiserverSd = parseInt(inputMultiserverSd.value, 10);
                             inputMultiserverSd.value = valueMultiserverSd;
                             if (isNaN(valueMultiserverSd) || valueMultiserverSd < 0) {
-                            alert("Standard deviation cannot be negative and must be an integer.");
+                            lightBoxManager.showlightBoxManager.showAlert("Standard deviation cannot be negative and must be an integer.");
                             return;
                           } 
                         }
@@ -128,7 +128,7 @@ define(["JsonManager", "Cons", "LightBoxManager", "Probabilities", "Utils"],
                         if(inputArrivalSd && !inputArrivalSd.disabled){
                             let valueArrivalSd = parseInt(inputArrivalSd.value, 10);
                             if (isNaN(valueArrivalSd) || valueArrivalSd < 0) {
-                                alert("Arrival standard deviation cannot be negative and must be an integer.");
+                                lightBoxManager.showlightBoxManager.showAlert("Arrival standard deviation cannot be negative and must be an integer.");
                                 return;
                             } 
                           inputArrivalSd.value = valueArrivalSd;
@@ -139,7 +139,7 @@ define(["JsonManager", "Cons", "LightBoxManager", "Probabilities", "Utils"],
                             let valueMsArrivalSd = parseInt(inputMsArrivalSd.value, 10);
                             inputMsArrivalSd.value = valueMsArrivalSd;
                             if (isNaN(valueMsArrivalSd) || valueMsArrivalSd < 0) {
-                                alert("Arrival standard deviation cannot be negative and must be an integer.");
+                                lightBoxManager.showlightBoxManager.showAlert("Arrival standard deviation cannot be negative and must be an integer.");
                                 return;
                             } 
                         }

@@ -74,9 +74,9 @@ function validateLogIn() {
                     var errorHeader = xhr.getResponseHeader('fot-error');
                     
                     if(errorHeader !== null) {
-                        alert(errorHeader);
+                        lightBoxManager.showAlert(errorHeader);
                     }else {
-                        alert(thrownError);
+                        lightBoxManager.showAlert(thrownError);
                     }
                 }
             });
@@ -118,15 +118,15 @@ function validateSignIn() {
                 url: "accounts?cmd=signin",
                 clearForm: true,
                 success: function() {
-                    alert("Registration done successfully!");
+                    lightBoxManager.showAlert("Registration done successfully!");
                 },
                 error: function(xhr, thrownError) {
                     var errorHeader = xhr.getResponseHeader('fot-error');
                     
                     if(errorHeader !== null) {
-                        alert(errorHeader);
+                        lightBoxManager.showAlert(errorHeader);
                     }else {
-                        alert(thrownError);
+                        lightBoxManager.showAlert(thrownError);
                     }
                 }
             });

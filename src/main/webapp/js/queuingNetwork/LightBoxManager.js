@@ -39,7 +39,17 @@ define([],
                         callback();
                     }
                 });
+            },
+            showAlert: function(message, title = "Warning") {
+                document.getElementById("modal-title").innerText = title;
+                document.getElementById("modal-message").innerText = message;
+                document.getElementById("global-alert-modal").style.display = "flex";
+            },
+
+            closeAlert: function() {
+                document.getElementById("global-alert-modal").style.display = "none";
             }
+
         };
     }
 );

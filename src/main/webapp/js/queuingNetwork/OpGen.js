@@ -18,7 +18,7 @@ define(["jquery", "JsonManager", "LightBoxManager", "Cons"],
                     {
                         if (mapNodes[key]?.properties?.["ms-nbr-servers"] !== undefined) 
                         {
-                            alert("Remove multiservers or use C language");
+                            lightBoxManager.showAlert("Remove multiservers or use C language");
                             return;
                         }         
                     }  
@@ -40,7 +40,7 @@ define(["jquery", "JsonManager", "LightBoxManager", "Cons"],
                 
                 
                 if(jsonManager.getGraph().nServers === 0){
-                    alert("Model has no servers");
+                    lightBoxManager.showAlert("Model has no servers");
                     return;
                 }
                 
@@ -56,19 +56,19 @@ define(["jquery", "JsonManager", "LightBoxManager", "Cons"],
                 }
 
                 if (errors.length > 0) {
-                  errors.forEach(msg => alert(" - " + msg));
+                  errors.forEach(msg => lightBoxManager.showAlert(" - " + msg));
                   return; 
                 }
                 
                 for (const node of Object.values(mapNodes)) {
                     if ((node.type === "server" && node.properties?.["server-average"] === undefined) || (node.type === "multiserver" && node.properties?.["ms-average"] === undefined)) {
-                        alert(`Server ${node.index}'s service average is undefined`);
+                        lightBoxManager.showAlert(`Server ${node.index}'s service average is undefined`);
                         return;
                     } 
                     
                     if(jsonManager.getGraph().firstArrivalSCs.some(obj => obj.value === node.id) && ((node.type === "server" && (node.properties["arrival-average"] === undefined || node.properties["arrival-average"] === ''))
                             || (node.type === "multiserver" && (node.properties["ms-arrival-average"] === undefined || node.properties["ms-arrival-average"] === '')))){
-                        alert(`Server ${node.index}'s arrival average is undefined`);
+                        lightBoxManager.showAlert(`Server ${node.index}'s arrival average is undefined`);
                         return;
                     }
                 }
@@ -83,7 +83,7 @@ define(["jquery", "JsonManager", "LightBoxManager", "Cons"],
                             "ms-distribution"
                         ]) {
                             if (["HyperExponential", "Erlang"].includes(node.properties[key])) {
-                                alert(`Distributions must be Exponential, Normal or Uniform`);
+                                lightBoxManager.showAlert(`Distributions must be Exponential, Normal or Uniform`);
                                 return;
                             }
                         }
@@ -98,7 +98,7 @@ define(["jquery", "JsonManager", "LightBoxManager", "Cons"],
                         if (Object.values(node.mapTargets).length > 1) {
                             const ok = sum >= 99.5 && sum <= 100.5;
                             if (!ok) {
-                                alert("The sum of the probabilities for each node must be 100."); 
+                                lightBoxManager.showAlert("The sum of the probabilities for each node must be 100."); 
                                 return true;
                             }
                         }
@@ -108,7 +108,7 @@ define(["jquery", "JsonManager", "LightBoxManager", "Cons"],
 
                 if (invalidNodeExists) return; 
                 if (!jsonManager.getGraph().parameters["op-param-exec-time"] || jsonManager.getGraph().parameters["op-param-exec-time"] === "" || Number(jsonManager.getGraph().parameters["op-param-exec-time"]) === 0) {
-                    alert("Execution time must be different from zero");
+                    lightBoxManager.showAlert("Execution time must be different from zero");
                     return;
                 }
                 content = `digraph ${jsonManager.getGraph().name} {\n    comment=" ${jsonManager.getGraph().parameters["op-param-exec-time"]} 0 ${batchSize} 0 aberto ${warmupTime} ${definedValue} ${seed} " rankdir=LR\n`;
@@ -288,7 +288,7 @@ define(["jquery", "JsonManager", "LightBoxManager", "Cons"],
                     const arrivals = jsonManager.getGraph().arrivals;
                     if (arrivals.length === 0) 
                         {
-                            alert("Add at least one arrival");
+                            lightBoxManager.showAlert("Add at least one arrival");
                             return;
                         } 
                     //var length = 0;

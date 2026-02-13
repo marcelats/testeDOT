@@ -37,7 +37,7 @@ define(["jquery", "LightBoxManager", "JsonManager", "Cons", "Utils"],
                         var filename = $("#op-save-as-filename").val(),
                             re = new RegExp(cons.REG_EXP_FILENAME);
                         if (filename.match(re) === null) {
-                            alert("You need to enter a valid filename.");
+                            lightBoxManager.showAlert("You need to enter a valid filename.");
                         } 
                         else {
                             jsonManager.setName(filename);
@@ -62,7 +62,7 @@ define(["jquery", "LightBoxManager", "JsonManager", "Cons", "Utils"],
                                     }
                                 },
                                 error: function (err) {
-                                    alert('Error while verifying graph.');
+                                    lightBoxManager.showAlert('Error while verifying graph.');
                                 }
                             });
                         }

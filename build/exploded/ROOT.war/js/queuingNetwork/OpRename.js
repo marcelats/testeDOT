@@ -4,7 +4,7 @@
 document.getElementById("opRename-btSubmit").addEventListener("click", function() {
     const filename = document.getElementById("opOpen-filename").value;
     if (!filename) {
-        alert("Select a file first.");
+        lightBoxManager.showAlert("Select a file first.");
         return;
     }
     document.getElementById("renameTitle").textContent = "Rename " + filename + " to:";
@@ -22,7 +22,7 @@ document.getElementById("renameOk").onclick = function() {
     const oldName = document.getElementById("opOpen-filename").value;
 
     if (!newName) {
-        alert("Input a new file name.");
+        lightBoxManager.showAlert("Input a new file name.");
         return;
     }
 
@@ -31,14 +31,14 @@ document.getElementById("renameOk").onclick = function() {
         type: "POST",
         data: { oldName: oldName, newName: newName },
         success: function() {
-            alert("The file was renamed.");
+            lightBoxManager.showAlert("The file was renamed.");
             document.querySelector('.file-row-open[data-filename="' + oldName + '"] .file-col').textContent = newName;
             document.querySelector('.file-row-open[data-filename="' + oldName + '"]').dataset.filename = newName;
             document.getElementById("opOpen-filename").value = newName;
         },
         error: function(xhr, thrownError) {
             var errorHeader = xhr.getResponseHeader('fot-error');
-            alert(errorHeader !== null ? errorHeader : thrownError);
+            lightBoxManager.showAlert(errorHeader !== null ? errorHeader : thrownError);
         },
         complete: function() {
             document.getElementById("renameModal").style.display = "none";
