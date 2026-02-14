@@ -96,7 +96,7 @@ function validateSignIn() {
             },
             "si-password2": {
                 required: true,
-                equalTo: "#si_password"
+                equalTo: "#si-password"
             }
         },
         messages: {
