@@ -67,7 +67,7 @@ define(["JsonManager", "Cons", "LightBoxManager", "Probabilities", "Utils"],
                     if ($("#" + cons.PROPERTIES_AREA).css("display") !== "none") {
                         closeDiv(element);
                     }
-                    if (element.name === "server" || element.name === "multiserver") {
+                    if (element.name === "server" || element.name === "multiServer") {
                         openDiv(element);
                     }
                 }
@@ -196,10 +196,10 @@ console.log(
                         syncArrivalDisabled("server", !isFirstArrival);
                     }
 
-                    if (element.name === "multiserver") {
+                    if (element.name === "multiServer") {
                         const fs = document.getElementById("ms-arrival-fieldset");
                         if (fs) fs.disabled = !isFirstArrival;
-                        syncArrivalDisabled("multiserver", !isFirstArrival);
+                        syncArrivalDisabled("multiServer", !isFirstArrival);
                     }
                 }
             );
@@ -226,7 +226,7 @@ console.log(
                 if (sd)  sd.disabled  = disabled;
             }
 
-            if (type === "multiserver") {
+            if (type === "multiServer") {
                 const avg = document.getElementById("ms-arrival-average");
                 const sd  = document.getElementById("ms-arrival-sd");
 

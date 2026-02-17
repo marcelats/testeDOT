@@ -76,11 +76,11 @@
                             <span class="line1">Execute</span>
                             <span class="line2">&nbsp;</span>
                         </li>
-                        <li>
+                        <!--<li>
                             <div id="op-manual"><img src="img/icon/manual.gif"/></div>
                             <span class="line1">Help</span>
                             <span class="line2">&nbsp;</span>
-                        </li>
+                        </li>-->
                     </ul>
                 </div>
             </div>
@@ -88,8 +88,9 @@
             <div id="center">
                 <div id="left-menu">
                     <ul class="menu menu-block">
+                    <li><div id="cursor" class="node" tabindex="0"><img src="img/icon/cursor.gif" title="Cursor"/></div></li>    
                     <li><div id="server" class="node" tabindex="0"><img src="img/icon/server.gif" title="One Server"/></div></li>
-                    <li><div id="multiserver" class="node" tabindex="0"><img src="img/icon/multiServer.gif" title="Multiple Servers"/></div></li>
+                    <li><div id="multiServer" class="node" tabindex="0"><img src="img/icon/multiServer.gif" title="Multiple Servers"/></div></li>
                     <li><div id="source" class="node" tabindex="0"><img src="img/icon/source.gif" title="Source"/></div></li>
                     <li><div id="out" class="node" tabindex="0"><img src="img/icon/out.gif" title="Out"/></div></li>
                     <li><div id="link" class="node" tabindex="0"><img src="img/icon/link.gif" title="Link"/></div></li>

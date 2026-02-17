@@ -61,13 +61,13 @@ define(["jquery", "JsonManager", "LightBoxManager", "Cons"],
                 }
                 
                 for (const node of Object.values(mapNodes)) {
-                    if ((node.type === "server" && node.properties?.["server-average"] === undefined) || (node.type === "multiserver" && node.properties?.["ms-average"] === undefined)) {
+                    if ((node.type === "server" && node.properties?.["server-average"] === undefined) || (node.type === "multiServer" && node.properties?.["ms-average"] === undefined)) {
                         alert(`Server ${node.index}'s service average is undefined`);
                         return;
                     } 
                     
                     if(jsonManager.getGraph().firstArrivalSCs.some(obj => obj.value === node.id) && ((node.type === "server" && (node.properties["arrival-average"] === undefined || node.properties["arrival-average"] === ''))
-                            || (node.type === "multiserver" && (node.properties["ms-arrival-average"] === undefined || node.properties["ms-arrival-average"] === '')))){
+                            || (node.type === "multiServer" && (node.properties["ms-arrival-average"] === undefined || node.properties["ms-arrival-average"] === '')))){
                         alert(`Server ${node.index}'s arrival average is undefined`);
                         return;
                     }
@@ -91,7 +91,7 @@ define(["jquery", "JsonManager", "LightBoxManager", "Cons"],
                 }
          
                 const invalidNodeExists = Object.entries(mapNodes).some(([nodeId, node]) => {
-                    if (node.type === "server" || node.type === "multiserver") {
+                    if (node.type === "server" || node.type === "multiServer") {
                         const sum = Object.values(node.mapTargets)
                             .reduce((a, v) => a + v, 0);
 
@@ -186,7 +186,7 @@ define(["jquery", "JsonManager", "LightBoxManager", "Cons"],
                         case "out":
                             content += `    ${node.index} [label=Destination comment=3]\n`;
                             break;
-                        case "multiserver":
+                        case "multiServer":
                             content += `    ${node.index} [label=CPU comment=" 2`;
                             switch (node.properties["ms-arrival-distribution"])
                             {

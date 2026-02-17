@@ -19,7 +19,7 @@ function(activeTool, divManager, idManager, jsonManager, cons, utils, history, j
         ctrl: function(event, element) {
             var tool = activeTool.getTool();
             if (typeof element === "undefined") {
-                if (tool === "server" || tool === "multiserver" || tool === "source" || tool === "out") {
+                if (tool === "server" || tool === "multiServer" || tool === "source" || tool === "out") {
                     addElement(utils.captureCoordinates(event), tool);
                 }
             }
@@ -30,7 +30,7 @@ function(activeTool, divManager, idManager, jsonManager, cons, utils, history, j
                     else remLink(element);
                 } else if (tool === "link") {
                     if(isNode(element)) linkElements(element);
-                }
+                }  
                 utils.stopPropagation(event);
             }
         },

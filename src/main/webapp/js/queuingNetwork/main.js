@@ -48,7 +48,7 @@ require([
     propertiesArea.initialize();
     jqueryPlugins.initialize();
 
-    const btnMulti = document.getElementById("multiserver");
+    const btnMulti = document.getElementById("multiServer");
     if (btnMulti) {
         btnMulti.style.opacity = "0.3";
         btnMulti.style.pointerEvents = "none";
@@ -68,9 +68,9 @@ require([
         $("#op-code").click(() => topOptions.ctrl("code"));
         $("#op-execute").click(() => topOptions.ctrl("execute"));
         $("#op-manual").click(() => topOptions.ctrl("manual"));
-
+        $("#cursor").click(() => activeTool.setTool("cursor"));
         $("#server").click(() => activeTool.setTool("server"));
-        $("#multiserver").click(() => activeTool.setTool("multiserver"));
+        $("#multiServer").click(() => activeTool.setTool("multiServer"));
         $("#source").click(() => activeTool.setTool("source"));
         $("#out").click(() => activeTool.setTool("out"));
         $("#link").click(() => activeTool.setTool("link"));
@@ -157,7 +157,7 @@ require([
             }
 
             muteUnmute(document.getElementById("arrival-bt"), enabled);
-            muteUnmute(document.getElementById("multiserver"), enabled);
+            muteUnmute(document.getElementById("multiServer"), enabled);
             muteUnmute(document.getElementById("queue-stats-fieldset"), enabled);
             muteUnmute(document.getElementById("arrival-sequence"), enabled);
             muteUnmute(document.getElementById("server-sequence"), enabled);

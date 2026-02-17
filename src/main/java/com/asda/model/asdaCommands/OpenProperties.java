@@ -33,7 +33,7 @@ public class OpenProperties implements Command {
                 aResponse.setForward(true);
                 aResponse.setPage(DIRECTORY + "propsArrival.jsp");
                 break;
-            case "multiserver":
+            case "multiServer":
                 aResponse = new CommandResponse();
                 aResponse.setForward(true);
                 aResponse.setPage(DIRECTORY + "propsMultiServer.jsp");
