@@ -98,7 +98,7 @@ define(["jquery", "jquery-ui", "LightBoxManager", "JsonManager", "Utils", "Cons"
                         }
                         lightBoxManager.openBox(cons.SHADOWING, cons.BOX_CONTAINER,
                             "qnetwork?cmd=open-box&type=open", function() {
-                                $("#opOpen-filename").focus();
+                                $("#op-open-filename").focus();
                             });
                         callback = action;
                         return;
@@ -135,7 +135,9 @@ define(["jquery", "jquery-ui", "LightBoxManager", "JsonManager", "Utils", "Cons"
                                         document.title = "ASDA - " + data.name;
                                     }
                                     constructGraph(data);
-                                    $("#opParamBox").values(jsonManager.getGraphParameters());
+                                    $("#op-param-box").values(jsonManager.getGraphParameters());
+                                    if(data.gv !== "") window.dispatchEvent(new Event("genClicked"));
+                                    if(data.code !== "") window.dispatchEvent(new Event("codeEditorClicked"));
                                 },
                                 error: function(xhr, thrownError) {
                                     var errorHeader = xhr.getResponseHeader('fot-error');
@@ -168,7 +170,7 @@ define(["jquery", "jquery-ui", "LightBoxManager", "JsonManager", "Utils", "Cons"
                                     jsonManager.setSaved(true);
                                     constructGraph(data);
                                     saveAs(filename, 0);
-                                    $("#opParamBox").values(jsonManager.getGraphParameters());
+                                    $("#op-param-box").values(jsonManager.getGraphParameters());
                                 },
                                 error: function(xhr, thrownError) {
                                     var errorHeader = xhr.getResponseHeader('fot-error');
@@ -213,7 +215,7 @@ define(["jquery", "jquery-ui", "LightBoxManager", "JsonManager", "Utils", "Cons"
                     }
 
                     if (action === "delete") {
-                        const confirmDelete = confirm("Are you sure you want to delete " + $("#opOpen-filename").val() + "?");
+                        const confirmDelete = confirm("Are you sure you want to delete " + $("#op-open-filename").val() + "?");
                         if (!confirmDelete) {
                             return;
                         }
