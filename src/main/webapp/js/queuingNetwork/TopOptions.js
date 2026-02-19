@@ -5,8 +5,8 @@
  * author: Marcela Tiemi Shinzato
  */
 
-define(["OpNew", "OpSaveAs", "OpOpen", "OpParam", "OpGen", "OpCode", "OpExecute", "Arrival", "OpSave"],
-    function(opNew, opSaveAs, opOpen, opParam, opGen, opCode, opExecute, arrival, opSave) {
+define(["OpNew", "OpSaveAs", "OpOpen", "OpParam", "OpGen", "OpCode", "OpExecute", "Arrival", "OpSave", "OpHelp"],
+    function(opNew, opSaveAs, opOpen, opParam, opGen, opCode, opExecute, arrival, opSave, opHelp) {
         "use strict";
         var elementManager = null;
         var TopOptions = {
@@ -38,7 +38,7 @@ define(["OpNew", "OpSaveAs", "OpOpen", "OpParam", "OpGen", "OpCode", "OpExecute"
                 } else if (option === "code") {
                     opCode.execute();
                 } else if (option === "manual") {
-                    //opHelp.execute();
+                    opHelp.execute();
                 }
             }
         };

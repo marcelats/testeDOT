@@ -163,7 +163,7 @@ require([
             muteUnmute(document.getElementById("server-sequence"), enabled);
             muteUnmute(document.getElementById("ms-arrival-sequence"), enabled);
             muteUnmute(document.getElementById("ms-sequence"), enabled);
-            muteUnmute(document.getElementById("opParam-batchSize"), enabled);
+            muteUnmute(document.getElementById("op-param-batch-size"), enabled);
 
             const warmup = document.getElementById("warmup-fieldset");
             if (warmup) warmup.disabled = !enabled;

@@ -76,11 +76,11 @@
                             <span class="line1">Execute</span>
                             <span class="line2">&nbsp;</span>
                         </li>
-                        <!--<li>
+                        <li>
                             <div id="op-manual"><img src="img/icon/manual.gif"/></div>
                             <span class="line1">Help</span>
                             <span class="line2">&nbsp;</span>
-                        </li>-->
+                        </li>
                     </ul>
                 </div>
             </div>
