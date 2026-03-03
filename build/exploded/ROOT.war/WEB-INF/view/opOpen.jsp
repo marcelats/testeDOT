@@ -66,7 +66,7 @@
                     <div class="form-buttons">
                         <input id="op-open-bt-submit" type="button" value="Open" class="button">
                         <input id="op-copy-bt-submit" type="button" value="Copy" class="button">
-                        <input id="op-rename-bt-submit" type="button" value="Rename" class="button">
+                        <!--<input id="op-rename-bt-submit" type="button" value="Rename" class="button">-->
                         <input id="op-delete-bt-submit" type="button" value="Delete" class="button">
                         <input id="op-graph-bt-submit" type="button" value="Graph" class="button">
                         <input id="op-code-bt-submit" type="button" value="Code" class="button">
