@@ -10,6 +10,8 @@ import com.asda.beans.AccountBean;
 import com.asda.controller.asda.JpaContextListener;
 import com.asda.model.accountsCommands.UserSessionManager;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 /**
  *
  * @author Marcela Tiemi Shinzato
@@ -33,13 +35,20 @@ public class SaveGraph extends HttpServlet implements Command {
             String codeName = req.getParameter("codeName");
             String reportFile = req.getParameter("reportFile");
             String reportName = req.getParameter("reportName");
+            String createdAtStr = req.getParameter("createdAt");
+            LocalDateTime createdAt = null;
+            if (createdAtStr != null && !createdAtStr.isBlank()) {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+                createdAt = LocalDateTime.parse(createdAtStr, formatter);
+            }
+
             em = JpaContextListener.getEmf().createEntityManager();
             
             try {
                 em.getTransaction().begin();
-                em.createNativeQuery(
-                    "INSERT INTO graphs (graph_name, graph_json, user_id, publicGraph, gv, code, report, report_name, code_name) " +
-                    "VALUES (:filename, :graphJson, :user, false, :gv, :code, :report, :reportName, :codeName)"
+                Query query = em.createNativeQuery(
+                    "INSERT INTO graphs (graph_name, graph_json, user_id, publicGraph, gv, code, report, report_name, code_name, created_at) " +
+                    "VALUES (:filename, :graphJson, :user, false, :gv, :code, :report, :reportName, :codeName, :createdAt)"
                 )
                 .setParameter("filename", filename)
                 .setParameter("graphJson", graphJson)
@@ -48,8 +57,9 @@ public class SaveGraph extends HttpServlet implements Command {
                 .setParameter("code", codeFile)
                 .setParameter("report", reportFile)
                 .setParameter("reportName", reportName)
-                .setParameter("codeName", codeName)
-                .executeUpdate();
+                .setParameter("codeName", codeName);
+                if (createdAt != null) query.setParameter("createdAt", createdAt);
+                query.executeUpdate();
                 em.getTransaction().commit();
                 em.close();
                 return aResponse; 

@@ -59,12 +59,8 @@ define([
     var JsonManager = {
 
         setGraph: function (pGraph) {
-            console.log(
-  "snapshot:",
-  structuredClone(pGraph)
-);
+            
             graph = pGraph;
-
             for (const id in graph.mapNodes) {
                 if (!graph.mapNodes[id].mapTargets) {
                     graph.mapNodes[id].mapTargets = {};
@@ -73,11 +69,6 @@ define([
                     graph.mapNodes[id].hasPrev = 0;
                 }
             }
-            console.log(
-  "snapshot:",
-  structuredClone(graph)
-);
-
             saved = true;
         },
 
@@ -209,11 +200,6 @@ define([
                     mapNodes[sourceId].mapTargets[key] = 0;
                 });
             }
-
-            console.log(
-  "snapshot:",
-  structuredClone(graph)
-);
         },
 
         changeNodePosition: function (element) {
@@ -279,6 +265,29 @@ define([
         
         setLoading: function (v) {
             loading = v;
+        },
+        
+        setCodeName: function (name) {
+            if (graph.codeName) {
+                if (graph.codeName === "Controle.java") return;
+                const lastDotIndex = graph.codeName.lastIndexOf(".");
+                if (lastDotIndex === -1) {
+                    graph.codeName = name;
+                }
+                const extension = graph.codeName.substring(lastDotIndex);
+                graph.codeName = name + extension;
+            }
+        },     
+        
+        setReportName: function (name) {
+            if (graph.reportName) {
+                const lastUnderscoreIndex = graph.reportName.lastIndexOf("_");
+                if (lastUnderscoreIndex === -1) {
+                   graph.reportName = name;
+                }
+                const extension = graph.reportName.substring(lastUnderscoreIndex);
+                graph.reportName = name + extension;
+            }
         }
     };
 

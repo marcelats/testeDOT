@@ -7,6 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
@@ -26,30 +27,31 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Table(name = "graphs",
         uniqueConstraints= @UniqueConstraint(columnNames={"user_id", "graph_name"}))
 @NamedQueries({
-    @NamedQuery(name="graphs.findGraph",
-               query="SELECT g FROM GraphBean g WHERE g.graphName = :name AND g.user = :user"),
-    @NamedQuery(name="graphs.findGraphs",
-               query="SELECT g FROM GraphBean g WHERE g.user = :user OR g.publicGraph = true ORDER BY g.createdAt DESC"),
-    @NamedQuery(name="graphs.setPublic",
-               query="UPDATE GraphBean g SET g.publicGraph = true WHERE g.graphName = :name"),
-    @NamedQuery(name="graphs.setPrivate",
-               query="UPDATE GraphBean g SET g.publicGraph = false WHERE g.graphName = :name"),
-    @NamedQuery(
-    name = "graphs.togglePublic",
+    @NamedQuery(name = "graphs.findGraph",
+               query = "SELECT g FROM GraphBean g WHERE g.graphName = :name AND g.user = :user"),
+    @NamedQuery(name = "graphs.findGraphs",
+               query = "SELECT g FROM GraphBean g WHERE g.user = :user OR g.publicGraph = true ORDER BY g.createdAt DESC"),
+    @NamedQuery(name = "graphs.setPublic",
+               query = "UPDATE GraphBean g SET g.publicGraph = true WHERE g.graphName = :name"),
+    @NamedQuery(name = "graphs.setPrivate",
+               query = "UPDATE GraphBean g SET g.publicGraph = false WHERE g.graphName = :name"),
+    @NamedQuery(name = "graphs.togglePublic",
     query = "UPDATE GraphBean g SET g.publicGraph = NOT g.publicGraph WHERE g.graphName = :name AND g.user = :user"
 ),
-    @NamedQuery(name="graphs.deleteGraph",
-               query="DELETE FROM GraphBean WHERE graphName = :name"),
-    @NamedQuery(name="graphs.renameGraph",
-               query="UPDATE GraphBean g SET graphName = :newName WHERE graphName = :name"),
-    @NamedQuery(name="graphs.findGraphCopy",
-            query="SELECT g FROM GraphBean g WHERE g.graphName = :name AND g.user.userId = :author AND (g.user.userId=:user OR g.publicGraph=true)"),
-    @NamedQuery(name="graphs.findGv",
-            query="SELECT g.gv FROM GraphBean g WHERE g.graphName = :name AND g.user.userId = :author AND (g.user.userId=:user OR g.publicGraph=true)"),
-    @NamedQuery(name="graphs.findCode",
-            query="SELECT g.code, g.code_name FROM GraphBean g WHERE g.graphName = :name AND g.user.userId = :author AND (g.user.userId=:user OR g.publicGraph=true)"),
-    @NamedQuery(name="graphs.findReport",
-            query="SELECT g.report, g.report_name FROM GraphBean g WHERE g.graphName = :name AND g.user.userId = :author AND (g.user.userId=:user OR g.publicGraph=true)")
+    @NamedQuery(name = "graphs.deleteGraph",
+            query = "DELETE FROM GraphBean WHERE graphName = :name"),
+    @NamedQuery(name = "graphs.renameGraph",
+            query = "UPDATE GraphBean g SET graphName = :newName WHERE graphName = :name"),
+    @NamedQuery(name = "graphs.findGraphCopy",
+            query = "SELECT g FROM GraphBean g WHERE g.graphName = :name AND g.user.userId = :author AND (g.user.userId = :user OR g.publicGraph = true)"),
+    @NamedQuery(name = "graphs.findGv",
+            query = "SELECT g.gv FROM GraphBean g WHERE g.graphName = :name AND g.user.userId = :author AND (g.user.userId = :user OR g.publicGraph = true)"),
+    @NamedQuery(name = "graphs.findCode",
+            query = "SELECT g.code, g.codeName FROM GraphBean g WHERE g.graphName = :name AND g.user.userId = :author AND (g.user.userId = :user OR g.publicGraph = true)"),
+    @NamedQuery(name = "graphs.findReport",
+            query = "SELECT g.report, g.reportName FROM GraphBean g WHERE g.graphName = :name AND g.user.userId = :author AND (g.user.userId = :user OR g.publicGraph = true)"),
+    @NamedQuery(name = "graphs.findCreatedAt",
+            query = "SELECT g.createdAt FROM GraphBean g WHERE g.graphName = :name AND g.user.userId = :user")
 }) 
 public class GraphBean implements Serializable {
 
@@ -79,20 +81,23 @@ public class GraphBean implements Serializable {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
     
-    @Column(name = "gv", columnDefinition="TEXT")
-    private String gv;
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
     
-    @Column(name = "code", columnDefinition="TEXT")
+    @Column(name = "code", columnDefinition = "TEXT")
     private String code;
-    
-    @Column(name = "report", columnDefinition="TEXT")
+
+    @Column(name = "report", columnDefinition = "TEXT")
     private String report;
-    
+
+    @Column(name = "gv", columnDefinition = "TEXT")
+    private String gv;
+
     @Column(name = "report_name")
-    private String report_name;
+    private String reportName;
     
     @Column(name = "code_name")
-    private String code_name;
+    private String codeName;
 
     public GraphBean() {
     }
@@ -145,5 +150,11 @@ public class GraphBean implements Serializable {
         if (createdAt == null) return "";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
         return createdAt.format(formatter);
+    }
+
+    public String getFormattedUpdatedAt() {
+        if (updatedAt == null) return "";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        return updatedAt.format(formatter);
     }
 }

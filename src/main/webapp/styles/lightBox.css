@@ -245,8 +245,8 @@ fieldset {
     line-height: 16px;
     font-size: 12px;
     font-weight: bold;
-    cursor: pointer; /* indica que pode clicar */
-    user-select: none; /* impede seleção de texto ao clicar */
+    cursor: pointer; 
+    user-select: none; 
 }
 .modal {
     display: none; 
@@ -294,7 +294,7 @@ fieldset {
 #box-prob {
     display: flex;
     flex-direction: column;
-    height: 150px; /* já bate com .small-box-content */
+    height: 150px; 
 }
 
 .box-header {
@@ -307,7 +307,20 @@ fieldset {
     flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: center; /* centraliza vertical */
-    align-items: center;     /* centraliza horizontal */
+    justify-content: center; 
+    align-items: center;     
     gap: 10px;
+}
+
+.rename {
+    display: flex;
+    flex-direction: column;
+    height: 85px; 
+}
+
+.rename-content {
+    flex: 1; 
+    display: flex;
+    justify-content: center;  
+    align-items: center; 
 }

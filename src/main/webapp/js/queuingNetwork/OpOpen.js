@@ -41,10 +41,10 @@ define(["jquery", "jquery-ui", "LightBoxManager", "JsonManager", "Utils", "Cons"
                     e.preventDefault();
                     OpOpen.execute("report");
                 });
-                /*$(document).on("click", "#opRename-btSubmit", function(e) {
+                $(document).on("click", "#op-rename-bt-submit", function(e) {
                     e.preventDefault();
                     OpOpen.execute("rename");
-                });*/         
+                });         
                 document.addEventListener("click", (e) => {
                     const checkbox = e.target.closest(".checkbox");
                     const row = e.target.closest(".file-row-open");
@@ -118,18 +118,8 @@ define(["jquery", "jquery-ui", "LightBoxManager", "JsonManager", "Utils", "Cons"
                                 },
                                 dataType: "json",
                                 success: function(data) {
-                                    console.log(
-  "snapshot:",
-  structuredClone(data)
-);
-                                    
-                                    
                                     lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
                                     jsonManager.setGraph(JSON.parse(JSON.stringify(data)));
-                                    console.log(
-  "snapshot:",
-  structuredClone(jsonManager.getMapNodes())
-);
                                     jsonManager.setSaved(true);
                                     if (data.name !== "") {
                                         document.title = "ASDA - " + data.name;
@@ -247,34 +237,97 @@ define(["jquery", "jquery-ui", "LightBoxManager", "JsonManager", "Utils", "Cons"
                     }
 
                     if (action === "rename") {
-                        var filename = checkFilename();
-                        if (filename) {
-                            var tempFilename = jsonManager.getName();
-                            jsonManager.setName(filename);
-                            $.ajax({
-                                url: "qnetwork?cmd=rename",
-                                type: "POST",
-                                async: false,
-                                data: {
-                                    graphName: filename,
-                                    newName: $("#op-open-new-name").val()
-                                },
-                                success: function() {
+                        const filename = checkFilename(); 
+                        if (!filename) return;
+                        
+                        lightBoxManager.openBox(cons.SHADOWING, cons.BOX_CONTAINER,
+                            "qnetwork?cmd=open-box&type=rename", function() {
+                                $(document).on("click", "#op-rename-bt-close", function() {
                                     lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
-                                    jsonManager.setSaved(true);
-                                    document.title = "ASDA - " + filename;
-                                },
-                                error: function(xhr, thrownError) {
-                                    var errorHeader = xhr.getResponseHeader('fot-error');
-                                    jsonManager.setName(tempFilename);
-                                    if (errorHeader !== null) {
-                                        alert(errorHeader);
-                                    } else {
-                                        alert(thrownError);
-                                    }
-                                }
-                            });
-                        }
+                                });
+
+                                $(document).off("click", "#op-rename-bt-submit")
+                                           .on("click", "#op-rename-bt-submit", function(e) {
+
+                                    e.preventDefault();
+                                    e.stopPropagation();
+
+                                    //obtem o created_at do modelo que sera renomeado
+                                    $.ajax({
+                                        url: "qnetwork?cmd=find-created-at",
+                                        type: "POST",
+                                        data: {
+                                            graphName: filename
+                                        },
+                                        //dataType: "text",
+                                        success: function(data) {
+                                            console.log(data);
+                                            const createdAt = data;
+                                            //salva o modelo atual numa variavel temporaria
+                                            const copy = jsonManager.getGraph();
+                                            console.log(copy);
+                                            //copia o modelo que sera renomeado com o novo nome o created_at antigo
+                                            //abre o modelo
+                                            $.ajax({
+                                                url: "qnetwork?cmd=open",
+                                                type: "POST",
+                                                data: {
+                                                    graphName: filename,
+                                                    author: ""
+                                                },
+                                                dataType: "json",
+                                                success: function(data) {
+                                                    jsonManager.setGraph(JSON.parse(JSON.stringify(data)));
+                                                    //altera os nomes
+                                                    const newName = $("#op-rename-new-name").val();
+                                                    jsonManager.setName(newName);
+                                                    jsonManager.setCodeName(newName);
+                                                    jsonManager.setReportName(newName);
+                                                    //salvar como
+                                                    console.log(createdAt);
+                                                    saveAs(newName, 0, createdAt);
+                                                    //exclui o modelo que foi renomeado
+                                                    $.ajax({
+                                                        url: "qnetwork?cmd=delete",
+                                                        type: "POST",
+                                                        data: {
+                                                            graphName: filename
+                                                        },
+                                                        success: function() {
+                                                            //abre a variavel temporaria no jsonManager
+                                                            jsonManager.setGraph(copy);
+                                                        },
+                                                        error: function(xhr, thrownError) {
+                                                            var errorHeader = xhr.getResponseHeader('fot-error');
+                                                            if (errorHeader !== null) {
+                                                                alert("1");
+                                                            } else {
+                                                                alert("2");
+                                                            }
+                                                        }
+                                                    });
+                                                },
+                                                error: function(xhr, thrownError) {
+                                                    var errorHeader = xhr.getResponseHeader('fot-error');
+                                                    if (errorHeader !== null) {
+                                                        alert("3");
+                                                    } else {
+                                                        alert("4");
+                                                    }
+                                                }
+                                            });
+                                        },
+                                        error: function(xhr, thrownError) {
+                                            var errorHeader = xhr.getResponseHeader('fot-error');
+                                            if (errorHeader !== null) {
+                                                alert("5");
+                                            } else {
+                                                alert("6");
+                                            }
+                                        }
+                                    });      
+                                });
+                        });
                     }
 
                     if (action === "graph") {
@@ -475,11 +528,6 @@ define(["jquery", "jquery-ui", "LightBoxManager", "JsonManager", "Utils", "Cons"
             $("#" + cons.DRAW_AREA).empty();
             jsPlumb.reset();
             const mapNodes = graph.mapNodes;
-            
-            console.log(
-  "snapshot:",
-  structuredClone(mapNodes)
-);
             if (!utils.mapIsEmpty(mapNodes)) {
                 jsonManager.setLoading(true);
                 for (var key in mapNodes) {
@@ -489,33 +537,10 @@ define(["jquery", "jquery-ui", "LightBoxManager", "JsonManager", "Utils", "Cons"
                     };
                     elementManager.add(mapNodes[key].type, position, key);
                 }
-                /*let maiorId = -Infinity;
-                for (const key in mapNodes) {
-                    if (mapNodes.hasOwnProperty(key)) {
-                        const node = mapNodes[key];
-                        if (node.id > maiorId) {
-                            maiorId = node.id;
-                        }
-                    }
-                }
-                idManager.setStartCid(maiorId);*/
                 for (var keyNode in mapNodes) {
                     var mapTargets = mapNodes[keyNode].mapTargets;
                     if (!utils.mapIsEmpty(mapTargets)) {
                         for (var keyTarget in mapTargets) {
-                            console.log(
-  "snapshot:",
-  structuredClone(mapNodes)
-);
-console.log(
-  "snapshot:",
-  structuredClone(mapTargets)
-);
-console.log(
-  "snapshot:",
-  structuredClone(keyTarget)
-);
-console.log(keyNode,keyTarget);
                             elementManager.linkElements($("#" + keyNode));
                             elementManager.linkElements($("#" + keyTarget));
                             
@@ -527,45 +552,82 @@ console.log(keyNode,keyTarget);
             }
         }
 
-        function saveAs(filename, i) {
+        function saveAs(filename, i, createdAt) {
             if (i !== 0) jsonManager.setName(filename + "_" + i);
 
             if (jsonManager.getGraph().parameters["op-param-library"] === "Python") {
-                jsonManager.getGraph().codeName = filename + "_" + i + ".py";
-                jsonManager.getGraph().reportName = filename + "_" + i + "_Python.txt";
+                if (i !== 0) {
+                    jsonManager.getGraph().codeName = filename + "_" + i + ".py";
+                    jsonManager.getGraph().reportName = filename + "_" + i + "_Python.txt";
+                }
             } else if (jsonManager.getGraph().parameters["op-param-library"] === "Java") {
-                jsonManager.getGraph().codeName = filename + "_" + i + ": Controle.java";
-                jsonManager.getGraph().reportName = filename + "_" + i + "_Java.txt";
+                if (i !== 0) {
+                    jsonManager.getGraph().codeName = filename + "_" + i + ": Controle.java";
+                    jsonManager.getGraph().reportName = filename + "_" + i + "_Java.txt";
+                }
             } else if (jsonManager.getGraph().parameters["op-param-library"] === "R") {
-                jsonManager.getGraph().codeName = filename + "_" + i + ".r";
-                jsonManager.getGraph().reportName = filename + "_" + i + "_R.txt";
+                if (i !== 0) {
+                    jsonManager.getGraph().codeName = filename + "_" + i + ".r";
+                    jsonManager.getGraph().reportName = filename + "_" + i + "_R.txt";
+                }
             } else if (jsonManager.getGraph().parameters["op-param-library"] === "C SMPL") {
-                jsonManager.getGraph().codeName = filename + "_" + i + ".c";
-                jsonManager.getGraph().reportName = filename + "_" + i + "_C_SMPL.txt";
+                if (i !== 0) {
+                    jsonManager.getGraph().codeName = filename + "_" + i + ".c";
+                    jsonManager.getGraph().reportName = filename + "_" + i + "_C_SMPL.txt";
+                }
             } else if (jsonManager.getGraph().parameters["op-param-library"] === "C SMPLX") {
-                jsonManager.getGraph().codeName = filename + "_" + i + ".c";
-                jsonManager.getGraph().reportName = filename + "_" + i + "_C_SMPLX.txt";
+                if (i !== 0) {
+                    jsonManager.getGraph().codeName = filename + "_" + i + ".c";
+                    jsonManager.getGraph().reportName = filename + "_" + i + "_C_SMPLX.txt";
+                }
             } else {
-                jsonManager.getGraph().codeName = filename + "_" + i;
-                jsonManager.getGraph().reportName = filename + "_" + i;
+                if (i !== 0) {
+                    jsonManager.getGraph().codeName = filename + "_" + i;
+                    jsonManager.getGraph().reportName = filename + "_" + i;
+                }
             }
-            console.log(
-  "snapshot:",
-  structuredClone(jsonManager.getGraph())
-);
+            
             var newFilename = filename;
             if (i !== 0) newFilename = filename + "_" + i;
-            $.ajax({
+            const graph = jsonManager.getGraph();
+            if (createdAt)
+            {
+                 $.ajax({
+                    url: "qnetwork?cmd=save-as",
+                    type: "POST",
+                    data: {
+                        filename: newFilename,
+                        graphJson: jsonManager.stringifyGraph(),
+                        gvFile: graph.gv,
+                        codeFile: graph.code,
+                        reportFile: graph.report,
+                        reportName: graph.reportName,
+                        codeName: graph.codeName,
+                        createdAt: createdAt
+                    },
+                    success: function() {
+                        lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
+                        jsonManager.setSaved(true);
+                        if (i === 0) document.title = "ASDA - " + filename;
+                        else document.title = "ASDA - " + newFilename;
+                        return;
+                    },
+                    error: function(err) {
+                        saveAs(filename, i + 1, createdAt);
+                    }
+                });
+            }
+            else $.ajax({
                 url: "qnetwork?cmd=save-as",
                 type: "POST",
                 data: {
                     filename: newFilename,
                     graphJson: jsonManager.stringifyGraph(),
-                    gvFile: jsonManager.getGraph().gv,
-                    codeFile: jsonManager.getGraph().code,
-                    reportFile: jsonManager.getGraph().report,
-                    reportName: jsonManager.getGraph().reportName,
-                    codeName: jsonManager.getGraph().codeName
+                    gvFile: graph.gv,
+                    codeFile: graph.code,
+                    reportFile: graph.report,
+                    reportName: graph.reportName,
+                    codeName: graph.codeName
                 },
                 success: function() {
                     lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);

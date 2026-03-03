@@ -13,7 +13,7 @@ public class CommandResponse {
     private boolean forward;
     private boolean ajax;
     private String page;
-private String jsonPayload;
+    private String jsonPayload;
 
 public String getJsonPayload() {
     return jsonPayload;

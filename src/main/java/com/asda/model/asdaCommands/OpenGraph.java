@@ -31,12 +31,13 @@ public class OpenGraph implements Command {
             UserSessionManager sessionMgr = UserSessionManager.getInstance();
             AccountBean account = sessionMgr.getAccountUser(session);
             String graphName = req.getParameter("graphName");
-
-            if (!Objects.equals(Long.valueOf(req.getParameter("author")), account.getUserId())) {
+            String author = req.getParameter("author");
+            if (!("".equals(author)) && !Objects.equals(Long.valueOf(author), account.getUserId())) {
                 res.sendError(HttpServletResponse.SC_FORBIDDEN, "Copy the file first.");
                 return aResponse;
             }
             if (graphName != null ) {
+
                 GraphBean graph = findGraph(account, graphName);
 
                 if (graph != null && Objects.equals(account.getUserId(), graph.getUser().getUserId())) {

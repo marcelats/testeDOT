@@ -14,7 +14,7 @@ import com.asda.model.asdaCommands.OpenProperties;
 import com.asda.model.asdaCommands.PublicGraph;
 import com.asda.model.asdaCommands.SaveGraph;
 import com.asda.model.asdaCommands.DeleteGraph;
-import com.asda.model.asdaCommands.RenameGraph;
+import com.asda.model.asdaCommands.FindCreatedAt;
 import com.asda.model.asdaCommands.VerifyGraphServlet;
 import com.asda.model.asdaCommands.CopyFile;
 import com.asda.utils.FlowControl;
@@ -82,7 +82,7 @@ public class QueuingNetworkServlet extends HttpServlet {
         commands.put("open", new OpenGraph());
         commands.put("public", new PublicGraph());
         commands.put("delete", new DeleteGraph());
-        commands.put("rename", new RenameGraph());
+        commands.put("find-created-at", new FindCreatedAt());
         commands.put("verify", new VerifyGraphServlet());
         commands.put("copy", new CopyFile());
         commands.put("open-gv", new OpenGv());

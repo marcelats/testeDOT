@@ -26,7 +26,7 @@
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>
             <!--  Update the database. Generates the tables if necessary -->
-            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.hbm2ddl.auto" value="validate"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
             <!-- HikariCP properties -->
             <property name="hibernate.hikari.dataSourceClassName" value="org.postgresql.ds.PGSimpleDataSource"/>

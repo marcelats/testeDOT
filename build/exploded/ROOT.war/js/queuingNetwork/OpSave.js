@@ -18,14 +18,18 @@ define(["jquery", "LightBoxManager", "JsonManager", "Cons", "OpSaveAs", "Utils"]
                     opSaveAs.execute(); 
                     return OpSave;
                 }
-                console.log(jsonManager.stringifyGraph());
+                const graph = jsonManager.getGraph();
                 $.ajax({
                     url: 'qnetwork?cmd=verify',
                     type: 'POST',
-                    data: { filename: filename, graphJson: jsonManager.stringifyGraph(), 
-                        gvFile: jsonManager.getGraph().gv, codeFile: jsonManager.getGraph().code, 
-                        reportFile: jsonManager.getGraph().report, reportName: jsonManager.getGraph().reportName,
-                        codeName: jsonManager.getGraph().codeName},
+                    data: { 
+                        filename: filename, 
+                        graphJson: jsonManager.stringifyGraph(), 
+                        gvFile: graph.gv, 
+                        codeFile: graph.code, 
+                        reportFile: graph.report, 
+                        reportName: graph.reportName,
+                        codeName: graph.codeName},
                     success: function () {
                         lightBoxManager.closeBox(cons.SHADOWING, cons.BOX_CONTAINER);
                         jsonManager.setSaved(true);

@@ -32,9 +32,9 @@ public class OpenReport implements Command {
             String graphName = req.getParameter("graphName");
             String author = req.getParameter("author");
             if (graphName != null ) {
-                Object graph = findReport(account, graphName, author);
-                if (graph != null) {
-                    Object[] result = (Object[]) graph;
+                Object reportAndName = findReport(account, graphName, author);
+                if (reportAndName != null) {
+                    Object[] result = (Object[]) reportAndName;
                     report = (String) result[0];
                     reportName = (String) result[1];
                     res.setContentType("application/json;charset=UTF-8");
@@ -52,12 +52,12 @@ public class OpenReport implements Command {
             Object array = null;
             try {
                 em = JpaContextListener.getEmf().createEntityManager();
-                Object graph = em.createNamedQuery("graphs.findReport")
+                Object reportAndName = em.createNamedQuery("graphs.findReport")
                         .setParameter("user", account.getUserId())
                         .setParameter("name", graphName)
                         .setParameter("author", author)
                         .getSingleResult();
-                array = (Object[]) graph;
+                array = (Object[]) reportAndName;
 
             } catch (NoResultException e) {
                 throw new CommandException("The graph name is invalid.");

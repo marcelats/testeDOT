@@ -34,10 +34,10 @@ public class OpenCode implements Command {
             String author = req.getParameter("author");
             
             if (graphName != null ) {
-                Object graph = findCode(account, graphName, author);
+                Object codeAndName = findCode(account, graphName, author);
 
-                if (graph != null) {
-                    Object[] result = (Object[]) graph;
+                if (codeAndName != null) {
+                    Object[] result = (Object[]) codeAndName;
                     code = (String) result[0];
                     codeName = (String) result[1];
                     res.setContentType("application/json;charset=UTF-8");
@@ -55,12 +55,12 @@ public class OpenCode implements Command {
             Object array = null;
             try {
                 em = JpaContextListener.getEmf().createEntityManager();
-                Object graph = em.createNamedQuery("graphs.findCode")
+                Object codeAndName = em.createNamedQuery("graphs.findCode")
                         .setParameter("user", account.getUserId())
                         .setParameter("name", graphName)
                         .setParameter("author", author)
                         .getSingleResult();   
-                array = (Object[]) graph;
+                array = (Object[]) codeAndName;
 
             } catch (NoResultException e) {
                 System.out.println(e);

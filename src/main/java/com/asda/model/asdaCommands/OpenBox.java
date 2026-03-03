@@ -84,6 +84,11 @@ public class OpenBox implements Command {
                     aResponse.setForward(true);
                     aResponse.setPage(DIRECTORY + "help.jsp");
                     break;
+                case "rename":
+                    aResponse = new CommandResponse();
+                    aResponse.setForward(true);
+                    aResponse.setPage(DIRECTORY + "rename.jsp");
+                    break;
             }
         return aResponse;
     }

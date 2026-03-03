@@ -27,7 +27,8 @@
                     <span class="file-col">Filename</span>
                     <span class="author-col">Author</span>
                     <span class="privacy-col">Public</span>
-                    <span class="date-col">Date</span>
+                    <span class="date-col">Created at</span>
+                    <span class="updated-col">Updated at</span>
                 </div>
 
                 <c:forEach var="file" items="${files}">
@@ -48,6 +49,9 @@
                         <span class="date-col">
                             <span>${file.formattedCreatedAt}</span>
                         </span>
+                        <span class="date-col">
+                            <!--<span>${file.formattedUpdatedAt}</span>-->
+                        </span>
                     </div>
                 </c:forEach>
             </div>
@@ -66,17 +70,17 @@
                     <div class="form-buttons">
                         <input id="op-open-bt-submit" type="button" value="Open" class="button">
                         <input id="op-copy-bt-submit" type="button" value="Copy" class="button">
-                        <input id="op-rename-bt-submit" type="button" value="Rename" class="button">
+                        <!--<input id="op-rename-bt-submit" type="button" value="Rename" class="button">-->
                         <input id="op-delete-bt-submit" type="button" value="Delete" class="button">
                         <input id="op-graph-bt-submit" type="button" value="Graph" class="button">
                         <input id="op-code-bt-submit" type="button" value="Code" class="button">
                         <input id="op-report-bt-submit" type="button" value="Report" class="button">
                     </div>
 
-                    <div class="form-row">
+                    <!--<div class="form-row">
                         <label for="op-open-new-name">Rename to:</label>
                         <input id="op-open-new-name" type="text" class="inputText large">
-                    </div>
+                    </div>-->
                 </form>
             </div>
         </div>
