@@ -73,10 +73,10 @@
                         <input id="op-report-bt-submit" type="button" value="Report" class="button">
                     </div>
 
-                    <div class="form-row">
+                    <!--<div class="form-row">
                         <label for="op-open-new-name">Rename to:</label>
                         <input id="op-open-new-name" type="text" class="inputText large">
-                    </div>
+                    </div>-->
                 </form>
             </div>
         </div>
