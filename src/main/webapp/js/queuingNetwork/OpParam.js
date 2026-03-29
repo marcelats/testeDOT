@@ -48,6 +48,7 @@ define(["jquery", "jquery-ui", "domReady!", "LightBoxManager", "JsonManager", "A
                 if (typeof action !== "string") {
                     $("#op-param-box").dialog("open");      
                     $("#op-param-box").values(jsonManager.getGraphParameters());
+                    console.log(jsonManager.getGraphParameters());
                     callback = action;
                 } else {
                     lastAction = action;
