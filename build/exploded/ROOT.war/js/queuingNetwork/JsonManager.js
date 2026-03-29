@@ -250,6 +250,13 @@ define([
 
         clearGraph: function () {
             graph = new Graph();
+            this.setGraphParameters({
+                "op-param-library": 'Python', 
+                "op-param-batch-size": '0', 
+                "op-param-seed": '0', 
+                "op-param-exec-time": '0', 
+                "op-param-time-automatic": 'on'
+            });
         },
 
         nullButtons: function () {
